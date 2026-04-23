@@ -2,638 +2,427 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>筋トレログ</title>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="筋トレログ">
-<meta name="theme-color" content="#0f0f0f">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="筋トレノート">
+<meta name="theme-color" content="#f0f4f8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>トレーニングノート</title>
 <style>
-  :root {
-    --bg:#0f0f0f; --surface:#1a1a1a; --surface2:#242424;
-    --border:#2e2e2e; --text:#f0f0f0; --text2:#888; --text3:#555;
-    --push:#4a9eff; --pull:#3ecf8e; --legs:#f59e0b; --day4:#c084fc; --day5:#fb7185;
-    --mono:'DM Mono',monospace; --sans:'Noto Sans JP',sans-serif;
-  }
-  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-  body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;font-size:15px;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif;background:#f0f4f8;color:#1a1a2e;overscroll-behavior:none}
 
-  .header{padding:16px 20px 0;display:flex;align-items:center;justify-content:space-between;}
-  .header-title{font-family:var(--mono);font-size:13px;color:var(--text3);letter-spacing:.1em;}
-  .header-date{font-family:var(--mono);font-size:13px;color:var(--text2);}
+/* ── Nav ── */
+.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e2e8f0;display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom)}
+.nav-btn{flex:1;padding:10px 4px 8px;border:none;background:none;cursor:pointer;font-size:11px;color:#94a3b8;display:flex;flex-direction:column;align-items:center;gap:3px;transition:color .15s}
+.nav-btn.active{color:#3b82f6}
+.nav-btn svg{width:22px;height:22px}
 
-  .tabs{display:flex;padding:12px 20px 0;border-bottom:1px solid var(--border);overflow-x:auto;}
-  .tabs::-webkit-scrollbar{display:none;}
-  .tab{font-size:12px;color:var(--text3);padding:8px 0;margin-right:20px;border-bottom:2px solid transparent;cursor:pointer;font-family:var(--mono);letter-spacing:.05em;white-space:nowrap;flex-shrink:0;}
-  .tab.active{color:var(--text);border-bottom-color:var(--text);}
+/* ── Pages ── */
+.page{display:none;padding:16px 14px;padding-bottom:90px;min-height:100svh}
+.page.active{display:block}
+.page-title{font-size:22px;font-weight:800;margin-bottom:16px;letter-spacing:-0.5px}
 
-  .page{display:none;padding:20px;}
-  .page.active{display:block;}
+/* ── Card ── */
+.card{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
 
-  .section-label{font-family:var(--mono);font-size:11px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;}
+/* ── Form ── */
+.field{margin-bottom:10px}
+.field-row{display:flex;gap:8px;align-items:center}
+.field-label{font-size:12px;font-weight:600;color:#64748b;min-width:38px;flex-shrink:0}
+input[type=text],input[type=date],input[type=time],input[type=number],select,textarea{
+  border:1.5px solid #e2e8f0;border-radius:10px;padding:9px 11px;font-size:14px;
+  width:100%;background:#f8fafc;color:#1a1a2e;outline:none;transition:border-color .15s;
+  -webkit-appearance:none;appearance:none}
+input:focus,select:focus,textarea:focus{border-color:#3b82f6;background:#fff}
+textarea{resize:none;height:60px;font-family:inherit}
 
-  /* TODAY */
-  .add-ex-row{display:flex;gap:8px;margin-bottom:16px;}
-  .add-ex-input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--sans);font-size:14px;padding:10px 14px;}
-  .add-ex-input:focus{outline:none;border-color:#555;}
-  .add-ex-btn{background:var(--text);color:var(--bg);border:none;border-radius:8px;font-size:14px;font-weight:700;padding:10px 16px;cursor:pointer;}
+/* ── Exercise table ── */
+.ex-wrap{overflow-x:auto;margin:0 -16px;padding:0 16px}
+.ex-table{width:100%;border-collapse:collapse;font-size:12px}
+.ex-table th{background:#f1f5f9;padding:7px 4px;text-align:center;font-weight:700;font-size:11px;color:#64748b;border-bottom:2px solid #e2e8f0;white-space:nowrap}
+.ex-table td{padding:4px 3px;border-bottom:1px solid #f1f5f9;vertical-align:middle}
+.ex-table td:first-child{min-width:90px}
+.ex-table input{padding:6px 4px;font-size:12px;text-align:center;border-radius:7px}
+.ex-table input[placeholder="種目名"]{text-align:left;min-width:88px}
+.set-input{width:64px!important}
+.del-btn{background:#fee2e2;color:#dc2626;border:none;border-radius:7px;padding:5px 8px;cursor:pointer;font-size:13px;line-height:1}
 
-  .exercise-card{background:var(--surface);border-radius:10px;margin-bottom:12px;overflow:hidden;}
-  .ex-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;}
-  .ex-name{font-weight:500;font-size:14px;}
-  .ex-meta{font-family:var(--mono);font-size:12px;color:var(--text2);margin-top:2px;}
-  .ex-del{background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer;padding:0 0 0 8px;line-height:1;}
-  .ex-body{padding:0 16px 14px;display:none;}
-  .ex-body.open{display:block;}
+/* ── Buttons ── */
+.btn{border:none;border-radius:12px;padding:12px 18px;cursor:pointer;font-size:15px;font-weight:700;transition:opacity .15s;width:100%}
+.btn:active{opacity:.75}
+.btn-primary{background:#3b82f6;color:#fff}
+.btn-outline{background:#eff6ff;color:#3b82f6;border:1.5px solid #bfdbfe}
+.add-ex-btn{color:#3b82f6;background:none;border:none;font-size:13px;font-weight:600;cursor:pointer;padding:8px 0 2px;display:flex;align-items:center;gap:4px}
 
-  .set-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
-  .set-num{font-family:var(--mono);font-size:12px;color:var(--text3);min-width:32px;}
-  .set-input{background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:var(--mono);font-size:14px;width:68px;padding:7px 10px;text-align:center;-moz-appearance:textfield;}
-  .set-input::-webkit-outer-spin-button,.set-input::-webkit-inner-spin-button{-webkit-appearance:none;}
-  .set-input:focus{outline:none;border-color:#555;}
-  .set-sep{color:var(--text3);font-size:13px;}
-  .set-del{background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;padding:0 4px;line-height:1;}
-  .rm-hint{font-family:var(--mono);font-size:11px;color:var(--text3);margin-left:auto;}
+/* ── History ── */
+.history-card{cursor:default}
+.history-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.history-date{font-size:14px;font-weight:800;color:#3b82f6}
+.history-meta{font-size:12px;color:#94a3b8;margin-top:2px}
+.history-ex{margin-bottom:6px}
+.history-ex-name{font-size:13px;font-weight:700;margin-bottom:2px}
+.history-sets{display:flex;flex-wrap:wrap;gap:4px}
+.set-badge{background:#f1f5f9;border-radius:6px;padding:3px 7px;font-size:11px;color:#475569}
+.history-memo{margin-top:8px;font-size:12px;color:#64748b;padding-top:8px;border-top:1px solid #f1f5f9}
+.del-log-btn{background:#fee2e2;color:#dc2626;border:none;border-radius:8px;padding:4px 10px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.empty{text-align:center;padding:50px 20px;color:#94a3b8;font-size:14px}
+.empty-icon{font-size:40px;margin-bottom:12px}
 
-  .add-set-btn{display:flex;align-items:center;gap:6px;background:none;border:1px dashed var(--border);border-radius:6px;color:var(--text2);font-size:13px;padding:7px 12px;cursor:pointer;width:100%;margin-top:4px;}
-  .finish-btn{width:100%;padding:14px;background:var(--text);color:var(--bg);border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;font-family:var(--sans);}
-  .finish-btn:active{opacity:.8;}
-  .empty{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px;}
+/* ── MAX Table ── */
+.max-calc-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.max-result-box{background:linear-gradient(135deg,#3b82f6,#6366f1);border-radius:12px;padding:14px;text-align:center;margin-top:8px}
+.max-result-label{font-size:12px;color:rgba(255,255,255,.8);margin-bottom:4px}
+.max-result-value{font-size:28px;font-weight:900;color:#fff}
+.max-result-unit{font-size:14px;color:rgba(255,255,255,.8)}
+.max-table-wrap{overflow:auto;max-height:55vh;border-radius:12px;border:1px solid #e2e8f0}
+.max-tbl{border-collapse:collapse;font-size:12px;white-space:nowrap;width:100%}
+.max-tbl th{background:#3b82f6;color:#fff;padding:7px 9px;text-align:center;position:sticky;top:0;z-index:10;font-size:11px}
+.max-tbl td{padding:6px 9px;text-align:center;border-bottom:1px solid #f1f5f9}
+.max-tbl tr:nth-child(even) td{background:#fafbfc}
+.max-tbl tr:hover td{background:#eff6ff}
+.max-tbl td:first-child{font-weight:700;background:#f8fafc;position:sticky;left:0;border-right:1px solid #e2e8f0;z-index:5}
+.max-tbl tr:nth-child(even) td:first-child{background:#f1f5f9}
+.max-tbl tr:hover td:first-child{background:#dbeafe}
+.hl-row td{background:#fef9c3!important;font-weight:600}
+.hl-row td:first-child{background:#fef08a!important}
+.hl-cell{background:#f59e0b!important;color:#fff!important;border-radius:4px;font-weight:800}
 
-  /* MENU VIEW */
-  .menu-day{margin-bottom:24px;}
-  .menu-day-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
-  .day-color-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-  .menu-day-title{font-size:15px;font-weight:500;}
-  .menu-day-sub{font-size:13px;color:var(--text2);font-weight:400;}
-  .menu-ex{display:flex;justify-content:space-between;padding:8px 0;border-bottom:.5px solid var(--border);font-size:14px;}
-  .menu-ex:last-child{border-bottom:none;}
-  .menu-ex-target{font-family:var(--mono);font-size:12px;color:var(--text2);}
-  .edit-menu-btn{width:100%;padding:11px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--text2);font-size:13px;cursor:pointer;margin-top:4px;font-family:var(--sans);}
-  .edit-menu-btn:active{border-color:#555;}
+/* ── Toast ── */
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-80px);background:#1a1a2e;color:#fff;padding:12px 24px;border-radius:30px;font-size:14px;font-weight:600;z-index:999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
 
-  /* MENU EDITOR */
-  .editor-day-block{background:var(--surface);border-radius:10px;margin-bottom:12px;overflow:hidden;}
-  .editor-day-header{display:flex;align-items:center;gap:8px;padding:14px 16px;cursor:pointer;}
-  .editor-day-name{font-weight:500;font-size:14px;flex:1;}
-  .editor-day-body{padding:0 16px 14px;display:none;}
-  .editor-day-body.open{display:block;}
-  .editor-field{margin-bottom:10px;}
-  .editor-label{font-family:var(--mono);font-size:11px;color:var(--text3);margin-bottom:5px;letter-spacing:.05em;}
-  .editor-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:var(--sans);font-size:14px;padding:8px 12px;}
-  .editor-input:focus{outline:none;border-color:#555;}
-  .editor-ex-row{display:flex;gap:8px;margin-bottom:8px;}
-  .editor-ex-name{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:var(--sans);font-size:13px;padding:7px 10px;}
-  .editor-ex-name:focus{outline:none;border-color:#555;}
-  .editor-ex-target{width:110px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text2);font-family:var(--mono);font-size:12px;padding:7px 8px;text-align:center;}
-  .editor-ex-target:focus{outline:none;border-color:#555;}
-  .editor-del-btn{background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;padding:0 4px;line-height:1;}
-  .editor-add-ex{display:flex;align-items:center;gap:6px;background:none;border:1px dashed var(--border);border-radius:6px;color:var(--text2);font-size:13px;padding:7px 12px;cursor:pointer;width:100%;margin-top:4px;}
-  .editor-del-day{background:none;border:none;color:#ef4444;font-size:12px;cursor:pointer;padding:0;font-family:var(--mono);}
-  .add-day-btn{width:100%;padding:12px;background:none;border:1px dashed var(--border);border-radius:10px;color:var(--text2);font-size:14px;cursor:pointer;margin-bottom:12px;}
-  .save-menu-btn{width:100%;padding:13px;background:var(--text);color:var(--bg);border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px;font-family:var(--sans);}
-  .save-menu-btn:active{opacity:.8;}
-  .saved-msg{text-align:center;font-size:13px;color:var(--pull);margin-top:10px;height:20px;}
-  .back-btn{background:none;border:none;color:var(--text2);font-size:13px;cursor:pointer;margin-bottom:16px;padding:0;font-family:var(--mono);}
-
-  /* RM */
-  .rm-inputs{display:flex;gap:10px;margin-bottom:16px;}
-  .rm-field{flex:1;}
-  .rm-field label{display:block;font-family:var(--mono);font-size:11px;color:var(--text3);margin-bottom:6px;letter-spacing:.08em;}
-  .rm-field input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--mono);font-size:20px;padding:12px;text-align:center;-moz-appearance:textfield;}
-  .rm-field input::-webkit-outer-spin-button,.rm-field input::-webkit-inner-spin-button{-webkit-appearance:none;}
-  .rm-field input:focus{outline:none;border-color:#555;}
-  .rm-result-big{background:var(--surface);border-radius:10px;padding:16px;text-align:center;margin-bottom:16px;}
-  .rm-result-label{font-family:var(--mono);font-size:11px;color:var(--text3);letter-spacing:.1em;margin-bottom:4px;}
-  .rm-result-val{font-size:40px;font-weight:700;font-family:var(--mono);}
-  .rm-result-unit{font-size:16px;color:var(--text2);}
-  .rm-table{width:100%;border-collapse:collapse;font-size:13px;}
-  .rm-table th{font-family:var(--mono);font-size:11px;color:var(--text3);text-align:left;padding:6px 8px;border-bottom:1px solid var(--border);letter-spacing:.05em;}
-  .rm-table th:not(:first-child){text-align:right;}
-  .rm-table td{padding:9px 8px;border-bottom:.5px solid var(--border);color:var(--text2);}
-  .rm-table td:not(:first-child){text-align:right;font-family:var(--mono);}
-  .rm-table tr:last-child td{border-bottom:none;}
-  .rm-table td.rep-col{color:var(--text);font-weight:500;}
-  .rm-table tr.highlight td{color:var(--text);background:var(--surface2);}
-
-  /* HISTORY */
-  .hist-item{border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;cursor:pointer;}
-  .hist-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;}
-  .hist-title{font-weight:500;font-size:14px;color:var(--text);}
-  .hist-date{font-family:var(--mono);font-size:12px;color:var(--text2);}
-  .hist-summary{font-size:13px;color:var(--text2);}
-  .hist-detail{margin-top:10px;display:none;border-top:1px solid var(--border);padding-top:10px;}
-  .hist-detail.open{display:block;}
-  .hist-ex{font-size:13px;color:var(--text2);margin-bottom:6px;}
-  .hist-ex strong{color:var(--text);font-weight:500;}
-
-  .reset-link{font-size:12px;color:var(--text3);background:none;border:none;cursor:pointer;text-decoration:underline;display:block;margin:20px auto 0;}
-
-  .color-swatch{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;}
+/* ── Section header ── */
+.section-head{font-size:12px;font-weight:700;color:#64748b;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;margin-top:4px}
+.divider{height:1px;background:#f1f5f9;margin:12px 0}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <span class="header-title">KINTORE</span>
-  <span class="header-date" id="header-date"></span>
+<!-- ===== LOG PAGE ===== -->
+<div id="page-log" class="page active">
+  <div class="page-title">📋 ログ入力</div>
+
+  <div class="card">
+    <div class="section-head">セッション情報</div>
+    <div class="field">
+      <div class="field-row">
+        <span class="field-label">日付</span>
+        <input type="date" id="log-date">
+      </div>
+    </div>
+    <div class="field">
+      <div class="field-row">
+        <span class="field-label">時間</span>
+        <input type="time" id="log-time">
+      </div>
+    </div>
+    <div class="field" style="margin:0">
+      <div class="field-row">
+        <span class="field-label">場所</span>
+        <input type="text" id="log-place" placeholder="ジム名・自宅など">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-head">種目・セット記録</div>
+    <div class="ex-wrap">
+      <table class="ex-table">
+        <thead>
+          <tr>
+            <th style="text-align:left;padding-left:6px">種目</th>
+            <th>1set</th><th>2set</th><th>3set</th><th>4set</th><th>5set</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="ex-tbody"></tbody>
+      </table>
+    </div>
+    <button class="add-ex-btn" onclick="addRow()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+      種目を追加
+    </button>
+  </div>
+
+  <div class="card">
+    <div class="section-head">メモ</div>
+    <textarea id="log-memo" placeholder="コンディション・気づきなど..."></textarea>
+  </div>
+
+  <button class="btn btn-primary" onclick="saveLog()">保存する</button>
 </div>
 
-<div class="tabs">
-  <div class="tab active" onclick="switchTab('today')">TODAY</div>
-  <div class="tab" onclick="switchTab('menu')">MENU</div>
-  <div class="tab" onclick="switchTab('rm')">RM</div>
-  <div class="tab" onclick="switchTab('history')">HISTORY</div>
+<!-- ===== HISTORY PAGE ===== -->
+<div id="page-history" class="page">
+  <div class="page-title">📚 履歴</div>
+  <div id="history-list"></div>
 </div>
 
-<div class="page active" id="page-today"></div>
-<div class="page" id="page-menu"></div>
-<div class="page" id="page-rm"></div>
-<div class="page" id="page-history"></div>
+<!-- ===== MAX TABLE PAGE ===== -->
+<div id="page-max" class="page">
+  <div class="page-title">📊 MAX早見表</div>
+
+  <div class="card">
+    <div class="section-head">推定MAX計算</div>
+    <div class="max-calc-row">
+      <div>
+        <div style="font-size:11px;color:#64748b;margin-bottom:4px">使用重量 (kg)</div>
+        <input type="number" id="calc-weight" placeholder="例: 100" step="2.5" min="0" oninput="calcAndHighlight()">
+      </div>
+      <div>
+        <div style="font-size:11px;color:#64748b;margin-bottom:4px">レップ数</div>
+        <select id="calc-reps" onchange="calcAndHighlight()">
+          <option value="">選択</option>
+          <option>2</option><option>3</option><option>4</option><option>5</option>
+          <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+        </select>
+      </div>
+    </div>
+    <div id="max-result-box" style="display:none" class="max-result-box">
+      <div class="max-result-label">推定MAX</div>
+      <div><span class="max-result-value" id="max-result-val">-</span> <span class="max-result-unit">kg</span></div>
+    </div>
+  </div>
+
+  <div class="card" style="padding:0;overflow:hidden">
+    <div class="max-table-wrap">
+      <table class="max-tbl" id="max-tbl"></table>
+    </div>
+  </div>
+  <div style="font-size:11px;color:#94a3b8;text-align:center;margin-top:6px">※あくまで参考値です。フォーム・種目によって個人差はあります。</div>
+</div>
+
+<!-- ===== NAV ===== -->
+<nav class="nav">
+  <button class="nav-btn active" onclick="showPage('log',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
+    </svg>
+    ログ
+  </button>
+  <button class="nav-btn" onclick="showPage('history',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+    </svg>
+    履歴
+  </button>
+  <button class="nav-btn" onclick="showPage('max',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/>
+      <line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/>
+    </svg>
+    MAX表
+  </button>
+</nav>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
 
 <script>
-const DEFAULT_MENU = [
-  { label:'Day A — Push', sub:'胸・肩・三頭', color:'#4a9eff', exercises:[
-    {name:'ベンチプレス',target:'4 × 6–8'},
-    {name:'インクラインDBプレス',target:'3 × 10–12'},
-    {name:'ショルダープレス',target:'3 × 8–10'},
-    {name:'ラテラルレイズ',target:'3 × 15–20'},
-    {name:'ペックフライ',target:'3 × 12–15'},
-    {name:'トライセプスプッシュダウン',target:'3 × 12–15'},
-  ]},
-  { label:'Day B — Pull', sub:'背中・二頭', color:'#3ecf8e', exercises:[
-    {name:'チンニング',target:'4 × max'},
-    {name:'ベントオーバーロウ',target:'4 × 8–10'},
-    {name:'シーテッドロウ',target:'3 × 10–12'},
-    {name:'フェイスプル',target:'3 × 15'},
-    {name:'EZバーカール',target:'3 × 10–12'},
-  ]},
-  { label:'Day C — Legs', sub:'脚', color:'#f59e0b', exercises:[
-    {name:'スクワット',target:'4 × 6–8'},
-    {name:'ルーマニアンデッドリフト',target:'3 × 10–12'},
-    {name:'レッグカール',target:'3 × 12–15'},
-    {name:'レッグエクステンション',target:'3 × 12–15'},
-    {name:'カーフレイズ',target:'3 × 15–20'},
-  ]},
-];
+// ── Init ──
+let rowId = 0;
 
-const DAY_COLORS = ['#4a9eff','#3ecf8e','#f59e0b','#c084fc','#fb7185'];
-
-function loadState(){
-  try{return JSON.parse(localStorage.getItem('kt3_state')||'null');}catch(e){}
-  return null;
-}
-function saveState(s){localStorage.setItem('kt3_state',JSON.stringify(s));}
-function getState(){return loadState()||{today:[],history:[]};}
-
-function loadMenu(){
-  try{const m=localStorage.getItem('kt3_menu');if(m)return JSON.parse(m);}catch(e){}
-  return JSON.parse(JSON.stringify(DEFAULT_MENU));
-}
-function saveMenu(m){localStorage.setItem('kt3_menu',JSON.stringify(m));}
-
-let openEx=null, openHist=null, openEditorDay=null, menuMode='view';
-
-const now=new Date();
-document.getElementById('header-date').textContent=`${now.getMonth()+1}/${now.getDate()}`;
-
-function switchTab(id){
-  document.querySelectorAll('.tab').forEach((t,i)=>{
-    t.classList.toggle('active',['today','menu','rm','history'][i]===id);
-  });
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  if(id==='menu'){menuMode='view';renderMenu();}
-  if(id==='rm')renderRM();
-  if(id==='history')renderHistory();
+function init() {
+  const today = new Date();
+  document.getElementById('log-date').value = today.toISOString().slice(0,10);
+  document.getElementById('log-time').value = today.toTimeString().slice(0,5);
+  addRow(); addRow(); addRow();
+  buildMaxTable();
 }
 
-/* ---- TODAY ---- */
-function renderToday(){
-  const state=getState();
-  const exercises=state.today||[];
-  const el=document.getElementById('page-today');
-  let html=`
-    <div class="section-label">今日の種目</div>
-    <div class="add-ex-row">
-      <input class="add-ex-input" type="text" id="new-ex-input" placeholder="種目名を入力..." onkeydown="if(event.key==='Enter')addExercise()">
-      <button class="add-ex-btn" onclick="addExercise()">追加</button>
-    </div>
+// ── Navigation ──
+function showPage(name, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  btn.classList.add('active');
+  if (name === 'history') renderHistory();
+}
+
+// ── Exercise rows ──
+function addRow() {
+  rowId++;
+  const id = rowId;
+  const tr = document.createElement('tr');
+  tr.id = 'ex-' + id;
+  const sets = [1,2,3,4,5].map(s =>
+    `<td><input type="text" class="set-input" placeholder="kg×回"></td>`
+  ).join('');
+  tr.innerHTML = `
+    <td><input type="text" placeholder="種目名" style="min-width:88px"></td>
+    ${sets}
+    <td><button class="del-btn" onclick="document.getElementById('ex-${id}').remove()">✕</button></td>
   `;
-  if(exercises.length===0){
-    html+=`<div class="empty">種目を追加してスタート</div>`;
-  } else {
-    exercises.forEach((ex,ei)=>{
-      const isOpen=openEx===ei;
-      const validSets=(ex.sets||[]).filter(s=>s.kg||s.reps);
-      const maxRM=calcMaxRM(ex.sets||[], guessCategory(ex.name));
-      html+=`
-        <div class="exercise-card">
-          <div class="ex-header" onclick="toggleEx(${ei})">
-            <div>
-              <div class="ex-name">${ex.name}</div>
-              <div class="ex-meta">${validSets.length}セット記録済み${maxRM?` · 推定1RM ${maxRM}kg`:''}</div>
-            </div>
-            <div style="display:flex;align-items:center">
-              <button class="ex-del" onclick="event.stopPropagation();delExercise(${ei})">×</button>
-              <span style="color:var(--text3);font-size:20px;margin-left:4px">${isOpen?'−':'+'}</span>
-            </div>
-          </div>
-          <div class="ex-body${isOpen?' open':''}">
-      `;
-      (ex.sets||[]).forEach((set,si)=>{
-        const cat=guessCategory(ex.name);
-        const rm=calcOneRMByCategory(parseFloat(set.kg),parseFloat(set.reps),cat);
-        html+=`
-          <div class="set-row">
-            <span class="set-num">SET ${si+1}</span>
-            <input class="set-input" type="number" inputmode="decimal" placeholder="kg" value="${set.kg||''}" onchange="updateSet(${ei},${si},'kg',this.value)">
-            <span class="set-sep">×</span>
-            <input class="set-input" type="number" inputmode="numeric" placeholder="rep" value="${set.reps||''}" onchange="updateSet(${ei},${si},'reps',this.value)">
-            <button class="set-del" onclick="delSet(${ei},${si})">×</button>
-            <span class="rm-hint">${rm?`≈${rm}kg`:''}</span>
-          </div>
-        `;
-      });
-      html+=`
-            <button class="add-set-btn" onclick="addSet(${ei})">＋ セット追加</button>
-          </div>
-        </div>
-      `;
-    });
-    html+=`<button class="finish-btn" onclick="finishSession()">セッション完了 →</button>`;
-  }
-  el.innerHTML=html;
+  document.getElementById('ex-tbody').appendChild(tr);
 }
 
-function addExercise(){
-  const input=document.getElementById('new-ex-input');
-  const name=input.value.trim();
-  if(!name)return;
-  const state=getState();
-  state.today.push({name,sets:[]});
-  saveState(state);
-  openEx=state.today.length-1;
-  renderToday();
-  setTimeout(()=>{const el=document.getElementById('new-ex-input');if(el)el.value='';},0);
-}
+// ── Save log ──
+function saveLog() {
+  const date  = document.getElementById('log-date').value;
+  const time  = document.getElementById('log-time').value;
+  const place = document.getElementById('log-place').value.trim();
+  const memo  = document.getElementById('log-memo').value.trim();
 
-function delExercise(ei){
-  const state=getState();
-  state.today.splice(ei,1);
-  if(openEx===ei)openEx=null;
-  else if(openEx>ei)openEx--;
-  saveState(state);renderToday();
-}
-
-function toggleEx(ei){openEx=openEx===ei?null:ei;renderToday();}
-
-function addSet(ei){
-  const state=getState();
-  const sets=state.today[ei].sets||[];
-  const last=sets.length>0?sets[sets.length-1]:{};
-  sets.push({kg:last.kg||'',reps:last.reps||''});
-  state.today[ei].sets=sets;
-  saveState(state);openEx=ei;renderToday();
-}
-
-function delSet(ei,si){
-  const state=getState();
-  state.today[ei].sets.splice(si,1);
-  saveState(state);renderToday();
-}
-
-function updateSet(ei,si,field,val){
-  const state=getState();
-  if(!state.today[ei]||!state.today[ei].sets[si])return;
-  state.today[ei].sets[si][field]=val;
-  saveState(state);
-}
-
-function finishSession(){
-  const state=getState();
-  const exercises=state.today.filter(ex=>(ex.sets||[]).some(s=>s.kg||s.reps));
-  if(exercises.length===0){alert('記録がありません');return;}
-  if(!state.history)state.history=[];
-  state.history.unshift({date:new Date().toISOString(),exercises});
-  state.today=[];openEx=null;
-  saveState(state);renderToday();
-}
-
-/* ---- MENU VIEW ---- */
-function renderMenu(){
-  const el=document.getElementById('page-menu');
-  if(menuMode==='edit'){renderMenuEditor();return;}
-  const menu=loadMenu();
-  let html='';
-  menu.forEach(day=>{
-    html+=`
-      <div class="menu-day">
-        <div class="menu-day-header">
-          <div class="day-color-dot" style="background:${day.color}"></div>
-          <span class="menu-day-title">${day.label} <span class="menu-day-sub">${day.sub}</span></span>
-        </div>
-        ${day.exercises.map(ex=>`
-          <div class="menu-ex">
-            <span>${ex.name}</span>
-            <span class="menu-ex-target">${ex.target}</span>
-          </div>
-        `).join('')}
-      </div>
-    `;
-  });
-  html+=`<button class="edit-menu-btn" onclick="menuMode='edit';renderMenu()">メニューを編集する</button>`;
-  el.innerHTML=html;
-}
-
-/* ---- MENU EDITOR ---- */
-function renderMenuEditor(){
-  const el=document.getElementById('page-menu');
-  const menu=loadMenu();
-  let html=`<button class="back-btn" onclick="menuMode='view';renderMenu()">← 戻る</button>`;
-
-  menu.forEach((day,di)=>{
-    const isOpen=openEditorDay===di;
-    html+=`
-      <div class="editor-day-block">
-        <div class="editor-day-header" onclick="toggleEditorDay(${di})">
-          <div class="day-color-dot" style="background:${day.color}"></div>
-          <span class="editor-day-name">${day.label||'Day '+(di+1)}</span>
-          <button class="editor-del-day" onclick="event.stopPropagation();delDay(${di})" ${menu.length<=1?'disabled':''}>削除</button>
-          <span style="color:var(--text3);font-size:18px;margin-left:8px">${isOpen?'−':'+'}</span>
-        </div>
-        <div class="editor-day-body${isOpen?' open':''}">
-          <div class="editor-field">
-            <div class="editor-label">DAY名</div>
-            <input class="editor-input" type="text" id="d${di}-label" value="${day.label}" placeholder="Day A — Push">
-          </div>
-          <div class="editor-field">
-            <div class="editor-label">サブタイトル</div>
-            <input class="editor-input" type="text" id="d${di}-sub" value="${day.sub}" placeholder="胸・肩・三頭">
-          </div>
-          <div class="editor-field">
-            <div class="editor-label">カラー</div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap">
-              ${DAY_COLORS.map(c=>`
-                <div onclick="setDayColor(${di},'${c}')" style="width:28px;height:28px;border-radius:50%;background:${c};cursor:pointer;border:3px solid ${day.color===c?'#fff':'transparent'};transition:border-color .15s"></div>
-              `).join('')}
-            </div>
-          </div>
-          <div class="editor-label" style="margin-bottom:8px">種目</div>
-          ${day.exercises.map((ex,ei)=>`
-            <div class="editor-ex-row">
-              <input class="editor-ex-name" type="text" id="d${di}-e${ei}-name" value="${ex.name}" placeholder="種目名">
-              <input class="editor-ex-target" type="text" id="d${di}-e${ei}-target" value="${ex.target}" placeholder="3 × 10–12">
-              <button class="editor-del-btn" onclick="delExFromDay(${di},${ei})">×</button>
-            </div>
-          `).join('')}
-          <button class="editor-add-ex" onclick="addExToDay(${di})">＋ 種目を追加</button>
-        </div>
-      </div>
-    `;
+  const exercises = [];
+  document.querySelectorAll('#ex-tbody tr').forEach(tr => {
+    const inputs = tr.querySelectorAll('input');
+    const name = inputs[0].value.trim();
+    if (!name) return;
+    const sets = Array.from(inputs).slice(1)
+      .map(i => i.value.trim()).filter(Boolean);
+    exercises.push({ name, sets });
   });
 
-  if(menu.length<5){
-    html+=`<button class="add-day-btn" onclick="addDay()">＋ DAYを追加 (${menu.length}/5)</button>`;
-  }
-  html+=`<button class="save-menu-btn" onclick="saveMenuEdit()">保存する</button>`;
-  html+=`<div class="saved-msg" id="saved-msg"></div>`;
-  html+=`<button class="reset-link" onclick="resetMenu()">デフォルトに戻す</button>`;
-  el.innerHTML=html;
+  if (!date) { showToast('日付を入力してください'); return; }
+  if (!exercises.length) { showToast('種目を1つ以上入力してください'); return; }
+
+  const logs = getLogs();
+  logs.unshift({ id: Date.now(), date, time, place, memo, exercises });
+  setLogs(logs);
+  showToast('✅ 保存しました！');
+  resetForm();
 }
 
-function toggleEditorDay(di){openEditorDay=openEditorDay===di?null:di;renderMenuEditor();}
-
-function collectMenuEdits(){
-  const menu=loadMenu();
-  menu.forEach((day,di)=>{
-    const labelEl=document.getElementById(`d${di}-label`);
-    const subEl=document.getElementById(`d${di}-sub`);
-    if(labelEl)day.label=labelEl.value.trim()||day.label;
-    if(subEl)day.sub=subEl.value.trim()||day.sub;
-    day.exercises.forEach((ex,ei)=>{
-      const nameEl=document.getElementById(`d${di}-e${ei}-name`);
-      const targetEl=document.getElementById(`d${di}-e${ei}-target`);
-      if(nameEl)ex.name=nameEl.value.trim()||ex.name;
-      if(targetEl)ex.target=targetEl.value.trim()||ex.target;
-    });
-  });
-  return menu;
+function resetForm() {
+  document.getElementById('log-place').value = '';
+  document.getElementById('log-memo').value = '';
+  document.getElementById('ex-tbody').innerHTML = '';
+  rowId = 0;
+  addRow(); addRow(); addRow();
+  const today = new Date();
+  document.getElementById('log-date').value = today.toISOString().slice(0,10);
+  document.getElementById('log-time').value = today.toTimeString().slice(0,5);
 }
 
-function setDayColor(di,color){
-  const menu=collectMenuEdits();
-  menu[di].color=color;
-  saveMenu(menu);
-  renderMenuEditor();
-}
-
-function addExToDay(di){
-  const menu=collectMenuEdits();
-  menu[di].exercises.push({name:'',target:'3 × 10–12'});
-  saveMenu(menu);
-  openEditorDay=di;
-  renderMenuEditor();
-}
-
-function delExFromDay(di,ei){
-  const menu=collectMenuEdits();
-  if(menu[di].exercises.length<=1)return;
-  menu[di].exercises.splice(ei,1);
-  saveMenu(menu);
-  openEditorDay=di;
-  renderMenuEditor();
-}
-
-function addDay(){
-  const menu=collectMenuEdits();
-  if(menu.length>=5)return;
-  const color=DAY_COLORS[menu.length]||DAY_COLORS[0];
-  menu.push({label:`Day ${['A','B','C','D','E'][menu.length]}`,sub:'',color,exercises:[{name:'',target:'3 × 10–12'}]});
-  saveMenu(menu);
-  openEditorDay=menu.length-1;
-  renderMenuEditor();
-}
-
-function delDay(di){
-  const menu=collectMenuEdits();
-  if(menu.length<=1)return;
-  if(!confirm(`「${menu[di].label}」を削除しますか？`))return;
-  menu.splice(di,1);
-  saveMenu(menu);
-  openEditorDay=null;
-  renderMenuEditor();
-}
-
-function saveMenuEdit(){
-  const menu=collectMenuEdits();
-  saveMenu(menu);
-  const msg=document.getElementById('saved-msg');
-  if(msg){msg.textContent='保存しました';setTimeout(()=>{msg.textContent='';},2000);}
-}
-
-function resetMenu(){
-  if(confirm('メニューをデフォルトに戻しますか？')){
-    localStorage.removeItem('kt3_menu');
-    openEditorDay=null;menuMode='view';
-    renderMenu();
-  }
-}
-
-/* ---- RM ---- */
-let rmCategory = 'bench';
-
-const BENCH_KEYWORDS = ['ベンチ','プレス','フライ','ペック','chest','bench','press','fly'];
-const SQUAT_KEYWORDS = ['スクワット','デッド','squat','dead'];
-
-function guessCategory(name){
-  const n = name.toLowerCase();
-  if(SQUAT_KEYWORDS.some(k=>n.includes(k.toLowerCase()))) return 'squat';
-  return 'bench';
-}
-
-function calcOneRMByCategory(kg, reps, category){
-  if(!kg||!reps||reps<1) return null;
-  if(reps===1) return Math.round(kg);
-  if(category==='squat'){
-    return Math.round(kg * reps / 33.3 + kg);
-  } else {
-    return Math.round(kg * reps / 40 + kg);
-  }
-}
-
-function calcMaxRM(sets, category){
-  let max=0;
-  const cat = category || 'bench';
-  sets.forEach(s=>{
-    if(s.kg&&s.reps){
-      const rm = calcOneRMByCategory(parseFloat(s.kg), parseFloat(s.reps), cat);
-      if(rm && rm>max) max=rm;
-    }
-  });
-  return max>0 ? max : null;
-}
-
-function renderRM(){
-  const el=document.getElementById('page-rm');
-  el.innerHTML=`
-    <div class="section-label">1RM換算</div>
-    <div style="display:flex;gap:8px;margin-bottom:16px;">
-      <button id="rm-btn-bench" onclick="setRMCategory('bench')" style="flex:1;padding:9px;border-radius:8px;font-size:13px;cursor:pointer;font-family:var(--mono);border:1px solid ${rmCategory==='bench'?'var(--text)':'var(--border)'};background:${rmCategory==='bench'?'var(--surface2)':'none'};color:${rmCategory==='bench'?'var(--text)':'var(--text3)'};">ベンチ系</button>
-      <button id="rm-btn-squat" onclick="setRMCategory('squat')" style="flex:1;padding:9px;border-radius:8px;font-size:13px;cursor:pointer;font-family:var(--mono);border:1px solid ${rmCategory==='squat'?'var(--text)':'var(--border)'};background:${rmCategory==='squat'?'var(--surface2)':'none'};color:${rmCategory==='squat'?'var(--text)':'var(--text3)'};">スクワット・デッド系</button>
-    </div>
-    <div style="font-family:var(--mono);font-size:11px;color:var(--text3);margin-bottom:16px;padding:8px 12px;background:var(--surface);border-radius:6px;">
-      式: ${rmCategory==='bench'?'重量 × 回数 ÷ 40 + 重量':'重量 × 回数 ÷ 33.3 + 重量'}
-    </div>
-    <div class="rm-inputs">
-      <div class="rm-field">
-        <label>重量 (KG)</label>
-        <input type="number" inputmode="decimal" id="rm-kg" placeholder="${rmCategory==='bench'?'100':'140'}" oninput="calcRM()">
-      </div>
-      <div class="rm-field">
-        <label>REP数</label>
-        <input type="number" inputmode="numeric" id="rm-reps" placeholder="5" oninput="calcRM()">
-      </div>
-    </div>
-    <div class="rm-result-big">
-      <div class="rm-result-label">推定 1RM</div>
-      <div class="rm-result-val" id="rm-1rm">—</div>
-    </div>
-    <div class="section-label">換算表</div>
-    <table class="rm-table">
-      <thead><tr><th>REP</th><th>%1RM</th><th>重量</th></tr></thead>
-      <tbody id="rm-table-body">
-        <tr><td colspan="3" style="text-align:center;color:var(--text3);padding:20px;">重量とrepを入力してください</td></tr>
-      </tbody>
-    </table>
-  `;
-}
-
-function setRMCategory(cat){
-  rmCategory=cat;
-  renderRM();
-}
-
-function calcRM(){
-  const kg=parseFloat(document.getElementById('rm-kg').value);
-  const reps=parseInt(document.getElementById('rm-reps').value);
-  const el1rm=document.getElementById('rm-1rm');
-  const tbody=document.getElementById('rm-table-body');
-  if(!kg||!reps||reps<1){
-    el1rm.textContent='—';
-    tbody.innerHTML='<tr><td colspan="3" style="text-align:center;color:var(--text3);padding:20px;">重量とrepを入力してください</td></tr>';
+// ── History ──
+function renderHistory() {
+  const logs = getLogs();
+  const el = document.getElementById('history-list');
+  if (!logs.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">📭</div>まだ記録がありません<br><small style="color:#cbd5e1;margin-top:4px;display:block">ログタブから記録を追加しましょう</small></div>';
     return;
   }
-  const oneRM = calcOneRMByCategory(kg, reps, rmCategory);
-  el1rm.innerHTML=`${oneRM}<span class="rm-result-unit"> kg</span>`;
-  const rows=[
-    {rep:1,pct:100},{rep:2,pct:95},{rep:3,pct:93},{rep:4,pct:90},
-    {rep:5,pct:87},{rep:6,pct:85},{rep:7,pct:83},{rep:8,pct:80},
-    {rep:9,pct:77},{rep:10,pct:75},{rep:12,pct:70},{rep:15,pct:65},
-  ];
-  tbody.innerHTML=rows.map(row=>{
-    const w=(Math.round(oneRM*row.pct/100*2)/2).toFixed(1);
-    const active=row.rep===reps;
-    return `<tr${active?' class="highlight"':''}>
-      <td class="rep-col">${row.rep}</td>
-      <td>${row.pct}%</td>
-      <td>${w} kg</td>
-    </tr>`;
+  el.innerHTML = logs.map(log => {
+    const exHtml = log.exercises.map(ex => `
+      <div class="history-ex">
+        <div class="history-ex-name">${esc(ex.name)}</div>
+        <div class="history-sets">
+          ${ex.sets.map((s,i) => `<span class="set-badge">${i+1}set: ${esc(s)}</span>`).join('')}
+          ${!ex.sets.length ? '<span class="set-badge" style="color:#94a3b8">記録なし</span>' : ''}
+        </div>
+      </div>
+    `).join('');
+    return `
+      <div class="card history-card">
+        <div class="history-header">
+          <div>
+            <div class="history-date">${log.date}${log.time ? ' ' + log.time : ''}</div>
+            ${log.place ? `<div class="history-meta">📍 ${esc(log.place)}</div>` : ''}
+          </div>
+          <button class="del-log-btn" onclick="deleteLog(${log.id})">削除</button>
+        </div>
+        ${exHtml}
+        ${log.memo ? `<div class="history-memo">💬 ${esc(log.memo)}</div>` : ''}
+      </div>
+    `;
   }).join('');
 }
 
-/* ---- HISTORY ---- */
-function formatDate(iso){
-  const d=new Date(iso);
-  return `${d.getMonth()+1}/${d.getDate()}`;
+function deleteLog(id) {
+  if (!confirm('このログを削除しますか？')) return;
+  setLogs(getLogs().filter(l => l.id !== id));
+  renderHistory();
+  showToast('🗑️ 削除しました');
 }
 
-function renderHistory(){
-  const state=getState();
-  const hist=state.history||[];
-  const el=document.getElementById('page-history');
-  if(hist.length===0){el.innerHTML='<div class="empty">まだ記録がありません</div>';return;}
-  let html=`<div class="section-label">記録 (${hist.length}回)</div>`;
-  hist.forEach((session,i)=>{
-    const isOpen=openHist===i;
-    const totalSets=session.exercises.reduce((s,e)=>s+(e.sets||[]).filter(s=>s.kg||s.reps).length,0);
-    const names=session.exercises.slice(0,3).map(e=>e.name).join('・')+(session.exercises.length>3?` 他${session.exercises.length-3}種目`:'');
-    html+=`
-      <div class="hist-item" onclick="toggleHist(${i})">
-        <div class="hist-header">
-          <span class="hist-title">${names}</span>
-          <span class="hist-date">${formatDate(session.date)}</span>
-        </div>
-        <div class="hist-summary">${session.exercises.length}種目 · ${totalSets}セット</div>
-        <div class="hist-detail${isOpen?' open':''}">
-    `;
-    session.exercises.forEach(ex=>{
-      const setStr=(ex.sets||[]).filter(s=>s.kg||s.reps).map((s,i)=>`${i+1}: ${s.kg||'?'}kg×${s.reps||'?'}`).join(' / ');
-      const maxRM=calcMaxRM(ex.sets||[], guessCategory(ex.name));
-      html+=`<div class="hist-ex"><strong>${ex.name}</strong>${maxRM?` <span style="font-family:var(--mono);font-size:11px;color:var(--text3)">1RM≈${maxRM}kg</span>`:''}<br>${setStr}</div>`;
+// ── MAX Table ──
+// Formula from the book: estimated 1RM = weight × (1 + reps × 0.025)
+function calcMax(w, r) {
+  return Math.round(w * (1 + r * 0.025) * 10) / 10;
+}
+
+function buildMaxTable() {
+  const reps = [2,3,4,5,6,7,8,9,10];
+  let html = '<thead><tr><th>使用重量</th>';
+  reps.forEach(r => html += `<th>${r}レップ</th>`);
+  html += '</tr></thead><tbody>';
+
+  for (let w = 50; w <= 250; w += 2.5) {
+    const wId = 'mw' + w.toString().replace('.','_');
+    html += `<tr id="${wId}"><td>${w % 1 === 0 ? w.toFixed(0) : w.toFixed(1)}</td>`;
+    reps.forEach((r, ri) => {
+      html += `<td id="${wId}r${ri}">${calcMax(w, r).toFixed(1)}</td>`;
     });
-    html+=`</div></div>`;
-  });
-  html+=`<button class="reset-link" onclick="resetAll()">記録をすべて削除</button>`;
-  el.innerHTML=html;
+    html += '</tr>';
+  }
+  html += '</tbody>';
+  document.getElementById('max-tbl').innerHTML = html;
 }
 
-function toggleHist(i){openHist=openHist===i?null:i;renderHistory();}
+function calcAndHighlight() {
+  // Clear previous highlights
+  document.querySelectorAll('.hl-row').forEach(r => r.classList.remove('hl-row'));
+  document.querySelectorAll('.hl-cell').forEach(c => c.classList.remove('hl-cell'));
 
-function resetAll(){
-  if(confirm('すべての記録を削除しますか？')){
-    localStorage.removeItem('kt3_state');
-    openEx=null;openHist=null;
-    renderToday();
+  const weight = parseFloat(document.getElementById('calc-weight').value);
+  const reps   = parseInt(document.getElementById('calc-reps').value);
+  const box    = document.getElementById('max-result-box');
+
+  if (!weight || weight <= 0) { box.style.display = 'none'; return; }
+
+  // Show result
+  if (reps) {
+    const max = calcMax(weight, reps);
+    document.getElementById('max-result-val').textContent = max.toFixed(1);
+    box.style.display = 'block';
+  } else {
+    box.style.display = 'none';
+  }
+
+  // Find nearest row (round to 2.5)
+  const nearest = Math.round(weight / 2.5) * 2.5;
+  const clipped = Math.min(250, Math.max(50, nearest));
+  const wId = 'mw' + clipped.toString().replace('.','_');
+  const row = document.getElementById(wId);
+  if (row) {
+    row.classList.add('hl-row');
+    if (reps) {
+      const repsCols = [2,3,4,5,6,7,8,9,10];
+      const ri = repsCols.indexOf(reps);
+      if (ri >= 0) {
+        const cell = document.getElementById(wId + 'r' + ri);
+        if (cell) cell.classList.add('hl-cell');
+      }
+    }
+    setTimeout(() => row.scrollIntoView({ block: 'nearest', behavior: 'smooth' }), 50);
   }
 }
 
-renderToday();
+// ── Storage ──
+function getLogs() { return JSON.parse(localStorage.getItem('tng-logs') || '[]'); }
+function setLogs(l) { localStorage.setItem('tng-logs', JSON.stringify(l)); }
 
+// ── Helpers ──
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+init();
+</script>
+
+<script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js');
 }
