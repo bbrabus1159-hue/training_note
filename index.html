@@ -2,333 +2,1187 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="筋トレノート">
-<meta name="theme-color" content="#f0f4f8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
 <title>トレーニングノート</title>
 <style>
+/* ============================================================
+   Variables — Industrial Dark
+   ============================================================ */
+:root{
+  --bg:        #0d1117;
+  --s1:        #161b22;
+  --s2:        #1c2128;
+  --s3:        #21262d;
+  --border:    #30363d;
+  --accent:    #e6a817;
+  --a10:       rgba(230,168,23,.10);
+  --a25:       rgba(230,168,23,.25);
+  --text:      #e6edf3;
+  --t2:        #8b949e;
+  --t3:        #484f58;
+  --red:       #f85149;
+  --red10:     rgba(248,81,73,.10);
+  --green:     #3fb950;
+  --green10:   rgba(63,185,80,.10);
+  --r:         12px;
+  --rsm:       8px;
+  --safe-b:    env(safe-area-inset-bottom,0px);
+}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif;background:#f0f4f8;color:#1a1a2e;overscroll-behavior:none}
-
-/* ── Nav ── */
-.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e2e8f0;display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom)}
-.nav-btn{flex:1;padding:10px 4px 8px;border:none;background:none;cursor:pointer;font-size:11px;color:#94a3b8;display:flex;flex-direction:column;align-items:center;gap:3px;transition:color .15s}
-.nav-btn.active{color:#3b82f6}
-.nav-btn svg{width:22px;height:22px}
+body{
+  font-family:-apple-system,'Hiragino Sans',sans-serif;
+  background:var(--bg);color:var(--text);
+  overscroll-behavior:none;-webkit-overflow-scrolling:touch
+}
 
 /* ── Pages ── */
-.page{display:none;padding:16px 14px;padding-bottom:90px;min-height:100svh}
+.page{display:none;padding:14px 13px;
+  padding-bottom:calc(80px + var(--safe-b));min-height:100svh}
 .page.active{display:block}
-.page-title{font-size:22px;font-weight:800;margin-bottom:16px;letter-spacing:-0.5px}
+.page-title{font-size:18px;font-weight:900;margin-bottom:14px;
+  letter-spacing:-.5px;display:flex;align-items:center;gap:6px}
 
-/* ── Card ── */
-.card{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+/* ── Cards ── */
+.card{background:var(--s1);border:1px solid var(--border);
+  border-radius:var(--r);padding:13px;margin-bottom:9px}
 
-/* ── Form ── */
-.field{margin-bottom:10px}
-.field-row{display:flex;gap:8px;align-items:center}
-.field-label{font-size:12px;font-weight:600;color:#64748b;min-width:38px;flex-shrink:0}
-input[type=text],input[type=date],input[type=time],input[type=number],select,textarea{
-  border:1.5px solid #e2e8f0;border-radius:10px;padding:9px 11px;font-size:14px;
-  width:100%;background:#f8fafc;color:#1a1a2e;outline:none;transition:border-color .15s;
+/* ── Section heads ── */
+.sh{font-size:10px;font-weight:700;color:var(--t3);
+  letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px}
+
+/* ── Inputs ── */
+input,select,textarea{
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:var(--rsm);color:var(--text);font-family:inherit;
+  font-size:14px;outline:none;transition:border-color .15s;
   -webkit-appearance:none;appearance:none}
-input:focus,select:focus,textarea:focus{border-color:#3b82f6;background:#fff}
-textarea{resize:none;height:60px;font-family:inherit}
+input:focus,select:focus{border-color:var(--accent)}
+textarea{width:100%;padding:9px 11px;resize:none;height:52px;font-size:14px}
+.field-row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.field-row:last-child{margin-bottom:0}
+.field-label{font-size:12px;color:var(--t2);min-width:36px;flex-shrink:0}
+.field-row input,.field-row select{flex:1;padding:9px 11px}
 
-/* ── Exercise table ── */
-.ex-wrap{overflow-x:auto;margin:0 -16px;padding:0 16px}
-.ex-table{width:100%;border-collapse:collapse;font-size:12px}
-.ex-table th{background:#f1f5f9;padding:7px 4px;text-align:center;font-weight:700;font-size:11px;color:#64748b;border-bottom:2px solid #e2e8f0;white-space:nowrap}
-.ex-table td{padding:4px 3px;border-bottom:1px solid #f1f5f9;vertical-align:middle}
-.ex-table td:first-child{min-width:90px}
-.ex-table input{padding:6px 4px;font-size:12px;text-align:center;border-radius:7px}
-.ex-table input[placeholder="種目名"]{text-align:left;min-width:88px}
-.set-input{width:64px!important}
-.del-btn{background:#fee2e2;color:#dc2626;border:none;border-radius:7px;padding:5px 8px;cursor:pointer;font-size:13px;line-height:1}
+/* ── Accent ── */
+.acc{color:var(--accent)}
 
-/* ── Buttons ── */
-.btn{border:none;border-radius:12px;padding:12px 18px;cursor:pointer;font-size:15px;font-weight:700;transition:opacity .15s;width:100%}
-.btn:active{opacity:.75}
-.btn-primary{background:#3b82f6;color:#fff}
-.btn-outline{background:#eff6ff;color:#3b82f6;border:1.5px solid #bfdbfe}
-.add-ex-btn{color:#3b82f6;background:none;border:none;font-size:13px;font-weight:600;cursor:pointer;padding:8px 0 2px;display:flex;align-items:center;gap:4px}
+/* ============================================================
+   EXERCISE BLOCK
+   ============================================================ */
+.ex-block{
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:var(--r);padding:12px;margin-bottom:9px;
+  transition:border-color .2s}
+.ex-block:focus-within{border-color:var(--a25)}
 
-/* ── History ── */
-.history-card{cursor:default}
-.history-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
-.history-date{font-size:14px;font-weight:800;color:#3b82f6}
-.history-meta{font-size:12px;color:#94a3b8;margin-top:2px}
-.history-ex{margin-bottom:6px}
-.history-ex-name{font-size:13px;font-weight:700;margin-bottom:2px}
-.history-sets{display:flex;flex-wrap:wrap;gap:4px}
-.set-badge{background:#f1f5f9;border-radius:6px;padding:3px 7px;font-size:11px;color:#475569}
-.history-memo{margin-top:8px;font-size:12px;color:#64748b;padding-top:8px;border-top:1px solid #f1f5f9}
-.del-log-btn{background:#fee2e2;color:#dc2626;border:none;border-radius:8px;padding:4px 10px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0}
-.empty{text-align:center;padding:50px 20px;color:#94a3b8;font-size:14px}
-.empty-icon{font-size:40px;margin-bottom:12px}
+/* Exercise header */
+.ex-hd{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.ex-name-btn{
+  flex:1;background:var(--s3);border:1px solid var(--border);
+  border-radius:var(--rsm);padding:9px 11px;text-align:left;
+  font-size:14px;font-weight:700;color:var(--text);cursor:pointer;
+  transition:border-color .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ex-name-btn:active{border-color:var(--accent)}
+.ex-del-btn{
+  background:var(--red10);border:1px solid rgba(248,81,73,.2);
+  color:var(--red);border-radius:var(--rsm);
+  padding:0;width:38px;height:38px;cursor:pointer;
+  font-size:15px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
 
-/* ── MAX Table ── */
-.max-calc-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
-.max-result-box{background:linear-gradient(135deg,#3b82f6,#6366f1);border-radius:12px;padding:14px;text-align:center;margin-top:8px}
-.max-result-label{font-size:12px;color:rgba(255,255,255,.8);margin-bottom:4px}
-.max-result-value{font-size:28px;font-weight:900;color:#fff}
-.max-result-unit{font-size:14px;color:rgba(255,255,255,.8)}
-.max-table-wrap{overflow:auto;max-height:55vh;border-radius:12px;border:1px solid #e2e8f0}
-.max-tbl{border-collapse:collapse;font-size:12px;white-space:nowrap;width:100%}
-.max-tbl th{background:#3b82f6;color:#fff;padding:7px 9px;text-align:center;position:sticky;top:0;z-index:10;font-size:11px}
-.max-tbl td{padding:6px 9px;text-align:center;border-bottom:1px solid #f1f5f9}
-.max-tbl tr:nth-child(even) td{background:#fafbfc}
-.max-tbl tr:hover td{background:#eff6ff}
-.max-tbl td:first-child{font-weight:700;background:#f8fafc;position:sticky;left:0;border-right:1px solid #e2e8f0;z-index:5}
-.max-tbl tr:nth-child(even) td:first-child{background:#f1f5f9}
-.max-tbl tr:hover td:first-child{background:#dbeafe}
-.hl-row td{background:#fef9c3!important;font-weight:600}
-.hl-row td:first-child{background:#fef08a!important}
-.hl-cell{background:#f59e0b!important;color:#fff!important;border-radius:4px;font-weight:800}
+/* Previous session badge */
+.prev-row{
+  background:var(--a10);border:1px solid var(--a25);
+  border-radius:var(--rsm);padding:7px 10px;margin-bottom:10px;
+  display:none;font-size:11px;color:var(--accent)}
+.prev-row strong{font-weight:700}
+
+/* Set column headers */
+.set-header{
+  display:grid;grid-template-columns:26px 1fr 72px 38px;
+  gap:5px;margin-bottom:4px;padding:0 2px}
+.col-lbl{font-size:10px;font-weight:700;color:var(--t3);
+  text-align:center;letter-spacing:.3px}
+.col-lbl:first-child{text-align:left}
+
+/* Individual set row */
+.set-row{
+  display:grid;grid-template-columns:26px 1fr 72px 38px;
+  gap:5px;align-items:center;margin-bottom:4px;
+  transition:opacity .2s}
+.set-row.done{opacity:.45}
+.set-num{font-size:11px;font-weight:800;color:var(--t2);text-align:center}
+
+/* Weight stepper */
+.stepper{
+  display:flex;align-items:center;gap:0;
+  background:var(--s3);border:1px solid var(--border);
+  border-radius:var(--rsm);overflow:hidden}
+.step-btn{
+  background:none;border:none;color:var(--t2);
+  font-size:18px;font-weight:300;cursor:pointer;
+  width:34px;height:38px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:background .1s,color .1s;line-height:1;
+  -webkit-user-select:none;user-select:none}
+.step-btn:active{background:var(--a10);color:var(--accent)}
+.step-val{
+  flex:1;text-align:center;font-size:14px;font-weight:700;
+  color:var(--text);min-width:0;font-variant-numeric:tabular-nums;
+  background:none;border:none;outline:none;cursor:pointer;
+  padding:0;height:38px}
+/* Make the center tappable to edit */
+.step-val:focus{color:var(--accent)}
+
+/* Reps input */
+.reps-input{
+  width:100%;padding:9px 5px;text-align:center;
+  font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;
+  height:38px}
+.reps-input::placeholder{font-size:12px;font-weight:400;color:var(--t3)}
+
+/* Done / check button */
+.set-check{
+  width:38px;height:38px;border-radius:var(--rsm);border:1.5px solid var(--border);
+  background:none;cursor:pointer;font-size:16px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;flex-shrink:0}
+.set-check:active{transform:scale(.9)}
+.set-check.checked{background:var(--green10);border-color:var(--green);color:var(--green)}
+.set-check:not(.checked){color:var(--t3)}
+
+/* Add set / Copy buttons */
+.add-set-btn{
+  width:100%;background:none;border:1px dashed var(--border);
+  border-radius:var(--rsm);color:var(--t2);padding:8px;
+  cursor:pointer;font-size:12px;margin-top:6px;
+  display:flex;align-items:center;justify-content:center;gap:5px;
+  transition:border-color .15s,color .15s}
+.add-set-btn:active{border-color:var(--accent);color:var(--accent)}
+
+/* Volume summary */
+.vol-bar{
+  display:flex;justify-content:space-between;
+  margin-top:9px;padding-top:9px;border-top:1px solid var(--border)}
+.vol-item{font-size:11px;color:var(--t2);text-align:center}
+.vol-val{font-size:14px;font-weight:800;color:var(--accent);
+  display:block;font-variant-numeric:tabular-nums}
+.copy-btn{
+  background:none;border:1px solid var(--border);
+  border-radius:var(--rsm);color:var(--t2);
+  padding:5px 10px;cursor:pointer;font-size:11px;font-weight:700;
+  transition:all .15s}
+.copy-btn:active{border-color:var(--accent);color:var(--accent)}
+
+/* Add exercise button */
+.add-ex-btn{
+  width:100%;background:var(--a10);border:1.5px dashed var(--a25);
+  border-radius:var(--r);color:var(--accent);padding:13px;
+  cursor:pointer;font-size:14px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  transition:background .15s}
+.add-ex-btn:active{background:var(--a25)}
+
+/* Buttons */
+.btn{border:none;border-radius:var(--r);padding:14px;cursor:pointer;
+  font-size:15px;font-weight:800;width:100%;
+  transition:opacity .15s,transform .1s;letter-spacing:-.2px}
+.btn:active{opacity:.75;transform:scale(.99)}
+.btn-accent{background:var(--accent);color:#0d1117}
+.btn-ghost{background:var(--s2);color:var(--text);
+  border:1px solid var(--border);font-size:13px;padding:11px;font-weight:700}
+.btn-red{background:var(--red10);color:var(--red);
+  border:1px solid rgba(248,81,73,.2);font-size:13px;padding:11px;font-weight:700}
+
+/* ============================================================
+   REST TIMER
+   ============================================================ */
+.rest-bar{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  background:var(--s1);border-bottom:1px solid var(--border);
+  padding:10px 16px;display:flex;align-items:center;gap:10px;
+  transform:translateY(-100%);transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.rest-bar.visible{transform:translateY(0)}
+.rest-label{font-size:12px;color:var(--t2);font-weight:700}
+.rest-time{font-size:20px;font-weight:900;color:var(--accent);
+  font-variant-numeric:tabular-nums;flex:1}
+.rest-btns{display:flex;gap:6px}
+.rest-skip,.rest-add{
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:var(--rsm);color:var(--text);
+  padding:5px 11px;cursor:pointer;font-size:12px;font-weight:700}
+.rest-skip:active,.rest-add:active{border-color:var(--accent);color:var(--accent)}
+/* Progress track */
+.rest-progress{
+  position:absolute;bottom:0;left:0;height:2px;
+  background:var(--accent);transition:width .9s linear;width:100%}
+
+/* ============================================================
+   EXERCISE PICKER MODAL
+   ============================================================ */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.7);
+  z-index:300;display:none;align-items:flex-end}
+.modal-overlay.open{display:flex}
+.modal-sheet{
+  background:var(--s1);border-radius:18px 18px 0 0;
+  border-top:1px solid var(--border);width:100%;
+  padding:12px 14px;padding-bottom:calc(16px + var(--safe-b));
+  max-height:82svh;overflow-y:auto;
+  animation:slideUp .22s cubic-bezier(.34,1.56,.64,1)}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.sheet-handle{width:40px;height:4px;background:var(--border);
+  border-radius:2px;margin:0 auto 14px}
+.picker-search{
+  width:100%;padding:10px 12px;font-size:14px;margin-bottom:12px}
+.chip-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.chip-btn{
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:20px;color:var(--text);padding:7px 13px;
+  cursor:pointer;font-size:13px;font-weight:600;
+  transition:all .15s;white-space:nowrap}
+.chip-btn:active{background:var(--a10);border-color:var(--accent);color:var(--accent)}
+.picker-group{font-size:10px;font-weight:700;color:var(--t3);
+  letter-spacing:1px;text-transform:uppercase;margin-bottom:7px}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.nav{position:fixed;bottom:0;left:0;right:0;
+  background:var(--s1);border-top:1px solid var(--border);
+  display:flex;z-index:200;padding-bottom:var(--safe-b)}
+.nav-btn{flex:1;padding:10px 4px 9px;border:none;background:none;
+  cursor:pointer;font-size:10px;color:var(--t2);
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  transition:color .15s;font-weight:700;letter-spacing:.3px}
+.nav-btn svg{width:21px;height:21px}
+.nav-btn.active{color:var(--accent)}
+
+/* ============================================================
+   HISTORY PAGE
+   ============================================================ */
+.hist-search{width:100%;padding:9px 12px;margin-bottom:12px}
+.week-sep{
+  font-size:10px;font-weight:800;color:var(--t3);letter-spacing:.8px;
+  text-transform:uppercase;padding:4px 0 8px;
+  display:flex;justify-content:space-between}
+.week-sep span{color:var(--accent)}
+.hist-card{margin-bottom:9px}
+.hist-date-line{display:flex;justify-content:space-between;
+  align-items:center;margin-bottom:8px}
+.hist-date{font-size:15px;font-weight:800}
+.hist-time{font-size:12px;color:var(--t2);margin-left:6px;font-weight:400}
+.del-log-btn{background:var(--red10);color:var(--red);
+  border:1px solid rgba(248,81,73,.2);border-radius:var(--rsm);
+  padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer}
+.hist-ex-name{font-size:13px;font-weight:700;margin:7px 0 4px}
+.sets-wrap{display:flex;flex-wrap:wrap;gap:4px}
+.set-chip{background:var(--s2);border-radius:5px;
+  padding:3px 8px;font-size:11px;color:var(--t2);
+  font-variant-numeric:tabular-nums}
+.set-chip.best{background:var(--a10);color:var(--accent);
+  border:1px solid var(--a25);font-weight:700}
+.hist-memo{margin-top:8px;padding-top:8px;border-top:1px solid var(--border);
+  font-size:12px;color:var(--t2)}
+
+/* ============================================================
+   PROGRESS PAGE
+   ============================================================ */
+.prog-select{width:100%;padding:10px 12px;font-weight:700;font-size:14px}
+.stat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:9px}
+.stat-box{background:var(--s1);border:1px solid var(--border);
+  border-radius:var(--r);padding:11px 8px;text-align:center}
+.stat-lbl{font-size:9px;font-weight:700;color:var(--t3);
+  letter-spacing:.8px;text-transform:uppercase;margin-bottom:2px}
+.stat-val{font-size:19px;font-weight:900;color:var(--accent);
+  font-variant-numeric:tabular-nums}
+.stat-unit{font-size:11px;color:var(--t2)}
+canvas{display:block;width:100%}
+
+/* ============================================================
+   MAX TABLE PAGE
+   ============================================================ */
+.max-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.max-grid input,.max-grid select{padding:9px 10px;font-size:14px}
+.max-result{
+  background:var(--accent);border-radius:var(--r);
+  padding:14px;text-align:center;margin-bottom:9px;display:none}
+.max-result-lbl{font-size:11px;color:rgba(0,0,0,.6);font-weight:700;margin-bottom:1px}
+.max-result-val{font-size:34px;font-weight:900;color:#0d1117;
+  font-variant-numeric:tabular-nums}
+.max-result-unit{font-size:14px;color:rgba(0,0,0,.55)}
+.pct-wrap{display:none;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:10px}
+.pct-box{background:var(--s2);border:1px solid var(--border);
+  border-radius:var(--rsm);padding:8px 4px;text-align:center}
+.pct-lbl{font-size:9px;color:var(--t2);font-weight:700}
+.pct-val{font-size:14px;font-weight:800;font-variant-numeric:tabular-nums}
+.tbl-wrap{overflow:auto;max-height:48svh;border-radius:var(--r);
+  border:1px solid var(--border)}
+.max-tbl{border-collapse:collapse;font-size:12px;white-space:nowrap;
+  width:100%;font-variant-numeric:tabular-nums}
+.max-tbl th{background:var(--s2);color:var(--t2);padding:7px 8px;text-align:center;
+  position:sticky;top:0;z-index:10;font-size:10px;font-weight:700;
+  letter-spacing:.3px;border-bottom:1px solid var(--border)}
+.max-tbl td{padding:5px 8px;text-align:center;
+  border-bottom:1px solid rgba(48,54,61,.5);color:var(--t2)}
+.max-tbl td:first-child{font-weight:700;background:var(--s2);
+  position:sticky;left:0;border-right:1px solid var(--border);
+  color:var(--text);z-index:5}
+.max-tbl tr:hover td{background:var(--a10);color:var(--text)}
+.max-tbl tr:hover td:first-child{background:var(--a10)}
+.hl-row td{background:rgba(230,168,23,.06)!important}
+.hl-cell{background:var(--accent)!important;color:#0d1117!important;
+  font-weight:900!important;border-radius:3px}
+
+/* Data management */
+.mgmt-row{display:flex;gap:7px;margin-bottom:7px}
+.mgmt-row .btn-ghost{flex:1}
 
 /* ── Toast ── */
-.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-80px);background:#1a1a2e;color:#fff;padding:12px 24px;border-radius:30px;font-size:14px;font-weight:600;z-index:999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
+.toast{position:fixed;top:16px;left:50%;
+  transform:translateX(-50%) translateY(-70px);
+  background:var(--s1);color:var(--text);
+  border:1px solid var(--border);padding:10px 20px;
+  border-radius:30px;font-size:13px;font-weight:700;z-index:999;
+  transition:transform .28s cubic-bezier(.34,1.56,.64,1);
+  pointer-events:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.5)}
 .toast.show{transform:translateX(-50%) translateY(0)}
 
-/* ── Section header ── */
-.section-head{font-size:12px;font-weight:700;color:#64748b;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;margin-top:4px}
-.divider{height:1px;background:#f1f5f9;margin:12px 0}
+/* Empty state */
+.empty{text-align:center;padding:48px 20px;color:var(--t2)}
+.empty-icon{font-size:34px;margin-bottom:10px}
+
+/* Note */
+.note{font-size:11px;color:var(--t3);text-align:center;margin-top:6px}
+
+/* Highlighted number */
+.hl-num{color:var(--accent);font-weight:800}
 </style>
 </head>
 <body>
 
-<!-- ===== LOG PAGE ===== -->
-<div id="page-log" class="page active">
-  <div class="page-title">📋 ログ入力</div>
-
-  <div class="card">
-    <div class="section-head">セッション情報</div>
-    <div class="field">
-      <div class="field-row">
-        <span class="field-label">日付</span>
-        <input type="date" id="log-date">
-      </div>
-    </div>
-    <div class="field">
-      <div class="field-row">
-        <span class="field-label">時間</span>
-        <input type="time" id="log-time">
-      </div>
-    </div>
-    <div class="field" style="margin:0">
-      <div class="field-row">
-        <span class="field-label">場所</span>
-        <input type="text" id="log-place" placeholder="ジム名・自宅など">
-      </div>
-    </div>
+<!-- =========================================================
+     REST TIMER BAR
+     ========================================================= -->
+<div id="rest-bar" class="rest-bar">
+  <div>
+    <div class="rest-label">インターバル</div>
+    <div class="rest-time" id="rest-time">0:00</div>
   </div>
-
-  <div class="card">
-    <div class="section-head">種目・セット記録</div>
-    <div class="ex-wrap">
-      <table class="ex-table">
-        <thead>
-          <tr>
-            <th style="text-align:left;padding-left:6px">種目</th>
-            <th>1set</th><th>2set</th><th>3set</th><th>4set</th><th>5set</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="ex-tbody"></tbody>
-      </table>
-    </div>
-    <button class="add-ex-btn" onclick="addRow()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-      種目を追加
-    </button>
+  <div class="rest-btns">
+    <button class="rest-add" onclick="addRestTime(30)">+30s</button>
+    <button class="rest-skip" onclick="stopRest()">スキップ</button>
   </div>
-
-  <div class="card">
-    <div class="section-head">メモ</div>
-    <textarea id="log-memo" placeholder="コンディション・気づきなど..."></textarea>
-  </div>
-
-  <button class="btn btn-primary" onclick="saveLog()">保存する</button>
+  <div class="rest-progress" id="rest-progress"></div>
 </div>
 
-<!-- ===== HISTORY PAGE ===== -->
+<!-- =========================================================
+     PAGE: LOG INPUT
+     ========================================================= -->
+<div id="page-log" class="page active">
+  <div class="page-title">
+    <span style="font-size:22px">💪</span>
+    <span>ログ<span class="acc">入力</span></span>
+    <span id="log-date-display"
+      style="margin-left:auto;font-size:13px;font-weight:600;color:var(--t2)"></span>
+  </div>
+
+  <div class="card">
+    <div class="sh">セッション情報</div>
+    <div class="field-row">
+      <span class="field-label">日付</span>
+      <input type="date" id="log-date" onchange="updateDateDisplay()">
+    </div>
+    <div class="field-row">
+      <span class="field-label">時間</span>
+      <input type="time" id="log-time">
+    </div>
+  </div>
+
+  <div id="ex-blocks"></div>
+
+  <button class="add-ex-btn" onclick="openPicker(null)">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2.5">
+      <path d="M12 5v14M5 12h14"/>
+    </svg>
+    種目を追加
+  </button>
+
+  <div style="margin-top:12px">
+    <div class="card" style="padding:11px 13px">
+      <div class="sh">メモ</div>
+      <textarea id="log-memo" placeholder="コンディション・気づきなど..."></textarea>
+    </div>
+  </div>
+
+  <div style="margin-top:4px">
+    <button class="btn btn-accent" onclick="saveLog()">保存する</button>
+  </div>
+  <div style="margin-top:7px">
+    <button class="btn btn-ghost" onclick="confirmReset()">リセット</button>
+  </div>
+</div>
+
+<!-- =========================================================
+     PAGE: HISTORY
+     ========================================================= -->
 <div id="page-history" class="page">
-  <div class="page-title">📚 履歴</div>
+  <div class="page-title">
+    <span style="font-size:22px">📚</span>履<span class="acc">歴</span>
+  </div>
+  <input class="hist-search" type="text" id="hist-filter"
+    placeholder="🔍 種目名で絞り込み" oninput="renderHistory()">
   <div id="history-list"></div>
 </div>
 
-<!-- ===== MAX TABLE PAGE ===== -->
+<!-- =========================================================
+     PAGE: PROGRESS
+     ========================================================= -->
+<div id="page-progress" class="page">
+  <div class="page-title">
+    <span style="font-size:22px">📈</span>進<span class="acc">捗</span>
+  </div>
+  <div class="card">
+    <div class="sh">種目を選択</div>
+    <select class="prog-select" id="prog-select" onchange="renderProgress()">
+      <option value="">── 種目を選んでください ──</option>
+    </select>
+  </div>
+
+  <div class="stat-row" id="prog-stats" style="display:none"></div>
+
+  <div class="card" id="prog-chart-card" style="display:none;padding:12px 10px">
+    <div class="sh">推定1RM推移</div>
+    <canvas id="prog-canvas" height="180"></canvas>
+  </div>
+
+  <div class="card" id="prog-detail-card" style="display:none">
+    <div class="sh">セッション履歴</div>
+    <div id="prog-detail-list"></div>
+  </div>
+</div>
+
+<!-- =========================================================
+     PAGE: MAX TABLE
+     ========================================================= -->
 <div id="page-max" class="page">
-  <div class="page-title">📊 MAX早見表</div>
+  <div class="page-title">
+    <span style="font-size:22px">📊</span>MAX<span class="acc">表</span>
+  </div>
 
   <div class="card">
-    <div class="section-head">推定MAX計算</div>
-    <div class="max-calc-row">
+    <div class="sh">推定1RM計算 (Epley式)</div>
+    <div class="max-grid">
       <div>
-        <div style="font-size:11px;color:#64748b;margin-bottom:4px">使用重量 (kg)</div>
-        <input type="number" id="calc-weight" placeholder="例: 100" step="2.5" min="0" oninput="calcAndHighlight()">
+        <div style="font-size:11px;color:var(--t2);margin-bottom:4px;font-weight:700">
+          使用重量 (kg)
+        </div>
+        <input type="number" id="calc-weight" placeholder="例: 80"
+          step="2.5" min="0" inputmode="decimal" oninput="updateMaxCalc()">
       </div>
       <div>
-        <div style="font-size:11px;color:#64748b;margin-bottom:4px">レップ数</div>
-        <select id="calc-reps" onchange="calcAndHighlight()">
+        <div style="font-size:11px;color:var(--t2);margin-bottom:4px;font-weight:700">
+          レップ数
+        </div>
+        <select id="calc-reps" onchange="updateMaxCalc()">
           <option value="">選択</option>
-          <option>2</option><option>3</option><option>4</option><option>5</option>
-          <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+          <option>1</option><option>2</option><option>3</option><option>4</option>
+          <option>5</option><option>6</option><option>7</option><option>8</option>
+          <option>9</option><option>10</option><option>11</option><option>12</option>
         </select>
       </div>
     </div>
-    <div id="max-result-box" style="display:none" class="max-result-box">
-      <div class="max-result-label">推定MAX</div>
-      <div><span class="max-result-value" id="max-result-val">-</span> <span class="max-result-unit">kg</span></div>
+    <div id="max-result" class="max-result">
+      <div class="max-result-lbl">推定1RM</div>
+      <div>
+        <span class="max-result-val" id="max-result-val">–</span>
+        <span class="max-result-unit"> kg</span>
+      </div>
     </div>
+    <div class="pct-wrap" id="pct-wrap"></div>
   </div>
 
   <div class="card" style="padding:0;overflow:hidden">
-    <div class="max-table-wrap">
+    <div class="tbl-wrap">
       <table class="max-tbl" id="max-tbl"></table>
     </div>
   </div>
-  <div style="font-size:11px;color:#94a3b8;text-align:center;margin-top:6px">※あくまで参考値です。フォーム・種目によって個人差はあります。</div>
+  <div class="note">※Epley式による推定値。個人差・種目により異なります</div>
+
+  <div class="card" style="margin-top:14px">
+    <div class="sh">データ管理</div>
+    <div class="mgmt-row">
+      <button class="btn btn-ghost" onclick="exportData()">📤 エクスポート</button>
+      <button class="btn btn-ghost"
+        onclick="document.getElementById('import-file').click()">
+        📥 インポート
+      </button>
+    </div>
+    <input type="file" id="import-file" accept=".json"
+      style="display:none" onchange="importData(event)">
+    <button class="btn btn-red" onclick="clearAllData()">
+      🗑️ 全データを削除
+    </button>
+  </div>
 </div>
 
-<!-- ===== NAV ===== -->
+<!-- =========================================================
+     EXERCISE PICKER MODAL
+     ========================================================= -->
+<div class="modal-overlay" id="ex-picker" onclick="closePicker(event)">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="sheet-handle"></div>
+    <input class="picker-search" type="text" id="picker-search"
+      placeholder="🔍 種目名を検索・入力..."
+      oninput="filterPicker()"
+      onkeydown="pickerKeydown(event)">
+    <div id="picker-recent-group"></div>
+    <div id="picker-preset-group"></div>
+    <div id="picker-search-result"></div>
+  </div>
+</div>
+
+<!-- =========================================================
+     NAV
+     ========================================================= -->
 <nav class="nav">
   <button class="nav-btn active" onclick="showPage('log',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
+      <path d="M12 20h9"/>
+      <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
     </svg>
-    ログ
+    入力
   </button>
   <button class="nav-btn" onclick="showPage('history',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+      <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
+      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
     </svg>
     履歴
   </button>
+  <button class="nav-btn" onclick="showPage('progress',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+    </svg>
+    進捗
+  </button>
   <button class="nav-btn" onclick="showPage('max',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/>
-      <line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/>
+      <rect x="3" y="3" width="18" height="18" rx="2"/>
+      <line x1="3" y1="9" x2="21" y2="9"/>
+      <line x1="9" y1="3" x2="9" y2="21"/>
     </svg>
     MAX表
   </button>
 </nav>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
+<!-- =========================================================
+     SCRIPT
+     ========================================================= -->
 <script>
-// ── Init ──
-let rowId = 0;
+'use strict';
 
+/* ============================================================
+   Constants & State
+   ============================================================ */
+const STORE_KEY = 'tn3-logs';
+
+// Preset exercises grouped by body part
+const PRESETS = {
+  '胸': ['ベンチプレス','インクラインベンチ','ダンベルフライ','ディップス','ケーブルクロス'],
+  '背中': ['デッドリフト','ラットプルダウン','懸垂','ベントオーバーロー','シーテッドロー','チンニング'],
+  '脚': ['スクワット','レッグプレス','ブルガリアンSQ','RDL','ハックスクワット','レッグカール','レッグエクステンション'],
+  '肩': ['ショルダープレス','サイドレイズ','リアレイズ','フロントレイズ','アーノルドプレス'],
+  '腕': ['バーベルカール','ハンマーカール','プレスダウン','ライイングトライセップ','コンセントレーションカール'],
+  '腹': ['クランチ','レッグレイズ','プランク','アブローラー'],
+};
+
+let exBlockId   = 0;  // counter for exercise block ids
+let setRowId    = 0;  // counter for set row ids
+let pickerTarget = null; // which block opened the picker
+
+// Rest timer state
+let restInterval  = null;
+let restRemaining = 0;
+let restTotal     = 0;
+
+/* ============================================================
+   Storage
+   ============================================================ */
+function getLogs()     { return JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); }
+function setLogs(arr)  { localStorage.setItem(STORE_KEY, JSON.stringify(arr)); }
+
+/* ============================================================
+   Init
+   ============================================================ */
 function init() {
-  const today = new Date();
-  document.getElementById('log-date').value = today.toISOString().slice(0,10);
-  document.getElementById('log-time').value = today.toTimeString().slice(0,5);
-  addRow(); addRow(); addRow();
+  const now = new Date();
+  document.getElementById('log-date').value = now.toISOString().slice(0,10);
+  document.getElementById('log-time').value = now.toTimeString().slice(0,5);
+  updateDateDisplay();
+  // Default 3 exercise blocks
+  addExBlock(); addExBlock(); addExBlock();
   buildMaxTable();
 }
 
-// ── Navigation ──
+function updateDateDisplay() {
+  const v = document.getElementById('log-date').value;
+  if (!v) return;
+  const d = new Date(v + 'T00:00:00');
+  const days = ['日','月','火','水','木','金','土'];
+  document.getElementById('log-date-display').textContent =
+    `${d.getMonth()+1}/${d.getDate()} (${days[d.getDay()]})`;
+}
+
+/* ============================================================
+   Navigation
+   ============================================================ */
 function showPage(name, btn) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p  => p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
   btn.classList.add('active');
-  if (name === 'history') renderHistory();
+  if (name === 'history')  renderHistory();
+  if (name === 'progress') populateProgressSelect();
 }
 
-// ── Exercise rows ──
-function addRow() {
-  rowId++;
-  const id = rowId;
-  const tr = document.createElement('tr');
-  tr.id = 'ex-' + id;
-  const sets = [1,2,3,4,5].map(s =>
-    `<td><input type="text" class="set-input" placeholder="kg×回"></td>`
-  ).join('');
-  tr.innerHTML = `
-    <td><input type="text" placeholder="種目名" style="min-width:88px"></td>
-    ${sets}
-    <td><button class="del-btn" onclick="document.getElementById('ex-${id}').remove()">✕</button></td>
+/* ============================================================
+   Exercise Blocks
+   ============================================================ */
+function addExBlock(name) {
+  exBlockId++;
+  const bid = exBlockId;
+  const div = document.createElement('div');
+  div.className = 'ex-block';
+  div.id        = 'exb-' + bid;
+  div.innerHTML = `
+    <div class="ex-hd">
+      <button class="ex-name-btn" onclick="openPicker(${bid})" id="exname-${bid}">
+        ${name ? esc(name) : '<span style="color:var(--t2);font-weight:400">種目を選択 ▾</span>'}
+      </button>
+      <button class="ex-del-btn" onclick="removeExBlock(${bid})">✕</button>
+    </div>
+    <div class="prev-row" id="prev-${bid}"></div>
+    <div class="set-header">
+      <div class="col-lbl">SET</div>
+      <div class="col-lbl">重量 (kg)</div>
+      <div class="col-lbl">回数</div>
+      <div class="col-lbl">✓</div>
+    </div>
+    <div class="set-rows" id="sets-${bid}"></div>
+    <button class="add-set-btn" onclick="addSetRow(${bid})">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2.5">
+        <path d="M12 5v14M5 12h14"/>
+      </svg>
+      セットを追加
+    </button>
+    <div class="vol-bar">
+      <div class="vol-item">
+        <span class="vol-val" id="vs-${bid}">0</span>セット
+      </div>
+      <div class="vol-item">
+        <span class="vol-val" id="vv-${bid}">0</span><span style="font-size:11px;color:var(--t2)"> kg vol</span>
+      </div>
+      <div class="vol-item">
+        <span class="vol-val" id="ve-${bid}">–</span><span style="font-size:11px;color:var(--t2)"> e1RM</span>
+      </div>
+      <button class="copy-btn" id="copy-btn-${bid}"
+        onclick="copyLastSession(${bid})" style="display:none">
+        前回コピー
+      </button>
+    </div>
   `;
-  document.getElementById('ex-tbody').appendChild(tr);
+  document.getElementById('ex-blocks').appendChild(div);
+  // Default 3 sets
+  addSetRow(bid); addSetRow(bid); addSetRow(bid);
+  if (name) setExName(bid, name);
 }
 
-// ── Save log ──
-function saveLog() {
-  const date  = document.getElementById('log-date').value;
-  const time  = document.getElementById('log-time').value;
-  const place = document.getElementById('log-place').value.trim();
-  const memo  = document.getElementById('log-memo').value.trim();
+function removeExBlock(bid) {
+  const el = document.getElementById('exb-' + bid);
+  if (el) el.remove();
+}
 
-  const exercises = [];
-  document.querySelectorAll('#ex-tbody tr').forEach(tr => {
-    const inputs = tr.querySelectorAll('input');
-    const name = inputs[0].value.trim();
-    if (!name) return;
-    const sets = Array.from(inputs).slice(1)
-      .map(i => i.value.trim()).filter(Boolean);
-    exercises.push({ name, sets });
-  });
+// Called after picking an exercise name
+function setExName(bid, name) {
+  const btn = document.getElementById('exname-' + bid);
+  if (!btn) return;
+  btn.textContent = name;
+  btn.dataset.name = name;
+  showPrevSession(bid, name);
+}
 
-  if (!date) { showToast('日付を入力してください'); return; }
-  if (!exercises.length) { showToast('種目を1つ以上入力してください'); return; }
+// Lookup and display the previous session's sets for this exercise
+function showPrevSession(bid, name) {
+  const badge = document.getElementById('prev-' + bid);
+  const copyBtn = document.getElementById('copy-btn-' + bid);
+  if (!badge) return;
 
   const logs = getLogs();
-  logs.unshift({ id: Date.now(), date, time, place, memo, exercises });
+  for (const log of logs) {
+    const ex = log.exercises.find(e => e.name === name);
+    if (ex && ex.sets.length) {
+      const bits = ex.sets
+        .map(s => `<span class="hl-num">${s.weight}</span>×${s.reps}`)
+        .join('　');
+      badge.innerHTML = `<strong>前回 ${log.date}</strong>　${bits}`;
+      badge.style.display = 'block';
+      if (copyBtn) copyBtn.style.display = 'block';
+      return;
+    }
+  }
+  badge.style.display = 'none';
+  if (copyBtn) copyBtn.style.display = 'none';
+}
+
+// Copy the last session's sets into current block
+function copyLastSession(bid) {
+  const btn  = document.getElementById('exname-' + bid);
+  const name = btn?.dataset.name || btn?.textContent?.trim();
+  if (!name) return;
+
+  const logs = getLogs();
+  for (const log of logs) {
+    const ex = log.exercises.find(e => e.name === name);
+    if (ex && ex.sets.length) {
+      // Clear current sets
+      document.getElementById('sets-' + bid).innerHTML = '';
+      setRowId = setRowId; // keep counter going
+
+      ex.sets.forEach(s => {
+        const rid = ++setRowId;
+        const num = document.querySelectorAll(`#sets-${bid} .set-row`).length + 1;
+        _appendSetRow(bid, rid, num, s.weight, s.reps);
+      });
+      updateVolume(bid);
+      showToast('⚡ 前回のセットをコピーしました');
+      return;
+    }
+  }
+}
+
+/* ============================================================
+   Set Rows
+   ============================================================ */
+function addSetRow(bid, prefillWeight, prefillReps) {
+  setRowId++;
+  const rid = setRowId;
+  const num = document.querySelectorAll(`#sets-${bid} .set-row`).length + 1;
+  _appendSetRow(bid, rid, num, prefillWeight, prefillReps);
+  updateVolume(bid);
+}
+
+function _appendSetRow(bid, rid, num, weight, reps) {
+  const container = document.getElementById('sets-' + bid);
+  const row = document.createElement('div');
+  row.className    = 'set-row';
+  row.id           = 'sr-' + rid;
+  row.dataset.bid  = bid;
+  row.dataset.done = '0';
+
+  const wVal = weight != null ? weight : '';
+  const rVal = reps   != null ? reps   : '';
+
+  row.innerHTML = `
+    <div class="set-num">${num}</div>
+    <!-- Weight Stepper -->
+    <div class="stepper">
+      <button class="step-btn" onclick="stepWeight('${rid}', -2.5)"
+        oncontextmenu="stepWeight('${rid}',-0.5);return false">－</button>
+      <input class="step-val" id="sw-${rid}" type="number"
+        value="${wVal}" placeholder="kg" step="2.5" min="0"
+        inputmode="decimal"
+        onfocus="this.select()"
+        oninput="updateVolume(${bid})">
+      <button class="step-btn" onclick="stepWeight('${rid}', 2.5)"
+        oncontextmenu="stepWeight('${rid}',0.5);return false">＋</button>
+    </div>
+    <!-- Reps -->
+    <input class="reps-input" id="rr-${rid}" type="number"
+      value="${rVal}" placeholder="回" step="1" min="0"
+      inputmode="numeric"
+      onfocus="this.select()"
+      oninput="updateVolume(${bid})">
+    <!-- Done check -->
+    <button class="set-check" id="sc-${rid}"
+      onclick="toggleSetDone('${rid}', ${bid})">○</button>
+  `;
+  container.appendChild(row);
+  renumberSets(bid);
+}
+
+function renumberSets(bid) {
+  document.querySelectorAll(`#sets-${bid} .set-row`).forEach((r, i) => {
+    r.querySelector('.set-num').textContent = i + 1;
+  });
+}
+
+// +/- buttons for weight (2.5kg default, 0.5kg on long-press context menu)
+function stepWeight(rid, delta) {
+  const inp = document.getElementById('sw-' + rid);
+  if (!inp) return;
+  const cur = parseFloat(inp.value) || 0;
+  const next = Math.max(0, Math.round((cur + delta) * 10) / 10);
+  inp.value = next % 1 === 0 ? next.toFixed(0) : next.toFixed(1);
+  // find bid from row
+  const row = document.getElementById('sr-' + rid);
+  if (row) updateVolume(parseInt(row.dataset.bid));
+}
+
+function toggleSetDone(rid, bid) {
+  const row = document.getElementById('sr-' + rid);
+  const btn = document.getElementById('sc-' + rid);
+  if (!row || !btn) return;
+
+  const isDone = row.dataset.done === '1';
+  if (!isDone) {
+    row.dataset.done = '1';
+    row.classList.add('done');
+    btn.classList.add('checked');
+    btn.textContent = '✓';
+    // Start rest timer (default 90 seconds)
+    startRest(90);
+  } else {
+    row.dataset.done = '0';
+    row.classList.remove('done');
+    btn.classList.remove('checked');
+    btn.textContent = '○';
+  }
+}
+
+// Compute and display volume stats for one exercise block
+function updateVolume(bid) {
+  const rows = document.querySelectorAll(`#sets-${bid} .set-row`);
+  let totalVol = 0, bestE1rm = 0, completedSets = 0;
+
+  rows.forEach(r => {
+    const rid  = r.id.replace('sr-', '');
+    const w    = parseFloat(document.getElementById('sw-' + rid)?.value) || 0;
+    const rep  = parseInt(document.getElementById('rr-' + rid)?.value)   || 0;
+    if (w > 0 && rep > 0) {
+      totalVol += w * rep;
+      completedSets++;
+      const e = epley(w, rep);
+      if (e > bestE1rm) bestE1rm = e;
+    }
+  });
+
+  document.getElementById('vs-' + bid).textContent = rows.length;
+  document.getElementById('vv-' + bid).textContent =
+    totalVol > 0 ? totalVol.toFixed(0) : '0';
+  document.getElementById('ve-' + bid).textContent =
+    bestE1rm > 0 ? bestE1rm.toFixed(1) : '–';
+}
+
+/* ============================================================
+   Rest Timer
+   ============================================================ */
+function startRest(seconds) {
+  stopRest();
+  restTotal     = seconds;
+  restRemaining = seconds;
+  const bar = document.getElementById('rest-bar');
+  bar.classList.add('visible');
+  updateRestDisplay();
+
+  restInterval = setInterval(() => {
+    restRemaining--;
+    if (restRemaining <= 0) {
+      stopRest();
+      showToast('⏱ インターバル終了！');
+    } else {
+      updateRestDisplay();
+    }
+  }, 1000);
+}
+
+function addRestTime(s) {
+  restRemaining += s;
+  restTotal     += s;
+  updateRestDisplay();
+}
+
+function stopRest() {
+  clearInterval(restInterval);
+  restInterval = null;
+  document.getElementById('rest-bar').classList.remove('visible');
+  document.getElementById('rest-progress').style.width = '100%';
+}
+
+function updateRestDisplay() {
+  const m = Math.floor(restRemaining / 60);
+  const s = restRemaining % 60;
+  document.getElementById('rest-time').textContent =
+    `${m}:${String(s).padStart(2,'0')}`;
+  const pct = Math.max(0, restRemaining / restTotal * 100);
+  document.getElementById('rest-progress').style.width = pct + '%';
+}
+
+/* ============================================================
+   Exercise Picker Modal
+   ============================================================ */
+function openPicker(bid) {
+  pickerTarget = bid;
+  document.getElementById('picker-search').value = '';
+  renderPickerContent('');
+  document.getElementById('ex-picker').classList.add('open');
+  setTimeout(() => document.getElementById('picker-search').focus(), 300);
+}
+
+function closePicker(e) {
+  if (!e || e.target === document.getElementById('ex-picker')) {
+    document.getElementById('ex-picker').classList.remove('open');
+  }
+}
+
+function filterPicker() {
+  const q = document.getElementById('picker-search').value.trim();
+  renderPickerContent(q);
+}
+
+function renderPickerContent(query) {
+  const logs    = getLogs();
+  // Collect recent exercise names (up to 12), sorted by recency
+  const recent = [];
+  const seen   = new Set();
+  for (const log of logs) {
+    for (const ex of log.exercises) {
+      if (!seen.has(ex.name)) {
+        seen.add(ex.name);
+        recent.push(ex.name);
+        if (recent.length >= 12) break;
+      }
+    }
+    if (recent.length >= 12) break;
+  }
+
+  const q = query.toLowerCase();
+
+  // If query, show filtered results from recent + presets
+  if (q) {
+    const allNames = new Set([
+      ...recent,
+      ...Object.values(PRESETS).flat()
+    ]);
+    const filtered = Array.from(allNames)
+      .filter(n => n.toLowerCase().includes(q));
+
+    let html = '';
+    if (filtered.length) {
+      html += '<div class="chip-grid">';
+      filtered.forEach(n => {
+        html += `<button class="chip-btn" onclick="selectExercise('${esc(n)}')">${esc(n)}</button>`;
+      });
+      html += '</div>';
+    }
+    // Show "use this as-is" option
+    if (query.trim()) {
+      html += `
+        <button class="chip-btn" style="width:100%;text-align:left;border-style:dashed"
+          onclick="selectExercise('${esc(query.trim())}')">
+          ＋「${esc(query.trim())}」で追加
+        </button>`;
+    }
+    document.getElementById('picker-recent-group').innerHTML  = '';
+    document.getElementById('picker-preset-group').innerHTML  = '';
+    document.getElementById('picker-search-result').innerHTML = html || '<div style="color:var(--t2);font-size:13px">見つかりませんでした</div>';
+    return;
+  }
+
+  // Default: show recent + presets
+  document.getElementById('picker-search-result').innerHTML = '';
+
+  // Recent
+  let recentHtml = '';
+  if (recent.length) {
+    recentHtml = `
+      <div class="picker-group">最近使った種目</div>
+      <div class="chip-grid">
+        ${recent.map(n =>
+          `<button class="chip-btn" onclick="selectExercise('${esc(n)}')">${esc(n)}</button>`
+        ).join('')}
+      </div>`;
+  }
+  document.getElementById('picker-recent-group').innerHTML = recentHtml;
+
+  // Presets
+  let presetsHtml = '<div class="picker-group">プリセット</div>';
+  Object.entries(PRESETS).forEach(([group, names]) => {
+    presetsHtml += `
+      <div style="font-size:11px;color:var(--t2);font-weight:700;
+        margin:8px 0 5px;letter-spacing:.3px">${group}</div>
+      <div class="chip-grid">
+        ${names.map(n =>
+          `<button class="chip-btn" onclick="selectExercise('${esc(n)}')">${esc(n)}</button>`
+        ).join('')}
+      </div>`;
+  });
+  document.getElementById('picker-preset-group').innerHTML = presetsHtml;
+}
+
+function selectExercise(name) {
+  closePicker(null);
+
+  if (pickerTarget === null) {
+    // Called from the main "add" button — create new block
+    addExBlock(name);
+  } else {
+    // Called from an existing block's name button
+    setExName(pickerTarget, name);
+  }
+  pickerTarget = null;
+}
+
+// Pressing Enter in the picker search = select first result or typed text
+function pickerKeydown(e) {
+  if (e.key !== 'Enter') return;
+  const q = e.target.value.trim();
+  if (q) selectExercise(q);
+}
+
+/* ============================================================
+   Save / Reset
+   ============================================================ */
+function saveLog() {
+  const date = document.getElementById('log-date').value;
+  const time = document.getElementById('log-time').value;
+  const memo = document.getElementById('log-memo').value.trim();
+
+  if (!date) { showToast('日付を入力してください'); return; }
+
+  const exercises = [];
+  document.querySelectorAll('.ex-block').forEach(blk => {
+    const nameBtn = blk.querySelector('.ex-name-btn');
+    const name = (nameBtn?.dataset.name || nameBtn?.textContent || '').trim();
+    if (!name || name.includes('種目を選択')) return;
+
+    const sets = [];
+    blk.querySelectorAll('.set-row').forEach(row => {
+      const rid = row.id.replace('sr-','');
+      const w   = parseFloat(document.getElementById('sw-' + rid)?.value);
+      const rep = parseInt(document.getElementById('rr-' + rid)?.value);
+      if (!isNaN(w) && !isNaN(rep) && w > 0 && rep > 0) {
+        sets.push({ weight: w, reps: rep });
+      }
+    });
+    if (sets.length) exercises.push({ name, sets });
+  });
+
+  if (!exercises.length) {
+    showToast('種目を1つ以上入力してください');
+    return;
+  }
+
+  const logs = getLogs();
+  logs.unshift({ id: Date.now(), date, time, memo, exercises });
   setLogs(logs);
   showToast('✅ 保存しました！');
   resetForm();
 }
 
-function resetForm() {
-  document.getElementById('log-place').value = '';
-  document.getElementById('log-memo').value = '';
-  document.getElementById('ex-tbody').innerHTML = '';
-  rowId = 0;
-  addRow(); addRow(); addRow();
-  const today = new Date();
-  document.getElementById('log-date').value = today.toISOString().slice(0,10);
-  document.getElementById('log-time').value = today.toTimeString().slice(0,5);
+function confirmReset() {
+  const hasData = document.querySelectorAll('.ex-block .set-row').length > 0;
+  if (!hasData || confirm('入力中のデータをリセットしますか？')) resetForm();
 }
 
-// ── History ──
+function resetForm() {
+  document.getElementById('log-memo').value = '';
+  document.getElementById('ex-blocks').innerHTML = '';
+  exBlockId = 0; setRowId = 0;
+
+  const now = new Date();
+  document.getElementById('log-date').value = now.toISOString().slice(0,10);
+  document.getElementById('log-time').value = now.toTimeString().slice(0,5);
+  updateDateDisplay();
+  addExBlock(); addExBlock(); addExBlock();
+}
+
+/* ============================================================
+   History
+   ============================================================ */
 function renderHistory() {
-  const logs = getLogs();
+  const filter = document.getElementById('hist-filter').value.toLowerCase().trim();
+  let logs = getLogs();
+
+  if (filter) {
+    logs = logs.filter(l =>
+      l.exercises.some(e => e.name.toLowerCase().includes(filter))
+    );
+  }
+
   const el = document.getElementById('history-list');
   if (!logs.length) {
-    el.innerHTML = '<div class="empty"><div class="empty-icon">📭</div>まだ記録がありません<br><small style="color:#cbd5e1;margin-top:4px;display:block">ログタブから記録を追加しましょう</small></div>';
+    el.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">${filter ? '🔍' : '📭'}</div>
+        <div>${filter ? '該当する記録がありません' : 'まだ記録がありません'}</div>
+      </div>`;
     return;
   }
-  el.innerHTML = logs.map(log => {
-    const exHtml = log.exercises.map(ex => `
-      <div class="history-ex">
-        <div class="history-ex-name">${esc(ex.name)}</div>
-        <div class="history-sets">
-          ${ex.sets.map((s,i) => `<span class="set-badge">${i+1}set: ${esc(s)}</span>`).join('')}
-          ${!ex.sets.length ? '<span class="set-badge" style="color:#94a3b8">記録なし</span>' : ''}
-        </div>
-      </div>
-    `).join('');
-    return `
-      <div class="card history-card">
-        <div class="history-header">
+
+  // Group by ISO week (Monday start)
+  const weeks = {};
+  logs.forEach(log => {
+    const d   = new Date(log.date + 'T00:00:00');
+    const dow = (d.getDay() + 6) % 7;  // 0=Mon
+    const mon = new Date(d);
+    mon.setDate(d.getDate() - dow);
+    const wk = mon.toISOString().slice(0,10);
+    if (!weeks[wk]) weeks[wk] = [];
+    weeks[wk].push(log);
+  });
+
+  let html = '';
+  Object.keys(weeks).sort((a,b) => b.localeCompare(a)).forEach(wk => {
+    const wlogs = weeks[wk];
+    const totalVol = wlogs.reduce((s, l) =>
+      s + l.exercises.reduce((s2, ex) =>
+        s2 + ex.sets.reduce((s3, set) => s3 + set.weight * set.reps, 0), 0), 0);
+
+    html += `
+      <div class="week-sep">
+        <span>${wk} 週〜</span>
+        <span>${wlogs.length}セッション&nbsp;·&nbsp;
+          <span class="acc">${(totalVol/1000).toFixed(2)} t</span>
+        </span>
+      </div>`;
+
+    wlogs.forEach(log => {
+      const exHtml = log.exercises.map(ex => {
+        let bestIdx = 0, bestMax = 0;
+        ex.sets.forEach((s, i) => {
+          const m = epley(s.weight, s.reps);
+          if (m > bestMax) { bestMax = m; bestIdx = i; }
+        });
+        const chips = ex.sets.map((s, i) => {
+          const lbl = `${s.weight}kg×${s.reps}`;
+          return `<span class="set-chip${i===bestIdx?' best':''}">${esc(lbl)}</span>`;
+        }).join('');
+        return `
           <div>
-            <div class="history-date">${log.date}${log.time ? ' ' + log.time : ''}</div>
-            ${log.place ? `<div class="history-meta">📍 ${esc(log.place)}</div>` : ''}
+            <div class="hist-ex-name">${esc(ex.name)}</div>
+            <div class="sets-wrap">${chips}</div>
+          </div>`;
+      }).join('');
+
+      html += `
+        <div class="card hist-card">
+          <div class="hist-date-line">
+            <div>
+              <span class="hist-date">${esc(log.date)}</span>
+              ${log.time ? `<span class="hist-time">${esc(log.time)}</span>` : ''}
+            </div>
+            <button class="del-log-btn" onclick="deleteLog(${log.id})">削除</button>
           </div>
-          <button class="del-log-btn" onclick="deleteLog(${log.id})">削除</button>
-        </div>
-        ${exHtml}
-        ${log.memo ? `<div class="history-memo">💬 ${esc(log.memo)}</div>` : ''}
-      </div>
-    `;
-  }).join('');
+          ${exHtml}
+          ${log.memo ? `<div class="hist-memo">💬 ${esc(log.memo)}</div>` : ''}
+        </div>`;
+    });
+  });
+
+  el.innerHTML = html;
 }
 
 function deleteLog(id) {
@@ -338,23 +1192,201 @@ function deleteLog(id) {
   showToast('🗑️ 削除しました');
 }
 
-// ── MAX Table ──
-// Formula from the book: estimated 1RM = weight × (1 + reps × 0.025)
-function calcMax(w, r) {
-  return Math.round(w * (1 + r * 0.025) * 10) / 10;
+/* ============================================================
+   Progress
+   ============================================================ */
+function populateProgressSelect() {
+  const logs  = getLogs();
+  const names = new Set();
+  logs.forEach(l => l.exercises.forEach(e => names.add(e.name)));
+
+  const sel = document.getElementById('prog-select');
+  const cur = sel.value;
+  sel.innerHTML =
+    '<option value="">── 種目を選んでください ──</option>' +
+    Array.from(names).sort()
+      .map(n => `<option value="${esc(n)}"${n===cur?' selected':''}>${esc(n)}</option>`)
+      .join('');
+  renderProgress();
+}
+
+function renderProgress() {
+  const name       = document.getElementById('prog-select').value;
+  const statsEl    = document.getElementById('prog-stats');
+  const chartCard  = document.getElementById('prog-chart-card');
+  const detailCard = document.getElementById('prog-detail-card');
+
+  if (!name) {
+    statsEl.style.display = chartCard.style.display = detailCard.style.display = 'none';
+    return;
+  }
+
+  const logs = getLogs();
+  const byDate = {};
+
+  // Go oldest-first so we can plot chronologically
+  [...logs].reverse().forEach(log => {
+    const ex = log.exercises.find(e => e.name === name);
+    if (!ex) return;
+    ex.sets.forEach(s => {
+      const e1rm = epley(s.weight, s.reps);
+      if (!byDate[log.date] || e1rm > byDate[log.date].e1rm) {
+        byDate[log.date] = {
+          date: log.date, weight: s.weight, reps: s.reps, e1rm
+        };
+      }
+    });
+  });
+
+  const points  = Object.values(byDate).sort((a,b) => a.date.localeCompare(b.date));
+  if (!points.length) return;
+
+  // Gather all sets for aggregate stats
+  const allSets = [];
+  logs.forEach(log => {
+    const ex = log.exercises.find(e => e.name === name);
+    if (ex) ex.sets.forEach(s => allSets.push(s));
+  });
+
+  const maxE1rm = Math.max(...points.map(p => p.e1rm));
+  const maxW    = Math.max(...allSets.map(s => s.weight));
+  const totalV  = allSets.reduce((s, d) => s + d.weight * d.reps, 0);
+
+  statsEl.innerHTML = `
+    <div class="stat-box">
+      <div class="stat-lbl">推定1RM</div>
+      <div class="stat-val">${maxE1rm.toFixed(1)}<span class="stat-unit"> kg</span></div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-lbl">最大重量</div>
+      <div class="stat-val">${maxW}<span class="stat-unit"> kg</span></div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-lbl">総ボリューム</div>
+      <div class="stat-val">${(totalV/1000).toFixed(1)}<span class="stat-unit"> t</span></div>
+    </div>`;
+  statsEl.style.display = 'grid';
+
+  chartCard.style.display  = 'block';
+  detailCard.style.display = 'block';
+
+  requestAnimationFrame(() => drawChart(points));
+
+  document.getElementById('prog-detail-list').innerHTML =
+    [...points].reverse().map(p => `
+      <div style="display:flex;justify-content:space-between;align-items:center;
+        padding:7px 0;border-bottom:1px solid var(--border);font-size:13px">
+        <span style="color:var(--t2)">${esc(p.date)}</span>
+        <span>
+          ${p.weight}kg×${p.reps}
+          <strong style="color:var(--accent);margin-left:6px">e1RM ${p.e1rm.toFixed(1)}</strong>
+        </span>
+      </div>`).join('');
+}
+
+function drawChart(points) {
+  const canvas = document.getElementById('prog-canvas');
+  const dpr    = window.devicePixelRatio || 1;
+  const W      = canvas.parentElement.clientWidth - 20;
+  const H      = 180;
+  canvas.width  = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width  = W + 'px';
+  canvas.style.height = H + 'px';
+
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const P = { t: 14, r: 12, b: 32, l: 46 };
+  const cW = W - P.l - P.r;
+  const cH = H - P.t - P.b;
+  const vals = points.map(p => p.e1rm);
+  const minV = Math.floor(Math.min(...vals) * 0.93);
+  const maxV = Math.ceil( Math.max(...vals) * 1.03);
+
+  const xP = i => P.l + (points.length < 2 ? cW/2 : (i / (points.length - 1)) * cW);
+  const yP = v => P.t + (1 - (v - minV) / (maxV - minV || 1)) * cH;
+
+  // Grid
+  ctx.strokeStyle = 'rgba(48,54,61,.8)'; ctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y   = P.t + (i / 4) * cH;
+    const val = maxV - (i / 4) * (maxV - minV);
+    ctx.beginPath(); ctx.moveTo(P.l, y); ctx.lineTo(P.l + cW, y); ctx.stroke();
+    ctx.fillStyle = '#7d8590';
+    ctx.font = '10px -apple-system,sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText(val.toFixed(0), P.l - 5, y + 3.5);
+  }
+
+  if (points.length < 2) {
+    ctx.fillStyle = '#7d8590';
+    ctx.font = '13px -apple-system,sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('2件以上記録するとグラフが表示されます', W/2, H/2);
+    return;
+  }
+
+  // Gradient fill
+  const grad = ctx.createLinearGradient(0, P.t, 0, P.t + cH);
+  grad.addColorStop(0, 'rgba(230,168,23,.22)');
+  grad.addColorStop(1, 'rgba(230,168,23,0)');
+  ctx.beginPath();
+  ctx.moveTo(xP(0), yP(vals[0]));
+  vals.forEach((v, i) => { if (i > 0) ctx.lineTo(xP(i), yP(v)); });
+  ctx.lineTo(xP(points.length-1), P.t + cH);
+  ctx.lineTo(xP(0), P.t + cH);
+  ctx.closePath();
+  ctx.fillStyle = grad; ctx.fill();
+
+  // Line
+  ctx.beginPath();
+  ctx.strokeStyle = '#e6a817'; ctx.lineWidth = 2.2;
+  ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  vals.forEach((v, i) => i === 0 ? ctx.moveTo(xP(i), yP(v)) : ctx.lineTo(xP(i), yP(v)));
+  ctx.stroke();
+
+  // Dots
+  vals.forEach((v, i) => {
+    ctx.beginPath();
+    ctx.arc(xP(i), yP(v), 4, 0, Math.PI*2);
+    ctx.fillStyle = '#e6a817'; ctx.fill();
+    ctx.strokeStyle = '#0d1117'; ctx.lineWidth = 2; ctx.stroke();
+  });
+
+  // X labels
+  ctx.fillStyle = '#7d8590'; ctx.textAlign = 'center';
+  ctx.font = '10px -apple-system,sans-serif';
+  const step = Math.max(1, Math.floor(points.length / 4));
+  const shown = new Set();
+  for (let i = 0; i < points.length; i += step) {
+    ctx.fillText(points[i].date.slice(5), xP(i), H - P.b + 14);
+    shown.add(i);
+  }
+  const last = points.length - 1;
+  if (!shown.has(last)) ctx.fillText(points[last].date.slice(5), xP(last), H - P.b + 14);
+}
+
+/* ============================================================
+   MAX Table (Epley)
+   ============================================================ */
+function epley(w, r) {
+  if (r <= 1) return w;
+  return Math.round(w * (1 + r / 30) * 10) / 10;
 }
 
 function buildMaxTable() {
-  const reps = [2,3,4,5,6,7,8,9,10];
-  let html = '<thead><tr><th>使用重量</th>';
-  reps.forEach(r => html += `<th>${r}レップ</th>`);
+  const repCols = [1,2,3,4,5,6,7,8,9,10,12];
+  let html = '<thead><tr><th>重量</th>';
+  repCols.forEach(r => { html += `<th>${r}rep</th>`; });
   html += '</tr></thead><tbody>';
 
-  for (let w = 50; w <= 250; w += 2.5) {
-    const wId = 'mw' + w.toString().replace('.','_');
-    html += `<tr id="${wId}"><td>${w % 1 === 0 ? w.toFixed(0) : w.toFixed(1)}</td>`;
-    reps.forEach((r, ri) => {
-      html += `<td id="${wId}r${ri}">${calcMax(w, r).toFixed(1)}</td>`;
+  for (let w = 20; w <= 250; w += 2.5) {
+    const wId = 'mw' + w.toString().replace('.', '_');
+    const wLabel = w % 1 === 0 ? w.toFixed(0) : w.toFixed(1);
+    html += `<tr id="${wId}"><td>${wLabel}</td>`;
+    repCols.forEach((r, ri) => {
+      html += `<td id="${wId}r${ri}">${epley(w, r).toFixed(1)}</td>`;
     });
     html += '</tr>';
   }
@@ -362,52 +1394,106 @@ function buildMaxTable() {
   document.getElementById('max-tbl').innerHTML = html;
 }
 
-function calcAndHighlight() {
-  // Clear previous highlights
-  document.querySelectorAll('.hl-row').forEach(r => r.classList.remove('hl-row'));
+function updateMaxCalc() {
+  document.querySelectorAll('.hl-row').forEach(r  => r.classList.remove('hl-row'));
   document.querySelectorAll('.hl-cell').forEach(c => c.classList.remove('hl-cell'));
 
   const weight = parseFloat(document.getElementById('calc-weight').value);
   const reps   = parseInt(document.getElementById('calc-reps').value);
-  const box    = document.getElementById('max-result-box');
+  const resBox  = document.getElementById('max-result');
+  const pctWrap = document.getElementById('pct-wrap');
 
-  if (!weight || weight <= 0) { box.style.display = 'none'; return; }
-
-  // Show result
-  if (reps) {
-    const max = calcMax(weight, reps);
-    document.getElementById('max-result-val').textContent = max.toFixed(1);
-    box.style.display = 'block';
-  } else {
-    box.style.display = 'none';
+  if (!weight || weight <= 0) {
+    resBox.style.display = 'none'; pctWrap.style.display = 'none'; return;
   }
 
-  // Find nearest row (round to 2.5)
-  const nearest = Math.round(weight / 2.5) * 2.5;
-  const clipped = Math.min(250, Math.max(50, nearest));
-  const wId = 'mw' + clipped.toString().replace('.','_');
-  const row = document.getElementById(wId);
-  if (row) {
-    row.classList.add('hl-row');
-    if (reps) {
-      const repsCols = [2,3,4,5,6,7,8,9,10];
-      const ri = repsCols.indexOf(reps);
+  if (reps) {
+    const max = epley(weight, reps);
+    document.getElementById('max-result-val').textContent = max.toFixed(1);
+    resBox.style.display = 'block';
+
+    // Percentage grid
+    const pcts = [50,55,60,65,70,75,80,85,90,95];
+    pctWrap.innerHTML = pcts.map(p => `
+      <div class="pct-box">
+        <div class="pct-lbl">${p}%</div>
+        <div class="pct-val">${(max * p / 100).toFixed(1)}</div>
+      </div>`).join('');
+    pctWrap.style.display = 'grid';
+
+    // Table highlight
+    const repCols = [1,2,3,4,5,6,7,8,9,10,12];
+    const nearest = Math.min(250, Math.max(20, Math.round(weight / 2.5) * 2.5));
+    const wId = 'mw' + nearest.toString().replace('.', '_');
+    const row = document.getElementById(wId);
+    if (row) {
+      row.classList.add('hl-row');
+      const ri = repCols.indexOf(reps);
       if (ri >= 0) {
         const cell = document.getElementById(wId + 'r' + ri);
         if (cell) cell.classList.add('hl-cell');
       }
+      setTimeout(() => row.scrollIntoView({ block:'nearest', behavior:'smooth' }), 50);
     }
-    setTimeout(() => row.scrollIntoView({ block: 'nearest', behavior: 'smooth' }), 50);
+  } else {
+    resBox.style.display = 'none'; pctWrap.style.display = 'none';
   }
 }
 
-// ── Storage ──
-function getLogs() { return JSON.parse(localStorage.getItem('tng-logs') || '[]'); }
-function setLogs(l) { localStorage.setItem('tng-logs', JSON.stringify(l)); }
+/* ============================================================
+   Export / Import / Clear
+   ============================================================ */
+function exportData() {
+  const blob = new Blob(
+    [JSON.stringify({ version:3, exportedAt:new Date().toISOString(), logs:getLogs() }, null, 2)],
+    { type:'application/json' }
+  );
+  const a = Object.assign(document.createElement('a'), {
+    href: URL.createObjectURL(blob),
+    download: 'training-log-' + new Date().toISOString().slice(0,10) + '.json'
+  });
+  a.click();
+  showToast('📤 エクスポートしました');
+}
 
-// ── Helpers ──
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const raw      = JSON.parse(e.target.result);
+      const incoming = raw.logs || (Array.isArray(raw) ? raw : null);
+      if (!incoming) { showToast('⚠️ 形式エラー'); return; }
+      if (!confirm(`${incoming.length}件を現在のデータに追加しますか？`)) return;
+      const existing   = getLogs();
+      const existingId = new Set(existing.map(l => l.id));
+      const merged     = [
+        ...existing,
+        ...incoming.filter(l => !existingId.has(l.id))
+      ].sort((a,b) => b.date.localeCompare(a.date));
+      setLogs(merged);
+      showToast(`✅ ${incoming.length}件インポート完了`);
+    } catch { showToast('⚠️ 読み込みに失敗しました'); }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+function clearAllData() {
+  if (!confirm('全データを削除しますか？この操作は取り消せません。')) return;
+  if (!confirm('本当によろしいですか？（最終確認）')) return;
+  localStorage.removeItem(STORE_KEY);
+  showToast('🗑️ 全データを削除しました');
+}
+
+/* ============================================================
+   Helpers
+   ============================================================ */
 function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 let toastTimer;
@@ -416,16 +1502,13 @@ function showToast(msg) {
   t.textContent = msg;
   t.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
 }
 
+/* ============================================================
+   Boot
+   ============================================================ */
 init();
-</script>
-
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js');
-}
 </script>
 </body>
 </html>
