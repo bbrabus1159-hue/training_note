@@ -9,1505 +9,981 @@
    Variables — Industrial Dark
    ============================================================ */
 :root{
-  --bg:        #0d1117;
-  --s1:        #161b22;
-  --s2:        #1c2128;
-  --s3:        #21262d;
-  --border:    #30363d;
-  --accent:    #e6a817;
-  --a10:       rgba(230,168,23,.10);
-  --a25:       rgba(230,168,23,.25);
-  --text:      #e6edf3;
-  --t2:        #8b949e;
-  --t3:        #484f58;
-  --red:       #f85149;
-  --red10:     rgba(248,81,73,.10);
-  --green:     #3fb950;
-  --green10:   rgba(63,185,80,.10);
-  --r:         12px;
-  --rsm:       8px;
-  --safe-b:    env(safe-area-inset-bottom,0px);
+  --bg:#0d1117;--s1:#161b22;--s2:#1c2128;--s3:#21262d;
+  --border:#30363d;
+  --accent:#e6a817;--a10:rgba(230,168,23,.10);--a25:rgba(230,168,23,.25);
+  --text:#e6edf3;--t2:#8b949e;--t3:#484f58;
+  --red:#f85149;--red10:rgba(248,81,73,.10);
+  --green:#3fb950;--green10:rgba(63,185,80,.10);
+  --blue:#58a6ff;--blue10:rgba(88,166,255,.12);
+  --purple:#a371f7;--purple10:rgba(163,113,247,.12);
+  --r:12px;--rsm:8px;
+  --safe-b:env(safe-area-inset-bottom,0px);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{
   font-family:-apple-system,'Hiragino Sans',sans-serif;
   background:var(--bg);color:var(--text);
-  overscroll-behavior:none;-webkit-overflow-scrolling:touch
+  overscroll-behavior:none;-webkit-overflow-scrolling:touch;
 }
 
 /* ── Pages ── */
-.page{display:none;padding:14px 13px;
-  padding-bottom:calc(80px + var(--safe-b));min-height:100svh}
+.page{display:none;padding:14px 13px;padding-bottom:calc(82px + var(--safe-b));min-height:100svh}
 .page.active{display:block}
-.page-title{font-size:18px;font-weight:900;margin-bottom:14px;
-  letter-spacing:-.5px;display:flex;align-items:center;gap:6px}
+.page-title{font-size:18px;font-weight:900;margin-bottom:14px;letter-spacing:-.5px;display:flex;align-items:center;gap:6px}
 
 /* ── Cards ── */
-.card{background:var(--s1);border:1px solid var(--border);
-  border-radius:var(--r);padding:13px;margin-bottom:9px}
+.card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:13px;margin-bottom:9px}
 
-/* ── Section heads ── */
-.sh{font-size:10px;font-weight:700;color:var(--t3);
-  letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px}
+/* ── Section label ── */
+.sh{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px}
 
 /* ── Inputs ── */
 input,select,textarea{
-  background:var(--s2);border:1px solid var(--border);
-  border-radius:var(--rsm);color:var(--text);font-family:inherit;
-  font-size:14px;outline:none;transition:border-color .15s;
-  -webkit-appearance:none;appearance:none}
-input:focus,select:focus{border-color:var(--accent)}
-textarea{width:100%;padding:9px 11px;resize:none;height:52px;font-size:14px}
-.field-row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
-.field-row:last-child{margin-bottom:0}
-.field-label{font-size:12px;color:var(--t2);min-width:36px;flex-shrink:0}
-.field-row input,.field-row select{flex:1;padding:9px 11px}
+  background:var(--s2);border:1px solid var(--border);border-radius:var(--rsm);
+  color:var(--text);font-family:inherit;font-size:14px;outline:none;
+  transition:border-color .15s;-webkit-appearance:none;appearance:none;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+textarea{width:100%;padding:9px 11px;resize:none;height:52px}
 
-/* ── Accent ── */
-.acc{color:var(--accent)}
+/* ── Buttons ── */
+.btn{border:none;border-radius:var(--rsm);cursor:pointer;font-family:inherit;font-weight:600;transition:opacity .15s,transform .1s}
+.btn:active{transform:scale(.96);opacity:.8}
+.btn-accent{background:var(--accent);color:#000;font-size:14px;padding:10px 16px}
+.btn-ghost{background:var(--s2);border:1px solid var(--border);color:var(--t2);font-size:13px;padding:8px 12px}
+.btn-icon{background:var(--s2);border:1px solid var(--border);color:var(--t2);width:32px;height:32px;border-radius:var(--rsm);display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;flex-shrink:0}
+.btn-red{background:var(--red10);border:1px solid var(--red);color:var(--red);font-size:13px;padding:8px 14px}
+
+/* ============================================================
+   WEEK SUMMARY
+   ============================================================ */
+.week-summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.ws-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px}
+.ws-label{font-size:10px;color:var(--t2);letter-spacing:.5px;margin-bottom:4px}
+.ws-value{font-size:22px;font-weight:900;color:var(--accent);line-height:1.1}
+.ws-sub{font-size:11px;color:var(--t2);margin-top:3px}
 
 /* ============================================================
    EXERCISE BLOCK
    ============================================================ */
-.ex-block{
-  background:var(--s2);border:1px solid var(--border);
-  border-radius:var(--r);padding:12px;margin-bottom:9px;
-  transition:border-color .2s}
-.ex-block:focus-within{border-color:var(--a25)}
+.ex-block{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);margin-bottom:9px;overflow:hidden}
+.ex-header{display:flex;align-items:center;padding:11px 13px;gap:8px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:6px}
+.ex-name{font-size:15px;font-weight:700;flex:1;min-width:80px}
+.ex-toggles{display:flex;gap:8px;align-items:center}
 
-/* Exercise header */
-.ex-hd{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.ex-name-btn{
-  flex:1;background:var(--s3);border:1px solid var(--border);
-  border-radius:var(--rsm);padding:9px 11px;text-align:left;
-  font-size:14px;font-weight:700;color:var(--text);cursor:pointer;
-  transition:border-color .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ex-name-btn:active{border-color:var(--accent)}
-.ex-del-btn{
-  background:var(--red10);border:1px solid rgba(248,81,73,.2);
-  color:var(--red);border-radius:var(--rsm);
-  padding:0;width:38px;height:38px;cursor:pointer;
-  font-size:15px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+/* Toggle */
+.tgl-wrap{display:flex;align-items:center;gap:4px;cursor:pointer}
+.tgl-lbl{font-size:11px;color:var(--t2)}
+.tgl{width:34px;height:18px;background:var(--s3);border-radius:9px;border:1px solid var(--border);position:relative;transition:background .2s;flex-shrink:0}
+.tgl.on{background:var(--accent);border-color:var(--accent)}
+.tgl::after{content:'';position:absolute;width:12px;height:12px;background:#fff;border-radius:50%;top:2px;left:2px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.4)}
+.tgl.on::after{transform:translateX(16px)}
 
-/* Previous session badge */
-.prev-row{
-  background:var(--a10);border:1px solid var(--a25);
-  border-radius:var(--rsm);padding:7px 10px;margin-bottom:10px;
-  display:none;font-size:11px;color:var(--accent)}
-.prev-row strong{font-weight:700}
+.ex-body{padding:10px 13px}
 
-/* Set column headers */
-.set-header{
-  display:grid;grid-template-columns:26px 1fr 72px 38px;
-  gap:5px;margin-bottom:4px;padding:0 2px}
-.col-lbl{font-size:10px;font-weight:700;color:var(--t3);
-  text-align:center;letter-spacing:.3px}
-.col-lbl:first-child{text-align:left}
+/* prev badge */
+.prev-badge{display:flex;align-items:center;gap:6px;margin-bottom:10px;background:var(--a10);border-radius:var(--rsm);padding:7px 10px}
+.prev-label{font-size:10px;color:var(--t2);flex-shrink:0}
+.prev-data{font-size:11px;color:var(--accent);flex:1;line-height:1.5}
+.prev-copy{font-size:11px;color:var(--accent);background:none;border:none;cursor:pointer;padding:0;font-weight:600;flex-shrink:0}
 
-/* Individual set row */
-.set-row{
-  display:grid;grid-template-columns:26px 1fr 72px 38px;
-  gap:5px;align-items:center;margin-bottom:4px;
-  transition:opacity .2s}
-.set-row.done{opacity:.45}
-.set-num{font-size:11px;font-weight:800;color:var(--t2);text-align:center}
+/* set row */
+.set-list{margin-bottom:8px}
+.set-row{display:flex;align-items:center;gap:5px;margin-bottom:6px;flex-wrap:nowrap}
+.set-num{font-size:11px;color:var(--t3);width:16px;text-align:center;flex-shrink:0}
 
-/* Weight stepper */
-.stepper{
-  display:flex;align-items:center;gap:0;
-  background:var(--s3);border:1px solid var(--border);
-  border-radius:var(--rsm);overflow:hidden}
-.step-btn{
-  background:none;border:none;color:var(--t2);
-  font-size:18px;font-weight:300;cursor:pointer;
-  width:34px;height:38px;display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;transition:background .1s,color .1s;line-height:1;
-  -webkit-user-select:none;user-select:none}
-.step-btn:active{background:var(--a10);color:var(--accent)}
-.step-val{
-  flex:1;text-align:center;font-size:14px;font-weight:700;
-  color:var(--text);min-width:0;font-variant-numeric:tabular-nums;
-  background:none;border:none;outline:none;cursor:pointer;
-  padding:0;height:38px}
-/* Make the center tappable to edit */
-.step-val:focus{color:var(--accent)}
+/* stepper */
+.stepper{display:flex;align-items:center;border:1px solid var(--border);border-radius:var(--rsm);overflow:hidden;flex-shrink:0}
+.sp-btn{background:var(--s2);border:none;color:var(--t2);width:30px;height:34px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background .1s}
+.sp-btn:active{background:var(--s3)}
+.sp-val{background:var(--bg);color:var(--text);font-size:13px;font-weight:600;width:46px;text-align:center;border:none;outline:none;height:34px;padding:0;font-family:inherit;font-variant-numeric:tabular-nums}
+.sp-unit{font-size:10px;color:var(--t3);padding:0 4px 0 0;background:var(--bg);height:34px;display:flex;align-items:center}
 
-/* Reps input */
-.reps-input{
-  width:100%;padding:9px 5px;text-align:center;
-  font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;
-  height:38px}
-.reps-input::placeholder{font-size:12px;font-weight:400;color:var(--t3)}
+/* bodyweight tag */
+.bw-tag{font-size:12px;font-weight:700;color:var(--accent);background:var(--a10);border:1px solid var(--a25);border-radius:var(--rsm);padding:0 10px;height:34px;display:flex;align-items:center;flex-shrink:0}
 
-/* Done / check button */
-.set-check{
-  width:38px;height:38px;border-radius:var(--rsm);border:1.5px solid var(--border);
-  background:none;cursor:pointer;font-size:16px;
-  display:flex;align-items:center;justify-content:center;
-  transition:all .15s;flex-shrink:0}
-.set-check:active{transform:scale(.9)}
-.set-check.checked{background:var(--green10);border-color:var(--green);color:var(--green)}
-.set-check:not(.checked){color:var(--t3)}
+/* side selector */
+.side-sel{display:flex;gap:3px;flex-shrink:0}
+.side-btn{font-size:11px;font-weight:700;padding:0 8px;height:28px;border-radius:6px;background:var(--s2);border:1px solid var(--border);color:var(--t2);cursor:pointer;transition:all .15s}
+.side-btn.L{background:var(--blue10);border-color:var(--blue);color:var(--blue)}
+.side-btn.R{background:var(--purple10);border-color:var(--purple);color:var(--purple)}
 
-/* Add set / Copy buttons */
-.add-set-btn{
-  width:100%;background:none;border:1px dashed var(--border);
-  border-radius:var(--rsm);color:var(--t2);padding:8px;
-  cursor:pointer;font-size:12px;margin-top:6px;
-  display:flex;align-items:center;justify-content:center;gap:5px;
-  transition:border-color .15s,color .15s}
-.add-set-btn:active{border-color:var(--accent);color:var(--accent)}
+/* done check */
+.set-done{width:28px;height:28px;border-radius:6px;background:var(--s2);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;transition:all .15s}
+.set-done.checked{background:var(--green10);border-color:var(--green);color:var(--green)}
 
-/* Volume summary */
-.vol-bar{
-  display:flex;justify-content:space-between;
-  margin-top:9px;padding-top:9px;border-top:1px solid var(--border)}
-.vol-item{font-size:11px;color:var(--t2);text-align:center}
-.vol-val{font-size:14px;font-weight:800;color:var(--accent);
-  display:block;font-variant-numeric:tabular-nums}
-.copy-btn{
-  background:none;border:1px solid var(--border);
-  border-radius:var(--rsm);color:var(--t2);
-  padding:5px 10px;cursor:pointer;font-size:11px;font-weight:700;
-  transition:all .15s}
-.copy-btn:active{border-color:var(--accent);color:var(--accent)}
+.set-del{background:none;border:none;color:var(--t3);cursor:pointer;font-size:16px;padding:2px;flex-shrink:0;line-height:1}
 
-/* Add exercise button */
-.add-ex-btn{
-  width:100%;background:var(--a10);border:1.5px dashed var(--a25);
-  border-radius:var(--r);color:var(--accent);padding:13px;
-  cursor:pointer;font-size:14px;font-weight:700;
-  display:flex;align-items:center;justify-content:center;gap:7px;
-  transition:background .15s}
-.add-ex-btn:active{background:var(--a25)}
+/* add set */
+.add-set-btn{width:100%;background:var(--s2);border:1px dashed var(--border);border-radius:var(--rsm);color:var(--t2);font-size:13px;padding:8px;cursor:pointer;font-family:inherit;transition:border-color .15s,color .15s}
+.add-set-btn:hover{border-color:var(--accent);color:var(--accent)}
 
-/* Buttons */
-.btn{border:none;border-radius:var(--r);padding:14px;cursor:pointer;
-  font-size:15px;font-weight:800;width:100%;
-  transition:opacity .15s,transform .1s;letter-spacing:-.2px}
-.btn:active{opacity:.75;transform:scale(.99)}
-.btn-accent{background:var(--accent);color:#0d1117}
-.btn-ghost{background:var(--s2);color:var(--text);
-  border:1px solid var(--border);font-size:13px;padding:11px;font-weight:700}
-.btn-red{background:var(--red10);color:var(--red);
-  border:1px solid rgba(248,81,73,.2);font-size:13px;padding:11px;font-weight:700}
+/* timer badge */
+.timer-badge{display:none;align-items:center;gap:6px;margin-top:8px;background:var(--s3);border-radius:var(--rsm);padding:6px 10px}
+.timer-badge.show{display:flex}
+.tb-label{font-size:11px;color:var(--t2)}
+.tb-time{font-size:14px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;flex:1}
+.tb-btn{font-size:11px;background:none;border:none;cursor:pointer;padding:2px 4px;border-radius:4px}
+.tb-plus{color:var(--accent)}
+.tb-skip{color:var(--t2)}
+
+/* add ex button */
+.add-ex-btn{width:100%;background:var(--s1);border:1px dashed var(--border);border-radius:var(--r);color:var(--t2);font-size:14px;font-weight:600;padding:13px;cursor:pointer;font-family:inherit;transition:border-color .15s,color .15s;margin-bottom:9px}
+.add-ex-btn:hover{border-color:var(--accent);color:var(--accent)}
 
 /* ============================================================
-   REST TIMER
+   BOTTOM NAV
    ============================================================ */
-.rest-bar{
-  position:fixed;top:0;left:0;right:0;z-index:500;
-  background:var(--s1);border-bottom:1px solid var(--border);
-  padding:10px 16px;display:flex;align-items:center;gap:10px;
-  transform:translateY(-100%);transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
-.rest-bar.visible{transform:translateY(0)}
-.rest-label{font-size:12px;color:var(--t2);font-weight:700}
-.rest-time{font-size:20px;font-weight:900;color:var(--accent);
-  font-variant-numeric:tabular-nums;flex:1}
-.rest-btns{display:flex;gap:6px}
-.rest-skip,.rest-add{
-  background:var(--s2);border:1px solid var(--border);
-  border-radius:var(--rsm);color:var(--text);
-  padding:5px 11px;cursor:pointer;font-size:12px;font-weight:700}
-.rest-skip:active,.rest-add:active{border-color:var(--accent);color:var(--accent)}
-/* Progress track */
-.rest-progress{
-  position:absolute;bottom:0;left:0;height:2px;
-  background:var(--accent);transition:width .9s linear;width:100%}
-
-/* ============================================================
-   EXERCISE PICKER MODAL
-   ============================================================ */
-.modal-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.7);
-  z-index:300;display:none;align-items:flex-end}
-.modal-overlay.open{display:flex}
-.modal-sheet{
-  background:var(--s1);border-radius:18px 18px 0 0;
-  border-top:1px solid var(--border);width:100%;
-  padding:12px 14px;padding-bottom:calc(16px + var(--safe-b));
-  max-height:82svh;overflow-y:auto;
-  animation:slideUp .22s cubic-bezier(.34,1.56,.64,1)}
-@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.sheet-handle{width:40px;height:4px;background:var(--border);
-  border-radius:2px;margin:0 auto 14px}
-.picker-search{
-  width:100%;padding:10px 12px;font-size:14px;margin-bottom:12px}
-.chip-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
-.chip-btn{
-  background:var(--s2);border:1px solid var(--border);
-  border-radius:20px;color:var(--text);padding:7px 13px;
-  cursor:pointer;font-size:13px;font-weight:600;
-  transition:all .15s;white-space:nowrap}
-.chip-btn:active{background:var(--a10);border-color:var(--accent);color:var(--accent)}
-.picker-group{font-size:10px;font-weight:700;color:var(--t3);
-  letter-spacing:1px;text-transform:uppercase;margin-bottom:7px}
-
-/* ============================================================
-   NAV
-   ============================================================ */
-.nav{position:fixed;bottom:0;left:0;right:0;
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;
   background:var(--s1);border-top:1px solid var(--border);
-  display:flex;z-index:200;padding-bottom:var(--safe-b)}
-.nav-btn{flex:1;padding:10px 4px 9px;border:none;background:none;
-  cursor:pointer;font-size:10px;color:var(--t2);
-  display:flex;flex-direction:column;align-items:center;gap:3px;
-  transition:color .15s;font-weight:700;letter-spacing:.3px}
-.nav-btn svg{width:21px;height:21px}
+  display:grid;grid-template-columns:repeat(4,1fr);
+  padding-bottom:var(--safe-b);z-index:100;
+}
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 0;background:none;border:none;cursor:pointer;color:var(--t3);transition:color .15s}
 .nav-btn.active{color:var(--accent)}
+.nav-icon{font-size:20px;line-height:1}
+.nav-label{font-size:9px;font-weight:600;letter-spacing:.3px}
 
 /* ============================================================
-   HISTORY PAGE
+   SHEET (種目選択)
    ============================================================ */
-.hist-search{width:100%;padding:9px 12px;margin-bottom:12px}
-.week-sep{
-  font-size:10px;font-weight:800;color:var(--t3);letter-spacing:.8px;
-  text-transform:uppercase;padding:4px 0 8px;
-  display:flex;justify-content:space-between}
-.week-sep span{color:var(--accent)}
-.hist-card{margin-bottom:9px}
-.hist-date-line{display:flex;justify-content:space-between;
-  align-items:center;margin-bottom:8px}
-.hist-date{font-size:15px;font-weight:800}
-.hist-time{font-size:12px;color:var(--t2);margin-left:6px;font-weight:400}
-.del-log-btn{background:var(--red10);color:var(--red);
-  border:1px solid rgba(248,81,73,.2);border-radius:var(--rsm);
-  padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer}
-.hist-ex-name{font-size:13px;font-weight:700;margin:7px 0 4px}
-.sets-wrap{display:flex;flex-wrap:wrap;gap:4px}
-.set-chip{background:var(--s2);border-radius:5px;
-  padding:3px 8px;font-size:11px;color:var(--t2);
-  font-variant-numeric:tabular-nums}
-.set-chip.best{background:var(--a10);color:var(--accent);
-  border:1px solid var(--a25);font-weight:700}
-.hist-memo{margin-top:8px;padding-top:8px;border-top:1px solid var(--border);
-  font-size:12px;color:var(--t2)}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:none;opacity:0;transition:opacity .25s}
+.overlay.open{display:block;opacity:1}
+.sheet{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--s1);border-radius:18px 18px 0 0;border-top:1px solid var(--border);
+  z-index:201;transform:translateY(100%);transition:transform .3s cubic-bezier(.32,.72,0,1);
+  max-height:80svh;display:flex;flex-direction:column;padding-bottom:var(--safe-b);
+}
+.sheet.open{transform:translateY(0)}
+.sheet-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:10px auto 12px;flex-shrink:0}
+.sheet-title{font-size:16px;font-weight:700;padding:0 16px 12px;flex-shrink:0;border-bottom:1px solid var(--border)}
+.sheet-search{padding:10px 16px;flex-shrink:0}
+.sheet-search input{width:100%;padding:9px 12px;font-size:14px}
+.sheet-body{overflow-y:auto;padding:8px 16px 16px;flex:1;-webkit-overflow-scrolling:touch}
+.sh-sec{font-size:10px;color:var(--t3);letter-spacing:1px;margin:10px 0 6px;font-weight:700}
+.sh-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
+.ex-chip{background:var(--s2);border:1px solid var(--border);border-radius:var(--rsm);color:var(--text);font-size:13px;padding:7px 12px;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.ex-chip:active{background:var(--a10);border-color:var(--accent);color:var(--accent)}
 
 /* ============================================================
-   PROGRESS PAGE
+   CALENDAR
    ============================================================ */
-.prog-select{width:100%;padding:10px 12px;font-weight:700;font-size:14px}
-.stat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:9px}
-.stat-box{background:var(--s1);border:1px solid var(--border);
-  border-radius:var(--r);padding:11px 8px;text-align:center}
-.stat-lbl{font-size:9px;font-weight:700;color:var(--t3);
-  letter-spacing:.8px;text-transform:uppercase;margin-bottom:2px}
-.stat-val{font-size:19px;font-weight:900;color:var(--accent);
-  font-variant-numeric:tabular-nums}
-.stat-unit{font-size:11px;color:var(--t2)}
-canvas{display:block;width:100%}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.cal-month{font-size:17px;font-weight:700}
+.cal-nav-btn{background:var(--s2);border:1px solid var(--border);color:var(--t2);width:34px;height:34px;border-radius:var(--rsm);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-dow{text-align:center;font-size:10px;color:var(--t3);padding:4px 0;font-weight:600}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:13px;cursor:pointer;position:relative;transition:all .15s;border:1px solid transparent}
+.cal-day.empty{cursor:default}
+.cal-day.trained{background:var(--a10);color:var(--accent);font-weight:700;border-color:var(--a25)}
+.cal-day.today{border-color:var(--accent) !important}
+.cal-day.today.trained{background:var(--a25)}
+.cal-day.selected{background:var(--s2);border-color:var(--border)}
+.cal-day:not(.empty):not(.trained):hover{background:var(--s2)}
+
+.cal-detail{margin-top:14px}
+.cal-det-date{font-size:13px;color:var(--t2);margin-bottom:8px;font-weight:600}
+.cal-ex-item{background:var(--s1);border:1px solid var(--border);border-radius:var(--rsm);padding:10px 12px;margin-bottom:6px}
+.cal-ex-name{font-size:14px;font-weight:600;margin-bottom:4px}
+.cal-set-txt{font-size:12px;color:var(--t2);line-height:1.9}
 
 /* ============================================================
-   MAX TABLE PAGE
+   STATS
    ============================================================ */
-.max-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
-.max-grid input,.max-grid select{padding:9px 10px;font-size:14px}
-.max-result{
-  background:var(--accent);border-radius:var(--r);
-  padding:14px;text-align:center;margin-bottom:9px;display:none}
-.max-result-lbl{font-size:11px;color:rgba(0,0,0,.6);font-weight:700;margin-bottom:1px}
-.max-result-val{font-size:34px;font-weight:900;color:#0d1117;
-  font-variant-numeric:tabular-nums}
-.max-result-unit{font-size:14px;color:rgba(0,0,0,.55)}
-.pct-wrap{display:none;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:10px}
-.pct-box{background:var(--s2);border:1px solid var(--border);
-  border-radius:var(--rsm);padding:8px 4px;text-align:center}
-.pct-lbl{font-size:9px;color:var(--t2);font-weight:700}
-.pct-val{font-size:14px;font-weight:800;font-variant-numeric:tabular-nums}
-.tbl-wrap{overflow:auto;max-height:48svh;border-radius:var(--r);
-  border:1px solid var(--border)}
-.max-tbl{border-collapse:collapse;font-size:12px;white-space:nowrap;
-  width:100%;font-variant-numeric:tabular-nums}
-.max-tbl th{background:var(--s2);color:var(--t2);padding:7px 8px;text-align:center;
-  position:sticky;top:0;z-index:10;font-size:10px;font-weight:700;
-  letter-spacing:.3px;border-bottom:1px solid var(--border)}
-.max-tbl td{padding:5px 8px;text-align:center;
-  border-bottom:1px solid rgba(48,54,61,.5);color:var(--t2)}
-.max-tbl td:first-child{font-weight:700;background:var(--s2);
-  position:sticky;left:0;border-right:1px solid var(--border);
-  color:var(--text);z-index:5}
-.max-tbl tr:hover td{background:var(--a10);color:var(--text)}
-.max-tbl tr:hover td:first-child{background:var(--a10)}
-.hl-row td{background:rgba(230,168,23,.06)!important}
-.hl-cell{background:var(--accent)!important;color:#0d1117!important;
-  font-weight:900!important;border-radius:3px}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.stat-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:13px}
+.stat-label{font-size:10px;color:var(--t2);letter-spacing:.5px;margin-bottom:6px}
+.stat-value{font-size:26px;font-weight:900;color:var(--accent);line-height:1}
+.stat-unit{font-size:11px;color:var(--t2);margin-top:3px}
 
-/* Data management */
-.mgmt-row{display:flex;gap:7px;margin-bottom:7px}
-.mgmt-row .btn-ghost{flex:1}
+.max-table{width:100%;border-collapse:collapse}
+.max-table tr{border-bottom:1px solid var(--border)}
+.max-table tr:last-child{border-bottom:none}
+.max-table td{padding:8px 4px;font-size:13px}
+.max-table .td-val{text-align:right;font-weight:700;color:var(--accent);font-size:14px}
 
-/* ── Toast ── */
-.toast{position:fixed;top:16px;left:50%;
-  transform:translateX(-50%) translateY(-70px);
-  background:var(--s1);color:var(--text);
-  border:1px solid var(--border);padding:10px 20px;
-  border-radius:30px;font-size:13px;font-weight:700;z-index:999;
-  transition:transform .28s cubic-bezier(.34,1.56,.64,1);
-  pointer-events:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.5)}
-.toast.show{transform:translateX(-50%) translateY(0)}
+/* ============================================================
+   SETTINGS
+   ============================================================ */
+.danger-zone{border:1px solid var(--red);border-radius:var(--r);padding:13px;margin-top:12px}
+.danger-title{font-size:12px;color:var(--red);font-weight:700;margin-bottom:10px;letter-spacing:.5px}
 
-/* Empty state */
-.empty{text-align:center;padding:48px 20px;color:var(--t2)}
-.empty-icon{font-size:34px;margin-bottom:10px}
-
-/* Note */
-.note{font-size:11px;color:var(--t3);text-align:center;margin-top:6px}
-
-/* Highlighted number */
-.hl-num{color:var(--accent);font-weight:800}
+/* ============================================================
+   TOAST
+   ============================================================ */
+#toast{
+  position:fixed;bottom:calc(82px + var(--safe-b) + 12px);left:50%;
+  transform:translateX(-50%) translateY(8px);
+  background:var(--s3);border:1px solid var(--border);border-radius:20px;
+  color:var(--text);font-size:13px;padding:8px 16px;
+  opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;z-index:400;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
+<div id="app">
 
-<!-- =========================================================
-     REST TIMER BAR
-     ========================================================= -->
-<div id="rest-bar" class="rest-bar">
-  <div>
-    <div class="rest-label">インターバル</div>
-    <div class="rest-time" id="rest-time">0:00</div>
-  </div>
-  <div class="rest-btns">
-    <button class="rest-add" onclick="addRestTime(30)">+30s</button>
-    <button class="rest-skip" onclick="stopRest()">スキップ</button>
-  </div>
-  <div class="rest-progress" id="rest-progress"></div>
-</div>
-
-<!-- =========================================================
-     PAGE: LOG INPUT
-     ========================================================= -->
-<div id="page-log" class="page active">
-  <div class="page-title">
-    <span style="font-size:22px">💪</span>
-    <span>ログ<span class="acc">入力</span></span>
-    <span id="log-date-display"
-      style="margin-left:auto;font-size:13px;font-weight:600;color:var(--t2)"></span>
-  </div>
-
-  <div class="card">
-    <div class="sh">セッション情報</div>
-    <div class="field-row">
-      <span class="field-label">日付</span>
-      <input type="date" id="log-date" onchange="updateDateDisplay()">
-    </div>
-    <div class="field-row">
-      <span class="field-label">時間</span>
-      <input type="time" id="log-time">
-    </div>
-  </div>
-
-  <div id="ex-blocks"></div>
-
-  <button class="add-ex-btn" onclick="openPicker(null)">
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" stroke-width="2.5">
-      <path d="M12 5v14M5 12h14"/>
-    </svg>
-    種目を追加
-  </button>
-
-  <div style="margin-top:12px">
-    <div class="card" style="padding:11px 13px">
+  <!-- ======== PAGE: 記録 ======== -->
+  <div id="page-record" class="page active">
+    <div class="page-title">🏋️ 記録</div>
+    <div class="week-summary" id="week-summary"></div>
+    <div id="today-label" style="font-size:12px;color:var(--t2);margin-bottom:10px"></div>
+    <div id="ex-list"></div>
+    <button class="add-ex-btn" onclick="openSheet()">＋ 種目を追加</button>
+    <div class="card">
       <div class="sh">メモ</div>
-      <textarea id="log-memo" placeholder="コンディション・気づきなど..."></textarea>
+      <textarea id="note-input" placeholder="今日のコンディション・気づきなど..." onchange="saveNote()"></textarea>
     </div>
   </div>
 
-  <div style="margin-top:4px">
-    <button class="btn btn-accent" onclick="saveLog()">保存する</button>
-  </div>
-  <div style="margin-top:7px">
-    <button class="btn btn-ghost" onclick="confirmReset()">リセット</button>
-  </div>
-</div>
-
-<!-- =========================================================
-     PAGE: HISTORY
-     ========================================================= -->
-<div id="page-history" class="page">
-  <div class="page-title">
-    <span style="font-size:22px">📚</span>履<span class="acc">歴</span>
-  </div>
-  <input class="hist-search" type="text" id="hist-filter"
-    placeholder="🔍 種目名で絞り込み" oninput="renderHistory()">
-  <div id="history-list"></div>
-</div>
-
-<!-- =========================================================
-     PAGE: PROGRESS
-     ========================================================= -->
-<div id="page-progress" class="page">
-  <div class="page-title">
-    <span style="font-size:22px">📈</span>進<span class="acc">捗</span>
-  </div>
-  <div class="card">
-    <div class="sh">種目を選択</div>
-    <select class="prog-select" id="prog-select" onchange="renderProgress()">
-      <option value="">── 種目を選んでください ──</option>
-    </select>
-  </div>
-
-  <div class="stat-row" id="prog-stats" style="display:none"></div>
-
-  <div class="card" id="prog-chart-card" style="display:none;padding:12px 10px">
-    <div class="sh">推定1RM推移</div>
-    <canvas id="prog-canvas" height="180"></canvas>
-  </div>
-
-  <div class="card" id="prog-detail-card" style="display:none">
-    <div class="sh">セッション履歴</div>
-    <div id="prog-detail-list"></div>
-  </div>
-</div>
-
-<!-- =========================================================
-     PAGE: MAX TABLE
-     ========================================================= -->
-<div id="page-max" class="page">
-  <div class="page-title">
-    <span style="font-size:22px">📊</span>MAX<span class="acc">表</span>
-  </div>
-
-  <div class="card">
-    <div class="sh">推定1RM計算 (Epley式)</div>
-    <div class="max-grid">
-      <div>
-        <div style="font-size:11px;color:var(--t2);margin-bottom:4px;font-weight:700">
-          使用重量 (kg)
-        </div>
-        <input type="number" id="calc-weight" placeholder="例: 80"
-          step="2.5" min="0" inputmode="decimal" oninput="updateMaxCalc()">
+  <!-- ======== PAGE: カレンダー ======== -->
+  <div id="page-calendar" class="page">
+    <div class="page-title">📅 カレンダー</div>
+    <div class="card">
+      <div class="cal-nav">
+        <button class="cal-nav-btn" onclick="calNav(-1)">‹</button>
+        <div class="cal-month" id="cal-month-label"></div>
+        <button class="cal-nav-btn" onclick="calNav(1)">›</button>
       </div>
-      <div>
-        <div style="font-size:11px;color:var(--t2);margin-bottom:4px;font-weight:700">
-          レップ数
-        </div>
-        <select id="calc-reps" onchange="updateMaxCalc()">
-          <option value="">選択</option>
-          <option>1</option><option>2</option><option>3</option><option>4</option>
-          <option>5</option><option>6</option><option>7</option><option>8</option>
-          <option>9</option><option>10</option><option>11</option><option>12</option>
-        </select>
-      </div>
+      <div class="cal-grid" id="cal-grid"></div>
     </div>
-    <div id="max-result" class="max-result">
-      <div class="max-result-lbl">推定1RM</div>
-      <div>
-        <span class="max-result-val" id="max-result-val">–</span>
-        <span class="max-result-unit"> kg</span>
-      </div>
-    </div>
-    <div class="pct-wrap" id="pct-wrap"></div>
+    <div class="cal-detail" id="cal-detail"></div>
   </div>
 
-  <div class="card" style="padding:0;overflow:hidden">
-    <div class="tbl-wrap">
-      <table class="max-tbl" id="max-tbl"></table>
+  <!-- ======== PAGE: 統計 ======== -->
+  <div id="page-stats" class="page">
+    <div class="page-title">📊 統計</div>
+    <div class="stats-grid" id="stats-grid"></div>
+    <div id="stats-extra"></div>
+  </div>
+
+  <!-- ======== PAGE: 設定 ======== -->
+  <div id="page-settings" class="page">
+    <div class="page-title">⚙️ 設定</div>
+    <div class="card">
+      <div class="sh">データ管理</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-ghost" onclick="exportData()">📤 エクスポート</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('import-file').click()">📥 インポート</button>
+      </div>
+      <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
+    </div>
+    <div class="danger-zone">
+      <div class="danger-title">DANGER ZONE</div>
+      <button class="btn btn-red" onclick="clearAll()">🗑️ 全データを削除</button>
     </div>
   </div>
-  <div class="note">※Epley式による推定値。個人差・種目により異なります</div>
 
-  <div class="card" style="margin-top:14px">
-    <div class="sh">データ管理</div>
-    <div class="mgmt-row">
-      <button class="btn btn-ghost" onclick="exportData()">📤 エクスポート</button>
-      <button class="btn btn-ghost"
-        onclick="document.getElementById('import-file').click()">
-        📥 インポート
-      </button>
-    </div>
-    <input type="file" id="import-file" accept=".json"
-      style="display:none" onchange="importData(event)">
-    <button class="btn btn-red" onclick="clearAllData()">
-      🗑️ 全データを削除
+  <!-- ======== BOTTOM NAV ======== -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-tab="record" onclick="switchTab('record')">
+      <div class="nav-icon">🏋️</div><div class="nav-label">記録</div>
     </button>
-  </div>
-</div>
+    <button class="nav-btn" data-tab="calendar" onclick="switchTab('calendar')">
+      <div class="nav-icon">📅</div><div class="nav-label">カレンダー</div>
+    </button>
+    <button class="nav-btn" data-tab="stats" onclick="switchTab('stats')">
+      <div class="nav-icon">📊</div><div class="nav-label">統計</div>
+    </button>
+    <button class="nav-btn" data-tab="settings" onclick="switchTab('settings')">
+      <div class="nav-icon">⚙️</div><div class="nav-label">設定</div>
+    </button>
+  </nav>
 
-<!-- =========================================================
-     EXERCISE PICKER MODAL
-     ========================================================= -->
-<div class="modal-overlay" id="ex-picker" onclick="closePicker(event)">
-  <div class="modal-sheet" onclick="event.stopPropagation()">
+  <!-- ======== EXERCISE SHEET ======== -->
+  <div id="overlay" class="overlay" onclick="closeSheet()"></div>
+  <div id="ex-sheet" class="sheet">
     <div class="sheet-handle"></div>
-    <input class="picker-search" type="text" id="picker-search"
-      placeholder="🔍 種目名を検索・入力..."
-      oninput="filterPicker()"
-      onkeydown="pickerKeydown(event)">
-    <div id="picker-recent-group"></div>
-    <div id="picker-preset-group"></div>
-    <div id="picker-search-result"></div>
+    <div class="sheet-title">種目を選択</div>
+    <div class="sheet-search">
+      <input type="search" id="sheet-q" placeholder="検索 / 新規入力..."
+        oninput="renderSheetList()"
+        onkeydown="if(event.key==='Enter')confirmSheetInput()">
+    </div>
+    <div class="sheet-body" id="sheet-body"></div>
   </div>
+
+  <!-- TOAST -->
+  <div id="toast"></div>
 </div>
 
-<!-- =========================================================
-     NAV
-     ========================================================= -->
-<nav class="nav">
-  <button class="nav-btn active" onclick="showPage('log',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M12 20h9"/>
-      <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
-    </svg>
-    入力
-  </button>
-  <button class="nav-btn" onclick="showPage('history',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
-      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
-    </svg>
-    履歴
-  </button>
-  <button class="nav-btn" onclick="showPage('progress',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-    </svg>
-    進捗
-  </button>
-  <button class="nav-btn" onclick="showPage('max',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <rect x="3" y="3" width="18" height="18" rx="2"/>
-      <line x1="3" y1="9" x2="21" y2="9"/>
-      <line x1="9" y1="3" x2="9" y2="21"/>
-    </svg>
-    MAX表
-  </button>
-</nav>
-
-<div class="toast" id="toast"></div>
-
-<!-- =========================================================
-     SCRIPT
-     ========================================================= -->
 <script>
-'use strict';
-
-/* ============================================================
-   Constants & State
-   ============================================================ */
-const STORE_KEY = 'tn3-logs';
-
-// Preset exercises grouped by body part
-const PRESETS = {
-  '胸': ['ベンチプレス','インクラインベンチ','ダンベルフライ','ディップス','ケーブルクロス'],
-  '背中': ['デッドリフト','ラットプルダウン','懸垂','ベントオーバーロー','シーテッドロー','チンニング'],
-  '脚': ['スクワット','レッグプレス','ブルガリアンSQ','RDL','ハックスクワット','レッグカール','レッグエクステンション'],
-  '肩': ['ショルダープレス','サイドレイズ','リアレイズ','フロントレイズ','アーノルドプレス'],
-  '腕': ['バーベルカール','ハンマーカール','プレスダウン','ライイングトライセップ','コンセントレーションカール'],
-  '腹': ['クランチ','レッグレイズ','プランク','アブローラー'],
-};
-
-let exBlockId   = 0;  // counter for exercise block ids
-let setRowId    = 0;  // counter for set row ids
-let pickerTarget = null; // which block opened the picker
-
-// Rest timer state
-let restInterval  = null;
-let restRemaining = 0;
-let restTotal     = 0;
-
 /* ============================================================
    Storage
    ============================================================ */
-function getLogs()     { return JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); }
-function setLogs(arr)  { localStorage.setItem(STORE_KEY, JSON.stringify(arr)); }
+const STORE_KEY = 'tn_sessions';
+// v3など旧バージョンのキー候補
+const LEGACY_KEYS = ['tn_logs','training-logs','tl_logs','trainingLogs','training_note','workout_logs','tn_v3'];
 
-/* ============================================================
-   Init
-   ============================================================ */
-function init() {
-  const now = new Date();
-  document.getElementById('log-date').value = now.toISOString().slice(0,10);
-  document.getElementById('log-time').value = now.toTimeString().slice(0,5);
-  updateDateDisplay();
-  // Default 3 exercise blocks
-  addExBlock(); addExBlock(); addExBlock();
-  buildMaxTable();
+const PRESETS = [
+  'ベンチプレス','インクラインDBプレス','チェストフライ','ディップス','腕立て伏せ',
+  'スクワット','レッグプレス','レッグカール','レッグエクステンション','ブルガリアンSQ',
+  'デッドリフト','ルーマニアンDL',
+  'ラットプルダウン','チンニング','ベントオーバーロウ','シーテッドロウ','フェイスプル',
+  'ショルダープレス','サイドレイズ','リアレイズ',
+  'バーベルカール','DBカール','ハンマーカール',
+  'トライセプスPD','スカルクラッシャー','ケーブルPD',
+  'プランク','クランチ','レッグレイズ',
+  'ランニング','ウォーキング','自転車'
+];
+
+function getSessions(){
+  try{return JSON.parse(localStorage.getItem(STORE_KEY)||'[]')}catch{return[]}
 }
+function setSessions(s){localStorage.setItem(STORE_KEY,JSON.stringify(s))}
 
-function updateDateDisplay() {
-  const v = document.getElementById('log-date').value;
-  if (!v) return;
-  const d = new Date(v + 'T00:00:00');
-  const days = ['日','月','火','水','木','金','土'];
-  document.getElementById('log-date-display').textContent =
-    `${d.getMonth()+1}/${d.getDate()} (${days[d.getDay()]})`;
-}
+function getToday(){return new Date().toISOString().split('T')[0]}
+function dateStr(d){return d.toISOString().split('T')[0]}
 
-/* ============================================================
-   Navigation
-   ============================================================ */
-function showPage(name, btn) {
-  document.querySelectorAll('.page').forEach(p  => p.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  btn.classList.add('active');
-  if (name === 'history')  renderHistory();
-  if (name === 'progress') populateProgressSelect();
+function getTodaySession(){return getSessions().find(s=>s.date===getToday())||null}
+function upsertSession(sess){
+  const all=getSessions().filter(s=>s.date!==sess.date);
+  all.push(sess);setSessions(all);
 }
 
 /* ============================================================
-   Exercise Blocks
+   Migration — 旧キーからデータを引き継ぐ
    ============================================================ */
-function addExBlock(name) {
-  exBlockId++;
-  const bid = exBlockId;
-  const div = document.createElement('div');
-  div.className = 'ex-block';
-  div.id        = 'exb-' + bid;
-  div.innerHTML = `
-    <div class="ex-hd">
-      <button class="ex-name-btn" onclick="openPicker(${bid})" id="exname-${bid}">
-        ${name ? esc(name) : '<span style="color:var(--t2);font-weight:400">種目を選択 ▾</span>'}
-      </button>
-      <button class="ex-del-btn" onclick="removeExBlock(${bid})">✕</button>
+function migrateIfNeeded(){
+  if(localStorage.getItem(STORE_KEY))return;
+  for(const key of LEGACY_KEYS){
+    const raw=localStorage.getItem(key);
+    if(!raw)continue;
+    try{
+      const data=JSON.parse(raw);
+      if(!Array.isArray(data)||!data.length)continue;
+      // フィールドを補完して新形式で保存
+      const migrated=data.map(s=>({
+        id:s.id||('sess_'+Math.random().toString(36).slice(2)),
+        date:s.date||getToday(),
+        exercises:(s.exercises||[]).map(ex=>({
+          id:ex.id||('ex_'+Math.random().toString(36).slice(2)),
+          name:ex.name||'',
+          bodyweight:!!ex.bodyweight,
+          sideBySide:!!ex.sideBySide,
+          sets:(ex.sets||[]).map(set=>({
+            id:set.id||('set_'+Math.random().toString(36).slice(2)),
+            weight:set.weight||0,reps:set.reps||0,
+            side:set.side||null,done:!!set.done
+          }))
+        })),
+        note:s.note||''
+      }));
+      localStorage.setItem(STORE_KEY,JSON.stringify(migrated));
+      showToast('✅ 旧データを引き継ぎました');
+      return;
+    }catch{}
+  }
+}
+
+/* ============================================================
+   App State
+   ============================================================ */
+let today = null;          // 今日のセッション
+let calY = new Date().getFullYear();
+let calM = new Date().getMonth();
+let calSel = null;         // カレンダー選択日
+let timerIv = null;
+let timerRem = 90;
+let timerExId = null;
+
+/* ============================================================
+   Boot
+   ============================================================ */
+function init(){
+  migrateIfNeeded();
+  today = getTodaySession() || newSession();
+  renderRecord();
+}
+
+function newSession(){
+  return{id:'sess_'+Date.now(),date:getToday(),exercises:[],note:''};
+}
+
+function save(){upsertSession(today)}
+
+/* ============================================================
+   Tab
+   ============================================================ */
+function switchTab(tab){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+tab).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+  if(tab==='calendar')renderCalendar();
+  if(tab==='stats')renderStats();
+}
+
+/* ============================================================
+   RECORD PAGE
+   ============================================================ */
+function renderRecord(){
+  renderWeekSummary();
+  renderTodayLabel();
+  renderExList();
+  document.getElementById('note-input').value=today.note||'';
+}
+
+/* Week Summary */
+function renderWeekSummary(){
+  const sessions=getSessions();
+  const now=new Date();
+  const dow=now.getDay();
+  const weekStart=new Date(now);
+  weekStart.setDate(now.getDate()-(dow===0?6:dow-1));
+  weekStart.setHours(0,0,0,0);
+
+  const weekCount=sessions.filter(s=>{
+    const d=new Date(s.date);return d>=weekStart&&d<=now;
+  }).length;
+
+  const past=sessions.filter(s=>s.date!==getToday())
+    .sort((a,b)=>b.date.localeCompare(a.date));
+  let lastStr='記録なし';
+  if(past[0]){
+    const diff=Math.round((now-new Date(past[0].date))/86400000);
+    lastStr=diff===0?'昨日':diff===1?'昨日':diff+'日前';
+  }
+
+  const days=['日','月','火','水','木','金','土'];
+  document.getElementById('week-summary').innerHTML=`
+    <div class="ws-card">
+      <div class="ws-label">TODAY</div>
+      <div class="ws-value" style="font-size:17px;color:var(--text)">
+        ${now.getMonth()+1}/${now.getDate()}<span style="font-size:13px;color:var(--t2);margin-left:4px">（${days[dow]}）</span>
+      </div>
+      <div class="ws-sub">前回 ${lastStr}</div>
     </div>
-    <div class="prev-row" id="prev-${bid}"></div>
-    <div class="set-header">
-      <div class="col-lbl">SET</div>
-      <div class="col-lbl">重量 (kg)</div>
-      <div class="col-lbl">回数</div>
-      <div class="col-lbl">✓</div>
-    </div>
-    <div class="set-rows" id="sets-${bid}"></div>
-    <button class="add-set-btn" onclick="addSetRow(${bid})">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2.5">
-        <path d="M12 5v14M5 12h14"/>
-      </svg>
-      セットを追加
-    </button>
-    <div class="vol-bar">
-      <div class="vol-item">
-        <span class="vol-val" id="vs-${bid}">0</span>セット
-      </div>
-      <div class="vol-item">
-        <span class="vol-val" id="vv-${bid}">0</span><span style="font-size:11px;color:var(--t2)"> kg vol</span>
-      </div>
-      <div class="vol-item">
-        <span class="vol-val" id="ve-${bid}">–</span><span style="font-size:11px;color:var(--t2)"> e1RM</span>
-      </div>
-      <button class="copy-btn" id="copy-btn-${bid}"
-        onclick="copyLastSession(${bid})" style="display:none">
-        前回コピー
-      </button>
+    <div class="ws-card">
+      <div class="ws-label">今週のトレーニング</div>
+      <div class="ws-value">${weekCount}</div>
+      <div class="ws-sub">回</div>
     </div>
   `;
-  document.getElementById('ex-blocks').appendChild(div);
-  // Default 3 sets
-  addSetRow(bid); addSetRow(bid); addSetRow(bid);
-  if (name) setExName(bid, name);
 }
 
-function removeExBlock(bid) {
-  const el = document.getElementById('exb-' + bid);
-  if (el) el.remove();
+function renderTodayLabel(){
+  document.getElementById('today-label').textContent=today.date+' の記録';
 }
 
-// Called after picking an exercise name
-function setExName(bid, name) {
-  const btn = document.getElementById('exname-' + bid);
-  if (!btn) return;
-  btn.textContent = name;
-  btn.dataset.name = name;
-  showPrevSession(bid, name);
+/* Exercise List */
+function renderExList(){
+  const el=document.getElementById('ex-list');
+  el.innerHTML='';
+  today.exercises.forEach(ex=>el.appendChild(buildExBlock(ex)));
 }
 
-// Lookup and display the previous session's sets for this exercise
-function showPrevSession(bid, name) {
-  const badge = document.getElementById('prev-' + bid);
-  const copyBtn = document.getElementById('copy-btn-' + bid);
-  if (!badge) return;
+function buildExBlock(ex){
+  const wrap=document.createElement('div');
+  wrap.className='ex-block';
+  wrap.id='exb-'+ex.id;
 
-  const logs = getLogs();
-  for (const log of logs) {
-    const ex = log.exercises.find(e => e.name === name);
-    if (ex && ex.sets.length) {
-      const bits = ex.sets
-        .map(s => `<span class="hl-num">${s.weight}</span>×${s.reps}`)
-        .join('　');
-      badge.innerHTML = `<strong>前回 ${log.date}</strong>　${bits}`;
-      badge.style.display = 'block';
-      if (copyBtn) copyBtn.style.display = 'block';
-      return;
-    }
-  }
-  badge.style.display = 'none';
-  if (copyBtn) copyBtn.style.display = 'none';
-}
+  const prev=getPrevEx(ex.name);
+  const prevHtml=prev?buildPrevHtml(ex,prev):'';
 
-// Copy the last session's sets into current block
-function copyLastSession(bid) {
-  const btn  = document.getElementById('exname-' + bid);
-  const name = btn?.dataset.name || btn?.textContent?.trim();
-  if (!name) return;
-
-  const logs = getLogs();
-  for (const log of logs) {
-    const ex = log.exercises.find(e => e.name === name);
-    if (ex && ex.sets.length) {
-      // Clear current sets
-      document.getElementById('sets-' + bid).innerHTML = '';
-      setRowId = setRowId; // keep counter going
-
-      ex.sets.forEach(s => {
-        const rid = ++setRowId;
-        const num = document.querySelectorAll(`#sets-${bid} .set-row`).length + 1;
-        _appendSetRow(bid, rid, num, s.weight, s.reps);
-      });
-      updateVolume(bid);
-      showToast('⚡ 前回のセットをコピーしました');
-      return;
-    }
-  }
-}
-
-/* ============================================================
-   Set Rows
-   ============================================================ */
-function addSetRow(bid, prefillWeight, prefillReps) {
-  setRowId++;
-  const rid = setRowId;
-  const num = document.querySelectorAll(`#sets-${bid} .set-row`).length + 1;
-  _appendSetRow(bid, rid, num, prefillWeight, prefillReps);
-  updateVolume(bid);
-}
-
-function _appendSetRow(bid, rid, num, weight, reps) {
-  const container = document.getElementById('sets-' + bid);
-  const row = document.createElement('div');
-  row.className    = 'set-row';
-  row.id           = 'sr-' + rid;
-  row.dataset.bid  = bid;
-  row.dataset.done = '0';
-
-  const wVal = weight != null ? weight : '';
-  const rVal = reps   != null ? reps   : '';
-
-  row.innerHTML = `
-    <div class="set-num">${num}</div>
-    <!-- Weight Stepper -->
-    <div class="stepper">
-      <button class="step-btn" onclick="stepWeight('${rid}', -2.5)"
-        oncontextmenu="stepWeight('${rid}',-0.5);return false">－</button>
-      <input class="step-val" id="sw-${rid}" type="number"
-        value="${wVal}" placeholder="kg" step="2.5" min="0"
-        inputmode="decimal"
-        onfocus="this.select()"
-        oninput="updateVolume(${bid})">
-      <button class="step-btn" onclick="stepWeight('${rid}', 2.5)"
-        oncontextmenu="stepWeight('${rid}',0.5);return false">＋</button>
+  wrap.innerHTML=`
+    <div class="ex-header">
+      <div class="ex-name">${esc(ex.name)}</div>
+      <div class="ex-toggles">
+        <div class="tgl-wrap" onclick="toggleBW('${ex.id}')">
+          <div class="tgl-lbl">自重</div>
+          <div class="tgl ${ex.bodyweight?'on':''}" id="tgl-bw-${ex.id}"></div>
+        </div>
+        <div class="tgl-wrap" onclick="toggleSide('${ex.id}')">
+          <div class="tgl-lbl">左右別</div>
+          <div class="tgl ${ex.sideBySide?'on':''}" id="tgl-side-${ex.id}"></div>
+        </div>
+        <div class="btn-icon" onclick="removeEx('${ex.id}')">✕</div>
+      </div>
     </div>
-    <!-- Reps -->
-    <input class="reps-input" id="rr-${rid}" type="number"
-      value="${rVal}" placeholder="回" step="1" min="0"
-      inputmode="numeric"
-      onfocus="this.select()"
-      oninput="updateVolume(${bid})">
-    <!-- Done check -->
-    <button class="set-check" id="sc-${rid}"
-      onclick="toggleSetDone('${rid}', ${bid})">○</button>
+    <div class="ex-body">
+      ${prevHtml}
+      <div class="set-list" id="sets-${ex.id}"></div>
+      <button class="add-set-btn" onclick="addSet('${ex.id}')">＋ セット追加</button>
+      <div class="timer-badge" id="tmr-${ex.id}"></div>
+    </div>
   `;
-  container.appendChild(row);
-  renumberSets(bid);
+  renderSetList(ex,wrap);
+  return wrap;
 }
 
-function renumberSets(bid) {
-  document.querySelectorAll(`#sets-${bid} .set-row`).forEach((r, i) => {
-    r.querySelector('.set-num').textContent = i + 1;
-  });
-}
-
-// +/- buttons for weight (2.5kg default, 0.5kg on long-press context menu)
-function stepWeight(rid, delta) {
-  const inp = document.getElementById('sw-' + rid);
-  if (!inp) return;
-  const cur = parseFloat(inp.value) || 0;
-  const next = Math.max(0, Math.round((cur + delta) * 10) / 10);
-  inp.value = next % 1 === 0 ? next.toFixed(0) : next.toFixed(1);
-  // find bid from row
-  const row = document.getElementById('sr-' + rid);
-  if (row) updateVolume(parseInt(row.dataset.bid));
-}
-
-function toggleSetDone(rid, bid) {
-  const row = document.getElementById('sr-' + rid);
-  const btn = document.getElementById('sc-' + rid);
-  if (!row || !btn) return;
-
-  const isDone = row.dataset.done === '1';
-  if (!isDone) {
-    row.dataset.done = '1';
-    row.classList.add('done');
-    btn.classList.add('checked');
-    btn.textContent = '✓';
-    // Start rest timer (default 90 seconds)
-    startRest(90);
-  } else {
-    row.dataset.done = '0';
-    row.classList.remove('done');
-    btn.classList.remove('checked');
-    btn.textContent = '○';
-  }
-}
-
-// Compute and display volume stats for one exercise block
-function updateVolume(bid) {
-  const rows = document.querySelectorAll(`#sets-${bid} .set-row`);
-  let totalVol = 0, bestE1rm = 0, completedSets = 0;
-
-  rows.forEach(r => {
-    const rid  = r.id.replace('sr-', '');
-    const w    = parseFloat(document.getElementById('sw-' + rid)?.value) || 0;
-    const rep  = parseInt(document.getElementById('rr-' + rid)?.value)   || 0;
-    if (w > 0 && rep > 0) {
-      totalVol += w * rep;
-      completedSets++;
-      const e = epley(w, rep);
-      if (e > bestE1rm) bestE1rm = e;
-    }
-  });
-
-  document.getElementById('vs-' + bid).textContent = rows.length;
-  document.getElementById('vv-' + bid).textContent =
-    totalVol > 0 ? totalVol.toFixed(0) : '0';
-  document.getElementById('ve-' + bid).textContent =
-    bestE1rm > 0 ? bestE1rm.toFixed(1) : '–';
-}
-
-/* ============================================================
-   Rest Timer
-   ============================================================ */
-function startRest(seconds) {
-  stopRest();
-  restTotal     = seconds;
-  restRemaining = seconds;
-  const bar = document.getElementById('rest-bar');
-  bar.classList.add('visible');
-  updateRestDisplay();
-
-  restInterval = setInterval(() => {
-    restRemaining--;
-    if (restRemaining <= 0) {
-      stopRest();
-      showToast('⏱ インターバル終了！');
-    } else {
-      updateRestDisplay();
-    }
-  }, 1000);
-}
-
-function addRestTime(s) {
-  restRemaining += s;
-  restTotal     += s;
-  updateRestDisplay();
-}
-
-function stopRest() {
-  clearInterval(restInterval);
-  restInterval = null;
-  document.getElementById('rest-bar').classList.remove('visible');
-  document.getElementById('rest-progress').style.width = '100%';
-}
-
-function updateRestDisplay() {
-  const m = Math.floor(restRemaining / 60);
-  const s = restRemaining % 60;
-  document.getElementById('rest-time').textContent =
-    `${m}:${String(s).padStart(2,'0')}`;
-  const pct = Math.max(0, restRemaining / restTotal * 100);
-  document.getElementById('rest-progress').style.width = pct + '%';
-}
-
-/* ============================================================
-   Exercise Picker Modal
-   ============================================================ */
-function openPicker(bid) {
-  pickerTarget = bid;
-  document.getElementById('picker-search').value = '';
-  renderPickerContent('');
-  document.getElementById('ex-picker').classList.add('open');
-  setTimeout(() => document.getElementById('picker-search').focus(), 300);
-}
-
-function closePicker(e) {
-  if (!e || e.target === document.getElementById('ex-picker')) {
-    document.getElementById('ex-picker').classList.remove('open');
-  }
-}
-
-function filterPicker() {
-  const q = document.getElementById('picker-search').value.trim();
-  renderPickerContent(q);
-}
-
-function renderPickerContent(query) {
-  const logs    = getLogs();
-  // Collect recent exercise names (up to 12), sorted by recency
-  const recent = [];
-  const seen   = new Set();
-  for (const log of logs) {
-    for (const ex of log.exercises) {
-      if (!seen.has(ex.name)) {
-        seen.add(ex.name);
-        recent.push(ex.name);
-        if (recent.length >= 12) break;
-      }
-    }
-    if (recent.length >= 12) break;
-  }
-
-  const q = query.toLowerCase();
-
-  // If query, show filtered results from recent + presets
-  if (q) {
-    const allNames = new Set([
-      ...recent,
-      ...Object.values(PRESETS).flat()
-    ]);
-    const filtered = Array.from(allNames)
-      .filter(n => n.toLowerCase().includes(q));
-
-    let html = '';
-    if (filtered.length) {
-      html += '<div class="chip-grid">';
-      filtered.forEach(n => {
-        html += `<button class="chip-btn" onclick="selectExercise('${esc(n)}')">${esc(n)}</button>`;
-      });
-      html += '</div>';
-    }
-    // Show "use this as-is" option
-    if (query.trim()) {
-      html += `
-        <button class="chip-btn" style="width:100%;text-align:left;border-style:dashed"
-          onclick="selectExercise('${esc(query.trim())}')">
-          ＋「${esc(query.trim())}」で追加
-        </button>`;
-    }
-    document.getElementById('picker-recent-group').innerHTML  = '';
-    document.getElementById('picker-preset-group').innerHTML  = '';
-    document.getElementById('picker-search-result').innerHTML = html || '<div style="color:var(--t2);font-size:13px">見つかりませんでした</div>';
-    return;
-  }
-
-  // Default: show recent + presets
-  document.getElementById('picker-search-result').innerHTML = '';
-
-  // Recent
-  let recentHtml = '';
-  if (recent.length) {
-    recentHtml = `
-      <div class="picker-group">最近使った種目</div>
-      <div class="chip-grid">
-        ${recent.map(n =>
-          `<button class="chip-btn" onclick="selectExercise('${esc(n)}')">${esc(n)}</button>`
-        ).join('')}
-      </div>`;
-  }
-  document.getElementById('picker-recent-group').innerHTML = recentHtml;
-
-  // Presets
-  let presetsHtml = '<div class="picker-group">プリセット</div>';
-  Object.entries(PRESETS).forEach(([group, names]) => {
-    presetsHtml += `
-      <div style="font-size:11px;color:var(--t2);font-weight:700;
-        margin:8px 0 5px;letter-spacing:.3px">${group}</div>
-      <div class="chip-grid">
-        ${names.map(n =>
-          `<button class="chip-btn" onclick="selectExercise('${esc(n)}')">${esc(n)}</button>`
-        ).join('')}
-      </div>`;
-  });
-  document.getElementById('picker-preset-group').innerHTML = presetsHtml;
-}
-
-function selectExercise(name) {
-  closePicker(null);
-
-  if (pickerTarget === null) {
-    // Called from the main "add" button — create new block
-    addExBlock(name);
-  } else {
-    // Called from an existing block's name button
-    setExName(pickerTarget, name);
-  }
-  pickerTarget = null;
-}
-
-// Pressing Enter in the picker search = select first result or typed text
-function pickerKeydown(e) {
-  if (e.key !== 'Enter') return;
-  const q = e.target.value.trim();
-  if (q) selectExercise(q);
-}
-
-/* ============================================================
-   Save / Reset
-   ============================================================ */
-function saveLog() {
-  const date = document.getElementById('log-date').value;
-  const time = document.getElementById('log-time').value;
-  const memo = document.getElementById('log-memo').value.trim();
-
-  if (!date) { showToast('日付を入力してください'); return; }
-
-  const exercises = [];
-  document.querySelectorAll('.ex-block').forEach(blk => {
-    const nameBtn = blk.querySelector('.ex-name-btn');
-    const name = (nameBtn?.dataset.name || nameBtn?.textContent || '').trim();
-    if (!name || name.includes('種目を選択')) return;
-
-    const sets = [];
-    blk.querySelectorAll('.set-row').forEach(row => {
-      const rid = row.id.replace('sr-','');
-      const w   = parseFloat(document.getElementById('sw-' + rid)?.value);
-      const rep = parseInt(document.getElementById('rr-' + rid)?.value);
-      if (!isNaN(w) && !isNaN(rep) && w > 0 && rep > 0) {
-        sets.push({ weight: w, reps: rep });
-      }
-    });
-    if (sets.length) exercises.push({ name, sets });
-  });
-
-  if (!exercises.length) {
-    showToast('種目を1つ以上入力してください');
-    return;
-  }
-
-  const logs = getLogs();
-  logs.unshift({ id: Date.now(), date, time, memo, exercises });
-  setLogs(logs);
-  showToast('✅ 保存しました！');
-  resetForm();
-}
-
-function confirmReset() {
-  const hasData = document.querySelectorAll('.ex-block .set-row').length > 0;
-  if (!hasData || confirm('入力中のデータをリセットしますか？')) resetForm();
-}
-
-function resetForm() {
-  document.getElementById('log-memo').value = '';
-  document.getElementById('ex-blocks').innerHTML = '';
-  exBlockId = 0; setRowId = 0;
-
-  const now = new Date();
-  document.getElementById('log-date').value = now.toISOString().slice(0,10);
-  document.getElementById('log-time').value = now.toTimeString().slice(0,5);
-  updateDateDisplay();
-  addExBlock(); addExBlock(); addExBlock();
-}
-
-/* ============================================================
-   History
-   ============================================================ */
-function renderHistory() {
-  const filter = document.getElementById('hist-filter').value.toLowerCase().trim();
-  let logs = getLogs();
-
-  if (filter) {
-    logs = logs.filter(l =>
-      l.exercises.some(e => e.name.toLowerCase().includes(filter))
-    );
-  }
-
-  const el = document.getElementById('history-list');
-  if (!logs.length) {
-    el.innerHTML = `
-      <div class="empty">
-        <div class="empty-icon">${filter ? '🔍' : '📭'}</div>
-        <div>${filter ? '該当する記録がありません' : 'まだ記録がありません'}</div>
-      </div>`;
-    return;
-  }
-
-  // Group by ISO week (Monday start)
-  const weeks = {};
-  logs.forEach(log => {
-    const d   = new Date(log.date + 'T00:00:00');
-    const dow = (d.getDay() + 6) % 7;  // 0=Mon
-    const mon = new Date(d);
-    mon.setDate(d.getDate() - dow);
-    const wk = mon.toISOString().slice(0,10);
-    if (!weeks[wk]) weeks[wk] = [];
-    weeks[wk].push(log);
-  });
-
-  let html = '';
-  Object.keys(weeks).sort((a,b) => b.localeCompare(a)).forEach(wk => {
-    const wlogs = weeks[wk];
-    const totalVol = wlogs.reduce((s, l) =>
-      s + l.exercises.reduce((s2, ex) =>
-        s2 + ex.sets.reduce((s3, set) => s3 + set.weight * set.reps, 0), 0), 0);
-
-    html += `
-      <div class="week-sep">
-        <span>${wk} 週〜</span>
-        <span>${wlogs.length}セッション&nbsp;·&nbsp;
-          <span class="acc">${(totalVol/1000).toFixed(2)} t</span>
-        </span>
-      </div>`;
-
-    wlogs.forEach(log => {
-      const exHtml = log.exercises.map(ex => {
-        let bestIdx = 0, bestMax = 0;
-        ex.sets.forEach((s, i) => {
-          const m = epley(s.weight, s.reps);
-          if (m > bestMax) { bestMax = m; bestIdx = i; }
-        });
-        const chips = ex.sets.map((s, i) => {
-          const lbl = `${s.weight}kg×${s.reps}`;
-          return `<span class="set-chip${i===bestIdx?' best':''}">${esc(lbl)}</span>`;
-        }).join('');
-        return `
-          <div>
-            <div class="hist-ex-name">${esc(ex.name)}</div>
-            <div class="sets-wrap">${chips}</div>
-          </div>`;
-      }).join('');
-
-      html += `
-        <div class="card hist-card">
-          <div class="hist-date-line">
-            <div>
-              <span class="hist-date">${esc(log.date)}</span>
-              ${log.time ? `<span class="hist-time">${esc(log.time)}</span>` : ''}
-            </div>
-            <button class="del-log-btn" onclick="deleteLog(${log.id})">削除</button>
-          </div>
-          ${exHtml}
-          ${log.memo ? `<div class="hist-memo">💬 ${esc(log.memo)}</div>` : ''}
-        </div>`;
-    });
-  });
-
-  el.innerHTML = html;
-}
-
-function deleteLog(id) {
-  if (!confirm('このログを削除しますか？')) return;
-  setLogs(getLogs().filter(l => l.id !== id));
-  renderHistory();
-  showToast('🗑️ 削除しました');
-}
-
-/* ============================================================
-   Progress
-   ============================================================ */
-function populateProgressSelect() {
-  const logs  = getLogs();
-  const names = new Set();
-  logs.forEach(l => l.exercises.forEach(e => names.add(e.name)));
-
-  const sel = document.getElementById('prog-select');
-  const cur = sel.value;
-  sel.innerHTML =
-    '<option value="">── 種目を選んでください ──</option>' +
-    Array.from(names).sort()
-      .map(n => `<option value="${esc(n)}"${n===cur?' selected':''}>${esc(n)}</option>`)
-      .join('');
-  renderProgress();
-}
-
-function renderProgress() {
-  const name       = document.getElementById('prog-select').value;
-  const statsEl    = document.getElementById('prog-stats');
-  const chartCard  = document.getElementById('prog-chart-card');
-  const detailCard = document.getElementById('prog-detail-card');
-
-  if (!name) {
-    statsEl.style.display = chartCard.style.display = detailCard.style.display = 'none';
-    return;
-  }
-
-  const logs = getLogs();
-  const byDate = {};
-
-  // Go oldest-first so we can plot chronologically
-  [...logs].reverse().forEach(log => {
-    const ex = log.exercises.find(e => e.name === name);
-    if (!ex) return;
-    ex.sets.forEach(s => {
-      const e1rm = epley(s.weight, s.reps);
-      if (!byDate[log.date] || e1rm > byDate[log.date].e1rm) {
-        byDate[log.date] = {
-          date: log.date, weight: s.weight, reps: s.reps, e1rm
-        };
-      }
-    });
-  });
-
-  const points  = Object.values(byDate).sort((a,b) => a.date.localeCompare(b.date));
-  if (!points.length) return;
-
-  // Gather all sets for aggregate stats
-  const allSets = [];
-  logs.forEach(log => {
-    const ex = log.exercises.find(e => e.name === name);
-    if (ex) ex.sets.forEach(s => allSets.push(s));
-  });
-
-  const maxE1rm = Math.max(...points.map(p => p.e1rm));
-  const maxW    = Math.max(...allSets.map(s => s.weight));
-  const totalV  = allSets.reduce((s, d) => s + d.weight * d.reps, 0);
-
-  statsEl.innerHTML = `
-    <div class="stat-box">
-      <div class="stat-lbl">推定1RM</div>
-      <div class="stat-val">${maxE1rm.toFixed(1)}<span class="stat-unit"> kg</span></div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-lbl">最大重量</div>
-      <div class="stat-val">${maxW}<span class="stat-unit"> kg</span></div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-lbl">総ボリューム</div>
-      <div class="stat-val">${(totalV/1000).toFixed(1)}<span class="stat-unit"> t</span></div>
+function buildPrevHtml(ex,prev){
+  const rows=prev.sets.map((s,i)=>{
+    const w=prev.bodyweight?'BW':`${s.weight}kg`;
+    const sd=s.side?` [${s.side}]`:'';
+    return `${i+1}:${w}×${s.reps}${sd}`;
+  }).join('　');
+  return `
+    <div class="prev-badge">
+      <div class="prev-label">前回</div>
+      <div class="prev-data">${esc(rows)}</div>
+      <button class="prev-copy" onclick="copyPrev('${ex.id}')">コピー</button>
     </div>`;
-  statsEl.style.display = 'grid';
-
-  chartCard.style.display  = 'block';
-  detailCard.style.display = 'block';
-
-  requestAnimationFrame(() => drawChart(points));
-
-  document.getElementById('prog-detail-list').innerHTML =
-    [...points].reverse().map(p => `
-      <div style="display:flex;justify-content:space-between;align-items:center;
-        padding:7px 0;border-bottom:1px solid var(--border);font-size:13px">
-        <span style="color:var(--t2)">${esc(p.date)}</span>
-        <span>
-          ${p.weight}kg×${p.reps}
-          <strong style="color:var(--accent);margin-left:6px">e1RM ${p.e1rm.toFixed(1)}</strong>
-        </span>
-      </div>`).join('');
 }
 
-function drawChart(points) {
-  const canvas = document.getElementById('prog-canvas');
-  const dpr    = window.devicePixelRatio || 1;
-  const W      = canvas.parentElement.clientWidth - 20;
-  const H      = 180;
-  canvas.width  = W * dpr;
-  canvas.height = H * dpr;
-  canvas.style.width  = W + 'px';
-  canvas.style.height = H + 'px';
+function renderSetList(ex,wrap){
+  const el=(wrap||document.getElementById('exb-'+ex.id))?.querySelector('#sets-'+ex.id);
+  if(!el)return;
+  el.innerHTML='';
+  ex.sets.forEach((set,i)=>el.appendChild(buildSetRow(ex,set,i+1)));
+}
 
-  const ctx = canvas.getContext('2d');
-  ctx.scale(dpr, dpr);
+function buildSetRow(ex,set,num){
+  const row=document.createElement('div');
+  row.className='set-row';
+  row.id='setr-'+set.id;
 
-  const P = { t: 14, r: 12, b: 32, l: 46 };
-  const cW = W - P.l - P.r;
-  const cH = H - P.t - P.b;
-  const vals = points.map(p => p.e1rm);
-  const minV = Math.floor(Math.min(...vals) * 0.93);
-  const maxV = Math.ceil( Math.max(...vals) * 1.03);
-
-  const xP = i => P.l + (points.length < 2 ? cW/2 : (i / (points.length - 1)) * cW);
-  const yP = v => P.t + (1 - (v - minV) / (maxV - minV || 1)) * cH;
-
-  // Grid
-  ctx.strokeStyle = 'rgba(48,54,61,.8)'; ctx.lineWidth = 1;
-  for (let i = 0; i <= 4; i++) {
-    const y   = P.t + (i / 4) * cH;
-    const val = maxV - (i / 4) * (maxV - minV);
-    ctx.beginPath(); ctx.moveTo(P.l, y); ctx.lineTo(P.l + cW, y); ctx.stroke();
-    ctx.fillStyle = '#7d8590';
-    ctx.font = '10px -apple-system,sans-serif';
-    ctx.textAlign = 'right';
-    ctx.fillText(val.toFixed(0), P.l - 5, y + 3.5);
+  // weight area
+  let wHtml='';
+  if(ex.bodyweight){
+    wHtml=`<div class="bw-tag">自重</div>`;
+  }else{
+    wHtml=`
+      <div class="stepper">
+        <button class="sp-btn" onclick="chgW('${ex.id}','${set.id}',-2.5)">−</button>
+        <input class="sp-val" type="number" inputmode="decimal" value="${set.weight}" step="2.5" min="0"
+          onchange="setW('${ex.id}','${set.id}',this.value)">
+        <div class="sp-unit">kg</div>
+        <button class="sp-btn" onclick="chgW('${ex.id}','${set.id}',2.5)">＋</button>
+      </div>`;
   }
 
-  if (points.length < 2) {
-    ctx.fillStyle = '#7d8590';
-    ctx.font = '13px -apple-system,sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('2件以上記録するとグラフが表示されます', W/2, H/2);
+  // reps
+  const rHtml=`
+    <div class="stepper">
+      <button class="sp-btn" onclick="chgR('${ex.id}','${set.id}',-1)">−</button>
+      <input class="sp-val" type="number" inputmode="numeric" value="${set.reps}" step="1" min="0"
+        onchange="setR('${ex.id}','${set.id}',this.value)">
+      <div class="sp-unit">rep</div>
+      <button class="sp-btn" onclick="chgR('${ex.id}','${set.id}',1)">＋</button>
+    </div>`;
+
+  // side
+  const sideHtml=ex.sideBySide?`
+    <div class="side-sel">
+      <button class="side-btn ${set.side==='L'?'L':''}" onclick="chgSide('${ex.id}','${set.id}','L')">L</button>
+      <button class="side-btn ${set.side==='R'?'R':''}" onclick="chgSide('${ex.id}','${set.id}','R')">R</button>
+    </div>`:'';
+
+  // done
+  const doneHtml=`<div class="set-done ${set.done?'checked':''}" onclick="toggleDone('${ex.id}','${set.id}')">${set.done?'✓':''}</div>`;
+
+  row.innerHTML=`
+    <div class="set-num">${num}</div>
+    ${wHtml}${rHtml}${sideHtml}${doneHtml}
+    <button class="set-del" onclick="delSet('${ex.id}','${set.id}')">✕</button>
+  `;
+  return row;
+}
+
+/* ============================================================
+   Exercise Actions
+   ============================================================ */
+function addExercise(name){
+  const ex={
+    id:'ex_'+Date.now(),name,
+    bodyweight:false,sideBySide:false,
+    sets:[]
+  };
+  today.exercises.push(ex);
+  save();renderExList();
+  closeSheet();
+}
+
+function removeEx(exId){
+  today.exercises=today.exercises.filter(e=>e.id!==exId);
+  save();renderExList();
+}
+
+function toggleBW(exId){
+  const ex=findEx(exId);ex.bodyweight=!ex.bodyweight;
+  save();
+  document.getElementById('tgl-bw-'+exId)?.classList.toggle('on',ex.bodyweight);
+  renderSetList(ex);
+}
+
+function toggleSide(exId){
+  const ex=findEx(exId);ex.sideBySide=!ex.sideBySide;
+  save();
+  document.getElementById('tgl-side-'+exId)?.classList.toggle('on',ex.sideBySide);
+  renderSetList(ex);
+}
+
+/* ============================================================
+   Set Actions
+   ============================================================ */
+function addSet(exId){
+  const ex=findEx(exId);
+  const last=ex.sets[ex.sets.length-1];
+  ex.sets.push({
+    id:'set_'+Date.now(),
+    weight:last?last.weight:0,
+    reps:last?last.reps:10,
+    side:null,done:false
+  });
+  save();renderSetList(ex);
+}
+
+function delSet(exId,setId){
+  const ex=findEx(exId);
+  ex.sets=ex.sets.filter(s=>s.id!==setId);
+  save();renderSetList(ex);
+}
+
+function chgW(exId,setId,delta){
+  const s=findSet(exId,setId);
+  s.weight=Math.max(0,Math.round((s.weight+delta)*10)/10);
+  save();syncVal(setId,'w',s.weight);
+}
+function setW(exId,setId,v){findSet(exId,setId).weight=Math.max(0,parseFloat(v)||0);save()}
+
+function chgR(exId,setId,delta){
+  const s=findSet(exId,setId);
+  s.reps=Math.max(0,s.reps+delta);
+  save();syncVal(setId,'r',s.reps);
+}
+function setR(exId,setId,v){findSet(exId,setId).reps=Math.max(0,parseInt(v)||0);save()}
+
+function syncVal(setId,type,val){
+  const row=document.getElementById('setr-'+setId);
+  if(!row)return;
+  const all=row.querySelectorAll('.sp-val');
+  if(type==='w'&&all[0])all[0].value=val;
+  if(type==='r'&&all.length>0)all[all.length-1].value=val;
+}
+
+function chgSide(exId,setId,side){
+  const s=findSet(exId,setId);
+  s.side=s.side===side?null:side;
+  save();renderSetList(findEx(exId));
+}
+
+function toggleDone(exId,setId){
+  const s=findSet(exId,setId);
+  s.done=!s.done;save();
+  // update UI
+  const el=document.getElementById('setr-'+setId)?.querySelector('.set-done');
+  if(el){el.classList.toggle('checked',s.done);el.textContent=s.done?'✓':'';}
+  if(s.done)startTimer(exId);
+  else{stopTimer();document.getElementById('tmr-'+exId)?.classList.remove('show')}
+}
+
+/* ============================================================
+   Copy Previous
+   ============================================================ */
+function copyPrev(exId){
+  const ex=findEx(exId);
+  const prev=getPrevEx(ex.name);
+  if(!prev)return;
+  ex.sets=prev.sets.map(s=>({
+    id:'set_'+Date.now()+Math.random(),
+    weight:s.weight,reps:s.reps,side:s.side||null,done:false
+  }));
+  ex.bodyweight=!!prev.bodyweight;
+  save();renderSetList(ex);
+  showToast('前回のデータをコピーしました');
+}
+
+function getPrevEx(name){
+  const sessions=getSessions().filter(s=>s.date!==getToday())
+    .sort((a,b)=>b.date.localeCompare(a.date));
+  for(const s of sessions){
+    const ex=s.exercises.find(e=>e.name===name);
+    if(ex)return ex;
+  }
+  return null;
+}
+
+/* ============================================================
+   Timer
+   ============================================================ */
+function startTimer(exId){
+  stopTimer();
+  timerRem=90;timerExId=exId;
+  const badge=document.getElementById('tmr-'+exId);
+  if(!badge)return;
+  badge.classList.add('show');
+  updateTimerBadge(badge);
+  timerIv=setInterval(()=>{
+    timerRem--;
+    if(timerRem<=0){stopTimer();badge.classList.remove('show');return}
+    updateTimerBadge(badge);
+  },1000);
+}
+function updateTimerBadge(badge){
+  const m=Math.floor(timerRem/60),s=timerRem%60;
+  badge.innerHTML=`
+    <div class="tb-label">🕐 REST</div>
+    <div class="tb-time">${m}:${String(s).padStart(2,'0')}</div>
+    <button class="tb-btn tb-plus" onclick="timerAdd()">+30s</button>
+    <button class="tb-btn tb-skip" onclick="timerSkip()">SKIP</button>`;
+}
+function timerAdd(){timerRem=Math.min(timerRem+30,600)}
+function timerSkip(){
+  stopTimer();
+  if(timerExId)document.getElementById('tmr-'+timerExId)?.classList.remove('show');
+}
+function stopTimer(){if(timerIv){clearInterval(timerIv);timerIv=null}}
+
+/* ============================================================
+   Note
+   ============================================================ */
+function saveNote(){today.note=document.getElementById('note-input').value;save()}
+
+/* ============================================================
+   Exercise Sheet
+   ============================================================ */
+function openSheet(){
+  document.getElementById('ex-sheet').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('sheet-q').value='';
+  renderSheetList();
+  setTimeout(()=>document.getElementById('sheet-q').focus(),300);
+}
+function closeSheet(){
+  document.getElementById('ex-sheet').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
+
+function renderSheetList(){
+  const q=document.getElementById('sheet-q').value.trim().toLowerCase();
+  const recent=getRecentExNames();
+  const allNames=[...new Set([...recent,...PRESETS])];
+  let html='';
+
+  if(q){
+    const hits=allNames.filter(n=>n.toLowerCase().includes(q));
+    html+=`<div class="sh-sec">検索結果</div><div class="sh-chips">`;
+    hits.forEach(n=>{html+=`<div class="ex-chip" onclick="addExercise('${esc2(n)}')">${esc(n)}</div>`});
+    html+=`</div>`;
+    const exact=hits.some(n=>n.toLowerCase()===q.toLowerCase());
+    if(!exact){
+      const label=document.getElementById('sheet-q').value.trim();
+      html+=`<button class="btn btn-accent" style="width:100%;margin-top:8px"
+        onclick="addExercise('${esc2(label)}')">「${esc(label)}」を追加</button>`;
+    }
+  }else{
+    if(recent.length){
+      html+=`<div class="sh-sec">よく使う種目</div><div class="sh-chips">`;
+      recent.forEach(n=>{html+=`<div class="ex-chip" onclick="addExercise('${esc2(n)}')">${esc(n)}</div>`});
+      html+=`</div>`;
+    }
+    html+=`<div class="sh-sec">プリセット</div><div class="sh-chips">`;
+    PRESETS.forEach(n=>{html+=`<div class="ex-chip" onclick="addExercise('${esc2(n)}')">${esc(n)}</div>`});
+    html+=`</div>`;
+  }
+  document.getElementById('sheet-body').innerHTML=html;
+}
+
+function confirmSheetInput(){
+  const v=document.getElementById('sheet-q').value.trim();
+  if(v)addExercise(v);
+}
+
+function getRecentExNames(){
+  const count={};
+  getSessions().forEach(s=>s.exercises.forEach(ex=>{count[ex.name]=(count[ex.name]||0)+1}));
+  return Object.entries(count).sort((a,b)=>b[1]-a[1]).slice(0,10).map(([n])=>n);
+}
+
+/* ============================================================
+   CALENDAR
+   ============================================================ */
+function calNav(dir){
+  calM+=dir;
+  if(calM<0){calM=11;calY--}
+  if(calM>11){calM=0;calY++}
+  renderCalendar();
+}
+
+function renderCalendar(){
+  document.getElementById('cal-month-label').textContent=`${calY}年${calM+1}月`;
+  const sessions=getSessions();
+  const trained=new Set(sessions.map(s=>s.date));
+  const todayStr=getToday();
+  const firstDow=new Date(calY,calM,1).getDay();
+  const offset=firstDow===0?6:firstDow-1;
+  const daysInMonth=new Date(calY,calM+1,0).getDate();
+  const dows=['月','火','水','木','金','土','日'];
+
+  let html=dows.map(d=>`<div class="cal-dow">${d}</div>`).join('');
+  for(let i=0;i<offset;i++)html+=`<div class="cal-day empty"></div>`;
+  for(let d=1;d<=daysInMonth;d++){
+    const ds=`${calY}-${String(calM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const cls=['cal-day',
+      trained.has(ds)?'trained':'',
+      ds===todayStr?'today':'',
+      ds===calSel?'selected':''
+    ].filter(Boolean).join(' ');
+    html+=`<div class="${cls}" onclick="calClick('${ds}')">${d}</div>`;
+  }
+  document.getElementById('cal-grid').innerHTML=html;
+  if(calSel)renderCalDetail(calSel);
+}
+
+function calClick(ds){
+  calSel=ds;
+  renderCalendar();
+  renderCalDetail(ds);
+}
+
+function renderCalDetail(ds){
+  const el=document.getElementById('cal-detail');
+  const sess=getSessions().find(s=>s.date===ds);
+  if(!sess){
+    el.innerHTML=`<div style="color:var(--t2);font-size:13px;text-align:center;padding:20px">この日の記録なし</div>`;
     return;
   }
-
-  // Gradient fill
-  const grad = ctx.createLinearGradient(0, P.t, 0, P.t + cH);
-  grad.addColorStop(0, 'rgba(230,168,23,.22)');
-  grad.addColorStop(1, 'rgba(230,168,23,0)');
-  ctx.beginPath();
-  ctx.moveTo(xP(0), yP(vals[0]));
-  vals.forEach((v, i) => { if (i > 0) ctx.lineTo(xP(i), yP(v)); });
-  ctx.lineTo(xP(points.length-1), P.t + cH);
-  ctx.lineTo(xP(0), P.t + cH);
-  ctx.closePath();
-  ctx.fillStyle = grad; ctx.fill();
-
-  // Line
-  ctx.beginPath();
-  ctx.strokeStyle = '#e6a817'; ctx.lineWidth = 2.2;
-  ctx.lineJoin = 'round'; ctx.lineCap = 'round';
-  vals.forEach((v, i) => i === 0 ? ctx.moveTo(xP(i), yP(v)) : ctx.lineTo(xP(i), yP(v)));
-  ctx.stroke();
-
-  // Dots
-  vals.forEach((v, i) => {
-    ctx.beginPath();
-    ctx.arc(xP(i), yP(v), 4, 0, Math.PI*2);
-    ctx.fillStyle = '#e6a817'; ctx.fill();
-    ctx.strokeStyle = '#0d1117'; ctx.lineWidth = 2; ctx.stroke();
+  const d=new Date(ds);
+  const dow='日月火水木金土'[d.getDay()];
+  let html=`<div class="cal-det-date">${ds}（${dow}）</div>`;
+  sess.exercises.forEach(ex=>{
+    const rows=ex.sets.map((s,i)=>{
+      const w=ex.bodyweight?'BW':`${s.weight}kg`;
+      const sd=s.side?` [${s.side}]`:'';
+      return `${i+1}: ${w} × ${s.reps}rep${sd}`;
+    }).join('<br>');
+    html+=`<div class="cal-ex-item">
+      <div class="cal-ex-name">${esc(ex.name)}</div>
+      <div class="cal-set-txt">${rows}</div>
+    </div>`;
   });
-
-  // X labels
-  ctx.fillStyle = '#7d8590'; ctx.textAlign = 'center';
-  ctx.font = '10px -apple-system,sans-serif';
-  const step = Math.max(1, Math.floor(points.length / 4));
-  const shown = new Set();
-  for (let i = 0; i < points.length; i += step) {
-    ctx.fillText(points[i].date.slice(5), xP(i), H - P.b + 14);
-    shown.add(i);
-  }
-  const last = points.length - 1;
-  if (!shown.has(last)) ctx.fillText(points[last].date.slice(5), xP(last), H - P.b + 14);
+  if(sess.note)html+=`<div class="card"><div class="sh">メモ</div><div style="font-size:13px;color:var(--t2)">${esc(sess.note)}</div></div>`;
+  el.innerHTML=html;
 }
 
 /* ============================================================
-   MAX Table (Epley)
+   STATS
    ============================================================ */
-function epley(w, r) {
-  if (r <= 1) return w;
-  return Math.round(w * (1 + r / 30) * 10) / 10;
-}
+function renderStats(){
+  const sessions=getSessions();
+  const now=new Date();
 
-function buildMaxTable() {
-  const repCols = [1,2,3,4,5,6,7,8,9,10,12];
-  let html = '<thead><tr><th>重量</th>';
-  repCols.forEach(r => { html += `<th>${r}rep</th>`; });
-  html += '</tr></thead><tbody>';
+  const thisMonth=sessions.filter(s=>{
+    const d=new Date(s.date);
+    return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();
+  });
 
-  for (let w = 20; w <= 250; w += 2.5) {
-    const wId = 'mw' + w.toString().replace('.', '_');
-    const wLabel = w % 1 === 0 ? w.toFixed(0) : w.toFixed(1);
-    html += `<tr id="${wId}"><td>${wLabel}</td>`;
-    repCols.forEach((r, ri) => {
-      html += `<td id="${wId}r${ri}">${epley(w, r).toFixed(1)}</td>`;
+  // streak
+  let streak=0;
+  const check=new Date();check.setHours(0,0,0,0);
+  const dateSet=new Set(sessions.map(s=>s.date));
+  for(;;){
+    if(!dateSet.has(dateStr(check)))break;
+    streak++;check.setDate(check.getDate()-1);
+  }
+
+  // month volume
+  let mVol=0;
+  thisMonth.forEach(s=>s.exercises.forEach(ex=>{
+    if(ex.bodyweight)return;
+    ex.sets.forEach(set=>{mVol+=set.weight*set.reps});
+  }));
+
+  document.getElementById('stats-grid').innerHTML=`
+    <div class="stat-card">
+      <div class="stat-label">総トレーニング</div>
+      <div class="stat-value">${sessions.length}</div>
+      <div class="stat-unit">日</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">今月</div>
+      <div class="stat-value">${thisMonth.length}</div>
+      <div class="stat-unit">日</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">連続記録</div>
+      <div class="stat-value">${streak}</div>
+      <div class="stat-unit">日</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">今月ボリューム</div>
+      <div class="stat-value" style="font-size:18px">${Math.round(mVol).toLocaleString()}</div>
+      <div class="stat-unit">kg</div>
+    </div>
+  `;
+
+  // max weight per exercise
+  const maxMap={};
+  sessions.forEach(s=>s.exercises.forEach(ex=>{
+    if(ex.bodyweight)return;
+    ex.sets.forEach(set=>{
+      if((set.weight||0)>(maxMap[ex.name]||0))maxMap[ex.name]=set.weight;
     });
-    html += '</tr>';
+  }));
+  const maxList=Object.entries(maxMap).sort((a,b)=>b[1]-a[1]).slice(0,10);
+
+  let extra='';
+  if(maxList.length){
+    extra=`<div class="card"><div class="sh">種目別 MAX重量</div>
+      <table class="max-table">
+        ${maxList.map(([n,v])=>`<tr><td>${esc(n)}</td><td class="td-val">${v}kg</td></tr>`).join('')}
+      </table>
+    </div>`;
   }
-  html += '</tbody>';
-  document.getElementById('max-tbl').innerHTML = html;
-}
-
-function updateMaxCalc() {
-  document.querySelectorAll('.hl-row').forEach(r  => r.classList.remove('hl-row'));
-  document.querySelectorAll('.hl-cell').forEach(c => c.classList.remove('hl-cell'));
-
-  const weight = parseFloat(document.getElementById('calc-weight').value);
-  const reps   = parseInt(document.getElementById('calc-reps').value);
-  const resBox  = document.getElementById('max-result');
-  const pctWrap = document.getElementById('pct-wrap');
-
-  if (!weight || weight <= 0) {
-    resBox.style.display = 'none'; pctWrap.style.display = 'none'; return;
-  }
-
-  if (reps) {
-    const max = epley(weight, reps);
-    document.getElementById('max-result-val').textContent = max.toFixed(1);
-    resBox.style.display = 'block';
-
-    // Percentage grid
-    const pcts = [50,55,60,65,70,75,80,85,90,95];
-    pctWrap.innerHTML = pcts.map(p => `
-      <div class="pct-box">
-        <div class="pct-lbl">${p}%</div>
-        <div class="pct-val">${(max * p / 100).toFixed(1)}</div>
-      </div>`).join('');
-    pctWrap.style.display = 'grid';
-
-    // Table highlight
-    const repCols = [1,2,3,4,5,6,7,8,9,10,12];
-    const nearest = Math.min(250, Math.max(20, Math.round(weight / 2.5) * 2.5));
-    const wId = 'mw' + nearest.toString().replace('.', '_');
-    const row = document.getElementById(wId);
-    if (row) {
-      row.classList.add('hl-row');
-      const ri = repCols.indexOf(reps);
-      if (ri >= 0) {
-        const cell = document.getElementById(wId + 'r' + ri);
-        if (cell) cell.classList.add('hl-cell');
-      }
-      setTimeout(() => row.scrollIntoView({ block:'nearest', behavior:'smooth' }), 50);
-    }
-  } else {
-    resBox.style.display = 'none'; pctWrap.style.display = 'none';
-  }
+  document.getElementById('stats-extra').innerHTML=extra;
 }
 
 /* ============================================================
-   Export / Import / Clear
+   Export / Import
    ============================================================ */
-function exportData() {
-  const blob = new Blob(
-    [JSON.stringify({ version:3, exportedAt:new Date().toISOString(), logs:getLogs() }, null, 2)],
-    { type:'application/json' }
-  );
-  const a = Object.assign(document.createElement('a'), {
-    href: URL.createObjectURL(blob),
-    download: 'training-log-' + new Date().toISOString().slice(0,10) + '.json'
-  });
+function exportData(){
+  const blob=new Blob([JSON.stringify(getSessions(),null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`training-note-${getToday()}.json`;
   a.click();
   showToast('📤 エクスポートしました');
 }
-
-function importData(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    try {
-      const raw      = JSON.parse(e.target.result);
-      const incoming = raw.logs || (Array.isArray(raw) ? raw : null);
-      if (!incoming) { showToast('⚠️ 形式エラー'); return; }
-      if (!confirm(`${incoming.length}件を現在のデータに追加しますか？`)) return;
-      const existing   = getLogs();
-      const existingId = new Set(existing.map(l => l.id));
-      const merged     = [
-        ...existing,
-        ...incoming.filter(l => !existingId.has(l.id))
-      ].sort((a,b) => b.date.localeCompare(a.date));
-      setLogs(merged);
-      showToast(`✅ ${incoming.length}件インポート完了`);
-    } catch { showToast('⚠️ 読み込みに失敗しました'); }
+function importData(ev){
+  const file=ev.target.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      if(!Array.isArray(data)){showToast('⚠️ 形式エラー');return}
+      const exist=getSessions();
+      const ids=new Set(exist.map(s=>s.id));
+      const merged=[...exist,...data.filter(s=>!ids.has(s.id))].sort((a,b)=>b.date.localeCompare(a.date));
+      setSessions(merged);
+      today=getTodaySession()||newSession();
+      renderRecord();
+      showToast(`✅ ${data.length}件インポートしました`);
+    }catch{showToast('⚠️ 読み込み失敗')}
   };
-  reader.readAsText(file);
-  event.target.value = '';
+  r.readAsText(file);
+  ev.target.value='';
 }
-
-function clearAllData() {
-  if (!confirm('全データを削除しますか？この操作は取り消せません。')) return;
-  if (!confirm('本当によろしいですか？（最終確認）')) return;
+function clearAll(){
+  if(!confirm('全データを削除しますか？元に戻せません。'))return;
+  if(!confirm('最終確認：本当に削除しますか？'))return;
   localStorage.removeItem(STORE_KEY);
-  showToast('🗑️ 全データを削除しました');
+  today=newSession();renderRecord();
+  showToast('🗑️ 削除しました');
 }
 
 /* ============================================================
    Helpers
    ============================================================ */
-function esc(s) {
-  return String(s)
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function findEx(id){return today.exercises.find(e=>e.id===id)}
+function findSet(exId,setId){return findEx(exId)?.sets.find(s=>s.id===setId)}
+function esc(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+}
+function esc2(s){return String(s).replace(/'/g,"\\'").replace(/"/g,'\\"')}
+
+let toastTmr;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastTmr);
+  toastTmr=setTimeout(()=>t.classList.remove('show'),2600);
 }
 
-let toastTimer;
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
-}
-
-/* ============================================================
-   Boot
-   ============================================================ */
+/* Boot */
 init();
 </script>
 </body>
