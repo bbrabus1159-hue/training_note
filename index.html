@@ -6,7 +6,34 @@
 <title>トレーニングノート</title>
 <style>
 /* ============================================================
-   Variables — Industrial Dark
+<!DOCTYPE html>
+   <html lang="ja">
+   <head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+   <title>トレーニングノート</title>
+   <style>
+   /* ============================================================
+      Variables — Industrial Dark
+      ============================================================ */
+   :root{
+        --bg:#0d1117;--s1:#161b22;--s2:#1c2128;--s3:#21262d;
+        --border:#30363d;
+        --accent:#e6a817;--a10:rgba(230,168,23,.10);--a25:rgba(230,168,23,.25);
+        --text:#e6edf3;--t2:#8b949e;--t3:#484f58;
+        --red:#f85149;--red10:rgba(248,81,73,.10);
+        --green:#3fb950;--green10:rgba(63,185,80,.10);
+        --blue:#58a6ff;--blue10:rgba(88,166,255,.12);
+        --purple:#a371f7;--purple10:rgba(163,113,247,.12);
+        --r:12px;--rsm:8px;
+        --safe-b:env(safe-area-inset-bottom,0px);
+   }
+   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+   body{
+        font-family:-apple-system,'Hiragino Sans',sans-serif;
+        background:var(--bg);color:var(--text);
+        overscroll-behavior:none;-webkit-overflow-scrolling:touch;
+   }Variables — Industrial Dark
    ============================================================ */
 :root{
   --bg:#0d1117;--s1:#161b22;--s2:#1c2128;--s3:#21262d;
@@ -35,7 +62,7 @@ body{
 /* ── Cards ── */
 .card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:13px;margin-bottom:9px}
 
-/* ── Section label ── */
+* ── Section label ── */
 .sh{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px}
 
 /* ── Inputs ── */
