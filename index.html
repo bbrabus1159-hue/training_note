@@ -1,4 +1,83 @@
-<!DOCTYPE html>
+
+/* ============================================================
+   v5 FEATURES - COLLAPSE, MINI HISTORY, COPY PREV, LONG PRESS, BACKUP REMINDER
+   ============================================================ */
+
+/* v5: Collapse state */
+const collapseState = {};
+
+function toggleCollapse(exId) {
+  collapseState[exId] = !collapseState[exId];
+  const block = document.getElementById('exb-' + exId);
+  if (!block) return;
+  block.classList.toggle('collapsed', !!collapseState[exId]);
+  const btn = block.querySelector('.ex-collapse-btn');
+  if (btn) btn.textContent = collapseState[exId] ? '▶' : '▼';
+}
+
+/* v5: Copy previous set */
+function copyPrevSet(exId, setId, prevSet) {
+  const s = findSet(exId, setId);
+  if (!s || !prevSet) return;
+  s.weight = prevSet.weight;
+  s.reps = prevSet.reps;
+  s.side = prevSet.side || null;
+  save();
+  renderSetList(findEx(exId));
+  showToast('↺ 前回値をセットしました');
+}
+
+/* v5: Long press */
+function setupLongPress(el, callback) {
+  let timer = null;
+  let moved = false;
+  function start() {
+    moved = false;
+    el.classList.add('pressing');
+    timer = setTimeout(() => {
+      if (!moved) {
+        el.classList.remove('pressing');
+        callback();
+        showToast('🗑️ 削除しました');
+      }
+    }, 500);
+  }
+  function cancel() {
+    clearTimeout(timer);
+    timer = null;
+    el.classList.remove('pressing');
+  }
+  el.addEventListener('touchstart', start, {passive: true});
+  el.addEventListener('touchmove', () => {moved = true; cancel()}, {passive: true});
+  el.addEventListener('touchend', cancel);
+  el.addEventListener('mousedown', start);
+  el.addEventListener('mouseup', cancel);
+  el.addEventListener('mouseleave', cancel);
+}
+
+/* v5: Backup reminder */
+function checkBackupReminder() {
+  const count = parseInt(localStorage.getItem('tn_launch_count') || '0') + 1;
+  localStorage.setItem('tn_launch_count', String(count));
+  if (count % 20 === 0) {
+    setTimeout(() => showToast('💾 定期バックアップを忘れずに！'), 1500);
+  }
+}
+
+/* v5: Mini history for exercises */
+function getPrevExList(name) {
+  const sessions = getSessions().filter(s => s.date !== getToday())
+    .sort((a, b) => b.date.localeCompare(a.date));
+  const result = [];
+  for (const s of sessions) {
+    const ex = s.exercises.find(e => e.name === name);
+    if (ex) {
+      result.push(ex);
+      if (result.length >= 2) break;
+    }
+  }
+  return result;
+}<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
