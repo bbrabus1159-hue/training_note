@@ -1,171 +1,12 @@
 <!DOCTYPE html>
 <html lang="ja">
-   <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>🏋️ トレーニングノート</title>
-       <style>
-               body {
-                              font-family: system-ui, -apple-system, sans-serif;
-                              background: #0d1117;
-                              color: #e6edf3;
-                              margin: 0;
-                              padding: 20px;
-                              line-height: 1.6;
-               }
-               .success { color: #22c55e; }
-               h1 { color: #e6a817; }
-           </style>
-   </head>
-<body>
-       <h1>🏋️ トレーニングノート v5</h1>
-    <div class="success">✅ HTML構造修正完了</div>div>
-    <p>v5機能復元中...</p>
-    <script>
-    </p></h1>
-</body></title>
-   </head>/* ============================================================
-   v5 FEATURES - COLLAPSE, MINI HISTORY, COPY PREV, LONG PRESS, BACKUP REMINDER
-   ============================================================ */
-
-/* v5: Collapse state */
-const collapseState = {};
-
-function toggleCollapse(exId) {
-  collapseState[exId] = !collapseState[exId];
-  const block = document.getElementById('exb-' + e<!DOCTYPE html>
-<html lang="ja">
-   <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
-      <title>トレーニングノート</title>
-   <style>
-   /* ============================================================
-      Variables — Industrial Dark
-      ============================================================ */
-   :root{
-        --bg:#0d1117;--s1:#161b22;--s2:#1c2128;--s3:#21262d;
-        --border:#30363d;
-        --accent:#e6a817;--a10:rgba(230,168,23,.10);--a25:rgba(230,168,23,.25);
-        --text:#e6edf3;--t2:#8b949e;--t3:#484f58;
-        --red:#f85149;--red10:rgba(248,81,73,.10);
-        --green:#3fb950;--green10:rgba(63,185,80,.10);
-        --blue:#58a6ff;--blue10:rgba(88,166,255,.12);
-        --purple:#a371f7;--purple10:rgba(163,113,247,.12);
-        --r:12px;--rsm:8px;
-        --safe-b:env(safe-area-inset-bottom,0px);
-   }
-   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-   body{
-        font-family:-apple-system,'Hiragino Sans',sans-serif;
-        background:var(--bg);color:var(--text);
-        overscroll-behavior:none;-webkit-overflow-scrolling:touch;
-   }</title>
-   </head>xId);
-  if (!block) return;
-  block.classList.toggle('collapsed', !!collapseState[exId]);
-  const btn = block.querySelector('.ex-collapse-btn');
-  if (btn) btn.textContent = collapseState[exId] ? '▶' : '▼';
-}
-
-/* v5: Copy previous set */
-function copyPrevSet(exId, setId, prevSet) {
-  const s = findSet(exId, setId);
-  if (!s || !prevSet) return;
-  s.weight = prevSet.weight;
-  s.reps = prevSet.reps;
-  s.side = prevSet.side || null;
-  save();
-  renderSetList(findEx(exId));
-  showToast('↺ 前回値をセットしました');
-}
-
-/* v5: Long press */
-function setupLongPress(el, callback) {
-  let timer = null;
-  let moved = false;
-  function start() {
-    moved = false;
-    el.classList.add('pressing');
-    timer = setTimeout(() => {
-      if (!moved) {
-        el.classList.remove('pressing');
-        callback();
-        showToast('🗑️ 削除しました');
-      }
-    }, 500);
-  }
-  function cancel() {
-    clearTimeout(timer);
-    timer = null;
-    el.classList.remove('pressing');
-  }
-  el.addEventListener('touchstart', start, {passive: true});
-  el.addEventListener('touchmove', () => {moved = true; cancel()}, {passive: true});
-  el.addEventListener('touchend', cancel);
-  el.addEventListener('mousedown', start);
-  el.addEventListener('mouseup', cancel);
-  el.addEventListener('mouseleave', cancel);
-}
-
-/* v5: Backup reminder */
-function checkBackupReminder() {
-  const count = parseInt(localStorage.getItem('tn_launch_count') || '0') + 1;
-  localStorage.setItem('tn_launch_count', String(count));
-  if (count % 20 === 0) {
-    setTimeout(() => showToast('💾 定期バックアップを忘れずに！'), 1500);
-  }
-}
-
-/* v5: Mini history for exercises */
-function getPrevExList(name) {
-  const sessions = getSessions().filter(s => s.date !== getToday())
-    .sort((a, b) => b.date.localeCompare(a.date));
-  const result = [];
-  for (const s of sessions) {
-    const ex = s.exercises.find(e => e.name === name);
-    if (ex) {
-      result.push(ex);
-      if (result.length >= 2) break;
-    }
-  }
-  return result;
-}<!DOCTYPE html>
-<html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
 <title>トレーニングノート</title>
 <style>
 /* ============================================================
-<!DOCTYPE html>
-   <html lang="ja">
-   <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
-   <title>トレーニングノート</title>
-   <style>
-   /* ============================================================
-      Variables — Industrial Dark
-      ============================================================ */
-   :root{
-        --bg:#0d1117;--s1:#161b22;--s2:#1c2128;--s3:#21262d;
-        --border:#30363d;
-        --accent:#e6a817;--a10:rgba(230,168,23,.10);--a25:rgba(230,168,23,.25);
-        --text:#e6edf3;--t2:#8b949e;--t3:#484f58;
-        --red:#f85149;--red10:rgba(248,81,73,.10);
-        --green:#3fb950;--green10:rgba(63,185,80,.10);
-        --blue:#58a6ff;--blue10:rgba(88,166,255,.12);
-        --purple:#a371f7;--purple10:rgba(163,113,247,.12);
-        --r:12px;--rsm:8px;
-        --safe-b:env(safe-area-inset-bottom,0px);
-   }
-   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-   body{
-        font-family:-apple-system,'Hiragino Sans',sans-serif;
-        background:var(--bg);color:var(--text);
-        overscroll-behavior:none;-webkit-overflow-scrolling:touch;
-   }Variables — Industrial Dark
+   Variables — Industrial Dark
    ============================================================ */
 :root{
   --bg:#0d1117;--s1:#161b22;--s2:#1c2128;--s3:#21262d;
@@ -194,7 +35,7 @@ body{
 /* ── Cards ── */
 .card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:13px;margin-bottom:9px}
 
-* ── Section label ── */
+/* ── Section label ── */
 .sh{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px}
 
 /* ── Inputs ── */
