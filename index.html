@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
 <title>トレーニングノート</title>
 <style>
-/* ============================================================
-   Variables — Industrial Dark
-   ============================================================ */
 :root{
   --bg:#0d1117;--s1:#161b22;--s2:#1c2128;--s3:#21262d;
   --border:#30363d;
@@ -21,33 +18,15 @@
   --safe-b:env(safe-area-inset-bottom,0px);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{
-  font-family:-apple-system,'Hiragino Sans',sans-serif;
-  background:var(--bg);color:var(--text);
-  overscroll-behavior:none;-webkit-overflow-scrolling:touch;
-}
-
-/* ── Pages ── */
+body{font-family:-apple-system,'Hiragino Sans',sans-serif;background:var(--bg);color:var(--text);overscroll-behavior:none;-webkit-overflow-scrolling:touch;}
 .page{display:none;padding:14px 13px;padding-bottom:calc(82px + var(--safe-b));min-height:100svh}
 .page.active{display:block}
 .page-title{font-size:18px;font-weight:900;margin-bottom:14px;letter-spacing:-.5px;display:flex;align-items:center;gap:6px}
-
-/* ── Cards ── */
 .card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:13px;margin-bottom:9px}
-
-/* ── Section label ── */
 .sh{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px}
-
-/* ── Inputs ── */
-input,select,textarea{
-  background:var(--s2);border:1px solid var(--border);border-radius:var(--rsm);
-  color:var(--text);font-family:inherit;font-size:14px;outline:none;
-  transition:border-color .15s;-webkit-appearance:none;appearance:none;
-}
+input,select,textarea{background:var(--s2);border:1px solid var(--border);border-radius:var(--rsm);color:var(--text);font-family:inherit;font-size:14px;outline:none;transition:border-color .15s;-webkit-appearance:none;appearance:none;}
 input:focus,select:focus,textarea:focus{border-color:var(--accent)}
 textarea{width:100%;padding:9px 11px;resize:none;height:52px}
-
-/* ── Buttons ── */
 .btn{border:none;border-radius:var(--rsm);cursor:pointer;font-family:inherit;font-weight:600;transition:opacity .15s,transform .1s}
 .btn:active{transform:scale(.96);opacity:.8}
 .btn-accent{background:var(--accent);color:#000;font-size:14px;padding:10px 16px}
@@ -55,71 +34,67 @@ textarea{width:100%;padding:9px 11px;resize:none;height:52px}
 .btn-icon{background:var(--s2);border:1px solid var(--border);color:var(--t2);width:32px;height:32px;border-radius:var(--rsm);display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;flex-shrink:0}
 .btn-red{background:var(--red10);border:1px solid var(--red);color:var(--red);font-size:13px;padding:8px 14px}
 
-/* ============================================================
-   WEEK SUMMARY
-   ============================================================ */
+/* WEEK SUMMARY */
 .week-summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
 .ws-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px}
 .ws-label{font-size:10px;color:var(--t2);letter-spacing:.5px;margin-bottom:4px}
 .ws-value{font-size:22px;font-weight:900;color:var(--accent);line-height:1.1}
 .ws-sub{font-size:11px;color:var(--t2);margin-top:3px}
 
-/* ============================================================
-   EXERCISE BLOCK
-   ============================================================ */
+/* EXERCISE BLOCK */
 .ex-block{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);margin-bottom:9px;overflow:hidden}
-.ex-header{display:flex;align-items:center;padding:11px 13px;gap:8px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:6px}
+.ex-header{display:flex;align-items:center;padding:11px 13px;gap:6px;border-bottom:1px solid var(--border);flex-wrap:wrap}
 .ex-name{font-size:15px;font-weight:700;flex:1;min-width:80px}
-.ex-toggles{display:flex;gap:8px;align-items:center}
-
-/* Toggle */
+.ex-toggles{display:flex;gap:6px;align-items:center}
+/* v5 collapse */
+.ex-collapse-btn{background:none;border:none;color:var(--t2);cursor:pointer;font-size:15px;padding:2px 4px;line-height:1;flex-shrink:0;transition:transform .2s}
+.ex-block.collapsed .ex-body{display:none}
+.ex-block.collapsed .ex-header{border-bottom:none}
+.ex-block.collapsed .ex-collapse-btn{transform:rotate(-90deg)}
+.ex-collapsed-summary{font-size:11px;color:var(--t2)}
+/* toggle */
 .tgl-wrap{display:flex;align-items:center;gap:4px;cursor:pointer}
 .tgl-lbl{font-size:11px;color:var(--t2)}
 .tgl{width:34px;height:18px;background:var(--s3);border-radius:9px;border:1px solid var(--border);position:relative;transition:background .2s;flex-shrink:0}
 .tgl.on{background:var(--accent);border-color:var(--accent)}
 .tgl::after{content:'';position:absolute;width:12px;height:12px;background:#fff;border-radius:50%;top:2px;left:2px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.4)}
 .tgl.on::after{transform:translateX(16px)}
-
 .ex-body{padding:10px 13px}
 
-/* prev badge */
-.prev-badge{display:flex;align-items:center;gap:6px;margin-bottom:10px;background:var(--a10);border-radius:var(--rsm);padding:7px 10px}
-.prev-label{font-size:10px;color:var(--t2);flex-shrink:0}
-.prev-data{font-size:11px;color:var(--accent);flex:1;line-height:1.5}
-.prev-copy{font-size:11px;color:var(--accent);background:none;border:none;cursor:pointer;padding:0;font-weight:600;flex-shrink:0}
+/* v5 mini history */
+.mini-hist{margin-bottom:10px;background:var(--a10);border-radius:var(--rsm);padding:8px 10px}
+.mh-row{display:flex;gap:6px;align-items:flex-start;margin-bottom:4px}
+.mh-row:last-child{margin-bottom:0}
+.mh-label{font-size:10px;color:var(--t3);width:36px;flex-shrink:0;padding-top:1px;font-weight:700;letter-spacing:.5px}
+.mh-data{font-size:11px;color:var(--t2);line-height:1.7;flex:1}
+.mh-copy{font-size:11px;color:var(--accent);background:none;border:none;cursor:pointer;padding:0;font-weight:700;flex-shrink:0}
 
 /* set row */
 .set-list{margin-bottom:8px}
 .set-row{display:flex;align-items:center;gap:5px;margin-bottom:6px;flex-wrap:nowrap}
 .set-num{font-size:11px;color:var(--t3);width:16px;text-align:center;flex-shrink:0}
-
 /* stepper */
 .stepper{display:flex;align-items:center;border:1px solid var(--border);border-radius:var(--rsm);overflow:hidden;flex-shrink:0}
 .sp-btn{background:var(--s2);border:none;color:var(--t2);width:30px;height:34px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background .1s}
 .sp-btn:active{background:var(--s3)}
 .sp-val{background:var(--bg);color:var(--text);font-size:13px;font-weight:600;width:46px;text-align:center;border:none;outline:none;height:34px;padding:0;font-family:inherit;font-variant-numeric:tabular-nums}
 .sp-unit{font-size:10px;color:var(--t3);padding:0 4px 0 0;background:var(--bg);height:34px;display:flex;align-items:center}
-
-/* bodyweight tag */
 .bw-tag{font-size:12px;font-weight:700;color:var(--accent);background:var(--a10);border:1px solid var(--a25);border-radius:var(--rsm);padding:0 10px;height:34px;display:flex;align-items:center;flex-shrink:0}
-
-/* side selector */
 .side-sel{display:flex;gap:3px;flex-shrink:0}
 .side-btn{font-size:11px;font-weight:700;padding:0 8px;height:28px;border-radius:6px;background:var(--s2);border:1px solid var(--border);color:var(--t2);cursor:pointer;transition:all .15s}
 .side-btn.L{background:var(--blue10);border-color:var(--blue);color:var(--blue)}
 .side-btn.R{background:var(--purple10);border-color:var(--purple);color:var(--purple)}
-
-/* done check */
 .set-done{width:28px;height:28px;border-radius:6px;background:var(--s2);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;transition:all .15s}
 .set-done.checked{background:var(--green10);border-color:var(--green);color:var(--green)}
+/* v5 copy set button */
+.set-copy-btn{background:none;border:none;color:var(--t3);cursor:pointer;font-size:14px;padding:2px 3px;flex-shrink:0;line-height:1;transition:color .15s}
+.set-copy-btn:active{color:var(--accent)}
+/* v5 long-press delete */
+.set-del{background:none;border:none;color:var(--t3);cursor:pointer;font-size:16px;padding:2px;flex-shrink:0;line-height:1;transition:color .15s,transform .15s;user-select:none}
+.set-del.pressing{color:var(--red);transform:scale(1.25)}
 
-.set-del{background:none;border:none;color:var(--t3);cursor:pointer;font-size:16px;padding:2px;flex-shrink:0;line-height:1}
-
-/* add set */
 .add-set-btn{width:100%;background:var(--s2);border:1px dashed var(--border);border-radius:var(--rsm);color:var(--t2);font-size:13px;padding:8px;cursor:pointer;font-family:inherit;transition:border-color .15s,color .15s}
 .add-set-btn:hover{border-color:var(--accent);color:var(--accent)}
-
-/* timer badge */
 .timer-badge{display:none;align-items:center;gap:6px;margin-top:8px;background:var(--s3);border-radius:var(--rsm);padding:6px 10px}
 .timer-badge.show{display:flex}
 .tb-label{font-size:11px;color:var(--t2)}
@@ -127,36 +102,20 @@ textarea{width:100%;padding:9px 11px;resize:none;height:52px}
 .tb-btn{font-size:11px;background:none;border:none;cursor:pointer;padding:2px 4px;border-radius:4px}
 .tb-plus{color:var(--accent)}
 .tb-skip{color:var(--t2)}
-
-/* add ex button */
 .add-ex-btn{width:100%;background:var(--s1);border:1px dashed var(--border);border-radius:var(--r);color:var(--t2);font-size:14px;font-weight:600;padding:13px;cursor:pointer;font-family:inherit;transition:border-color .15s,color .15s;margin-bottom:9px}
 .add-ex-btn:hover{border-color:var(--accent);color:var(--accent)}
 
-/* ============================================================
-   BOTTOM NAV
-   ============================================================ */
-.bottom-nav{
-  position:fixed;bottom:0;left:0;right:0;
-  background:var(--s1);border-top:1px solid var(--border);
-  display:grid;grid-template-columns:repeat(4,1fr);
-  padding-bottom:var(--safe-b);z-index:100;
-}
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--s1);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(4,1fr);padding-bottom:var(--safe-b);z-index:100;}
 .nav-btn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 0;background:none;border:none;cursor:pointer;color:var(--t3);transition:color .15s}
 .nav-btn.active{color:var(--accent)}
 .nav-icon{font-size:20px;line-height:1}
 .nav-label{font-size:9px;font-weight:600;letter-spacing:.3px}
 
-/* ============================================================
-   SHEET (種目選択)
-   ============================================================ */
+/* SHEET */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:none;opacity:0;transition:opacity .25s}
 .overlay.open{display:block;opacity:1}
-.sheet{
-  position:fixed;bottom:0;left:0;right:0;
-  background:var(--s1);border-radius:18px 18px 0 0;border-top:1px solid var(--border);
-  z-index:201;transform:translateY(100%);transition:transform .3s cubic-bezier(.32,.72,0,1);
-  max-height:80svh;display:flex;flex-direction:column;padding-bottom:var(--safe-b);
-}
+.sheet{position:fixed;bottom:0;left:0;right:0;background:var(--s1);border-radius:18px 18px 0 0;border-top:1px solid var(--border);z-index:201;transform:translateY(100%);transition:transform .3s cubic-bezier(.32,.72,0,1);max-height:80svh;display:flex;flex-direction:column;padding-bottom:var(--safe-b);}
 .sheet.open{transform:translateY(0)}
 .sheet-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:10px auto 12px;flex-shrink:0}
 .sheet-title{font-size:16px;font-weight:700;padding:0 16px 12px;flex-shrink:0;border-bottom:1px solid var(--border)}
@@ -165,12 +124,10 @@ textarea{width:100%;padding:9px 11px;resize:none;height:52px}
 .sheet-body{overflow-y:auto;padding:8px 16px 16px;flex:1;-webkit-overflow-scrolling:touch}
 .sh-sec{font-size:10px;color:var(--t3);letter-spacing:1px;margin:10px 0 6px;font-weight:700}
 .sh-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
-.ex-chip{background:var(--s2);border:1px solid var(--border);border-radius:var(--rsm);color:var(--text);font-size:13px;padding:7px 12px;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.ex-chip{background:var(--s2);border:1px solid var(--border);border-radius:var(--rsm);color:var(--text);font-size:13px;padding:7px 12px;cursor:pointer;transition:all .15s}
 .ex-chip:active{background:var(--a10);border-color:var(--accent);color:var(--accent)}
 
-/* ============================================================
-   CALENDAR
-   ============================================================ */
+/* CALENDAR */
 .cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .cal-month{font-size:17px;font-weight:700}
 .cal-nav-btn{background:var(--s2);border:1px solid var(--border);color:var(--t2);width:34px;height:34px;border-radius:var(--rsm);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
@@ -183,51 +140,70 @@ textarea{width:100%;padding:9px 11px;resize:none;height:52px}
 .cal-day.today.trained{background:var(--a25)}
 .cal-day.selected{background:var(--s2);border-color:var(--border)}
 .cal-day:not(.empty):not(.trained):hover{background:var(--s2)}
-
 .cal-detail{margin-top:14px}
-.cal-det-date{font-size:13px;color:var(--t2);margin-bottom:8px;font-weight:600}
+.cal-det-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.cal-det-date{font-size:13px;color:var(--t2);font-weight:600}
+.cal-share-btn{font-size:11px;background:var(--a10);border:1px solid var(--a25);color:var(--accent);border-radius:6px;padding:4px 10px;cursor:pointer;font-family:inherit;font-weight:700}
 .cal-ex-item{background:var(--s1);border:1px solid var(--border);border-radius:var(--rsm);padding:10px 12px;margin-bottom:6px}
 .cal-ex-name{font-size:14px;font-weight:600;margin-bottom:4px}
 .cal-set-txt{font-size:12px;color:var(--t2);line-height:1.9}
 
-/* ============================================================
-   STATS
-   ============================================================ */
+/* STATS */
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
 .stat-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:13px}
 .stat-label{font-size:10px;color:var(--t2);letter-spacing:.5px;margin-bottom:6px}
 .stat-value{font-size:26px;font-weight:900;color:var(--accent);line-height:1}
 .stat-unit{font-size:11px;color:var(--t2);margin-top:3px}
-
 .max-table{width:100%;border-collapse:collapse}
 .max-table tr{border-bottom:1px solid var(--border)}
 .max-table tr:last-child{border-bottom:none}
 .max-table td{padding:8px 4px;font-size:13px}
 .max-table .td-val{text-align:right;font-weight:700;color:var(--accent);font-size:14px}
 
-/* ============================================================
-   SETTINGS
-   ============================================================ */
+/* SETTINGS */
+.backup-banner{background:var(--a10);border:1px solid var(--a25);border-radius:var(--r);padding:13px;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.backup-banner-icon{font-size:22px;flex-shrink:0}
+.backup-banner-text{flex:1}
+.backup-banner-title{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:2px}
+.backup-banner-sub{font-size:11px;color:var(--t2)}
 .danger-zone{border:1px solid var(--red);border-radius:var(--r);padding:13px;margin-top:12px}
 .danger-title{font-size:12px;color:var(--red);font-weight:700;margin-bottom:10px;letter-spacing:.5px}
 
-/* ============================================================
-   TOAST
-   ============================================================ */
-#toast{
-  position:fixed;bottom:calc(82px + var(--safe-b) + 12px);left:50%;
-  transform:translateX(-50%) translateY(8px);
-  background:var(--s3);border:1px solid var(--border);border-radius:20px;
-  color:var(--text);font-size:13px;padding:8px 16px;
-  opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;z-index:400;
-}
+/* TOAST */
+#toast{position:fixed;bottom:calc(82px + var(--safe-b) + 12px);left:50%;transform:translateX(-50%) translateY(8px);background:var(--s3);border:1px solid var(--border);border-radius:20px;color:var(--text);font-size:13px;padding:8px 16px;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;z-index:400;}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* v5 SHARE MODAL */
+.share-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:300;display:none;align-items:center;justify-content:center;padding:20px}
+.share-overlay.open{display:flex}
+.share-modal{background:var(--s1);border:1px solid var(--border);border-radius:16px;width:100%;max-width:400px;max-height:85svh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.share-modal-inner{padding:16px}
+.share-close-row{display:flex;justify-content:flex-end;margin-bottom:8px}
+.share-close-btn{background:var(--s2);border:1px solid var(--border);color:var(--t2);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+/* Share Card */
+.share-card{background:#111318;border:1px solid #2a2f38;border-radius:12px;padding:16px;margin-bottom:12px}
+.share-card-date{font-size:10px;color:var(--t3);font-weight:600;letter-spacing:1.5px;margin-bottom:4px}
+.share-card-title{font-size:20px;font-weight:900;color:var(--text);letter-spacing:-.5px}
+.share-card-vol{font-size:11px;color:var(--t2);margin-top:4px}
+.share-divider{height:1px;background:#2a2f38;margin:12px 0}
+.share-ex-block{margin-bottom:12px}
+.share-ex-block:last-child{margin-bottom:0}
+.share-ex-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.share-ex-title{font-size:13px;font-weight:700;color:var(--text)}
+.share-ex-rm{font-size:11px;color:var(--t2)}
+.share-set-row{display:flex;gap:4px;font-size:12px;margin-bottom:3px;align-items:center}
+.share-set-num{color:var(--t3);width:18px;flex-shrink:0;font-size:11px}
+.share-set-detail{color:var(--t2);flex:1}
+.share-set-pr{font-size:10px;font-weight:700;background:var(--accent);color:#000;border-radius:3px;padding:1px 5px}
+.share-footer{font-size:10px;color:var(--t3);text-align:right;margin-top:10px;font-weight:600;letter-spacing:.5px}
+.share-actions{display:flex;gap:8px}
+.share-actions .btn{flex:1;text-align:center;padding:10px}
 </style>
 </head>
 <body>
 <div id="app">
 
-  <!-- ======== PAGE: 記録 ======== -->
+  <!-- PAGE: 記録 -->
   <div id="page-record" class="page active">
     <div class="page-title">🏋️ 記録</div>
     <div class="week-summary" id="week-summary"></div>
@@ -240,7 +216,7 @@ textarea{width:100%;padding:9px 11px;resize:none;height:52px}
     </div>
   </div>
 
-  <!-- ======== PAGE: カレンダー ======== -->
+  <!-- PAGE: カレンダー -->
   <div id="page-calendar" class="page">
     <div class="page-title">📅 カレンダー</div>
     <div class="card">
@@ -254,21 +230,28 @@ textarea{width:100%;padding:9px 11px;resize:none;height:52px}
     <div class="cal-detail" id="cal-detail"></div>
   </div>
 
-  <!-- ======== PAGE: 統計 ======== -->
+  <!-- PAGE: 統計 -->
   <div id="page-stats" class="page">
     <div class="page-title">📊 統計</div>
     <div class="stats-grid" id="stats-grid"></div>
     <div id="stats-extra"></div>
   </div>
 
-  <!-- ======== PAGE: 設定 ======== -->
+  <!-- PAGE: 設定 -->
   <div id="page-settings" class="page">
     <div class="page-title">⚙️ 設定</div>
+    <div class="backup-banner">
+      <div class="backup-banner-icon">💾</div>
+      <div class="backup-banner-text">
+        <div class="backup-banner-title">定期バックアップを推奨</div>
+        <div class="backup-banner-sub">ブラウザのキャッシュ削除でデータが消えます</div>
+      </div>
+    </div>
     <div class="card">
       <div class="sh">データ管理</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn btn-ghost" onclick="exportData()">📤 エクスポート</button>
-        <button class="btn btn-ghost" onclick="document.getElementById('import-file').click()">📥 インポート</button>
+        <button class="btn btn-accent" onclick="exportData()" style="flex:1">📤 バックアップ</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('import-file').click()" style="flex:1">📥 復元</button>
       </div>
       <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
     </div>
@@ -278,7 +261,7 @@ textarea{width:100%;padding:9px 11px;resize:none;height:52px}
     </div>
   </div>
 
-  <!-- ======== BOTTOM NAV ======== -->
+  <!-- BOTTOM NAV -->
   <nav class="bottom-nav">
     <button class="nav-btn active" data-tab="record" onclick="switchTab('record')">
       <div class="nav-icon">🏋️</div><div class="nav-label">記録</div>
@@ -294,7 +277,7 @@ textarea{width:100%;padding:9px 11px;resize:none;height:52px}
     </button>
   </nav>
 
-  <!-- ======== EXERCISE SHEET ======== -->
+  <!-- EXERCISE SHEET -->
   <div id="overlay" class="overlay" onclick="closeSheet()"></div>
   <div id="ex-sheet" class="sheet">
     <div class="sheet-handle"></div>
@@ -307,19 +290,29 @@ textarea{width:100%;padding:9px 11px;resize:none;height:52px}
     <div class="sheet-body" id="sheet-body"></div>
   </div>
 
-  <!-- TOAST -->
+  <!-- v5: SHARE MODAL -->
+  <div id="share-overlay" class="share-overlay" onclick="if(event.target===this)closeShare()">
+    <div class="share-modal">
+      <div class="share-modal-inner">
+        <div class="share-close-row">
+          <button class="share-close-btn" onclick="closeShare()">✕</button>
+        </div>
+        <div id="share-card-wrap"></div>
+        <div class="share-actions">
+          <button class="btn btn-ghost" onclick="copyShareText()">📋 テキストコピー</button>
+          <button class="btn btn-accent" onclick="showToast('📸 スクショ → シェア！')">📸 シェア</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="toast"></div>
 </div>
 
 <script>
-/* ============================================================
-   Storage
-   ============================================================ */
-const STORE_KEY = 'tn_sessions';
-// v3など旧バージョンのキー候補
-const LEGACY_KEYS = ['tn_logs','training-logs','tl_logs','trainingLogs','training_note','workout_logs','tn_v3'];
-
-const PRESETS = [
+const STORE_KEY='tn_sessions';
+const LEGACY_KEYS=['tn_logs','training-logs','tl_logs','trainingLogs','training_note','workout_logs','tn_v3'];
+const PRESETS=[
   'ベンチプレス','インクラインDBプレス','チェストフライ','ディップス','腕立て伏せ',
   'スクワット','レッグプレス','レッグカール','レッグエクステンション','ブルガリアンSQ',
   'デッドリフト','ルーマニアンDL',
@@ -331,84 +324,61 @@ const PRESETS = [
   'ランニング','ウォーキング','自転車'
 ];
 
-function getSessions(){
-  try{return JSON.parse(localStorage.getItem(STORE_KEY)||'[]')}catch{return[]}
-}
+function getSessions(){try{return JSON.parse(localStorage.getItem(STORE_KEY)||'[]')}catch{return[]}}
 function setSessions(s){localStorage.setItem(STORE_KEY,JSON.stringify(s))}
-
 function getToday(){return new Date().toISOString().split('T')[0]}
 function dateStr(d){return d.toISOString().split('T')[0]}
-
 function getTodaySession(){return getSessions().find(s=>s.date===getToday())||null}
-function upsertSession(sess){
-  const all=getSessions().filter(s=>s.date!==sess.date);
-  all.push(sess);setSessions(all);
-}
+function upsertSession(sess){const all=getSessions().filter(s=>s.date!==sess.date);all.push(sess);setSessions(all);}
 
-/* ============================================================
-   Migration — 旧キーからデータを引き継ぐ
-   ============================================================ */
 function migrateIfNeeded(){
   if(localStorage.getItem(STORE_KEY))return;
   for(const key of LEGACY_KEYS){
-    const raw=localStorage.getItem(key);
-    if(!raw)continue;
+    const raw=localStorage.getItem(key);if(!raw)continue;
     try{
       const data=JSON.parse(raw);
       if(!Array.isArray(data)||!data.length)continue;
-      // フィールドを補完して新形式で保存
       const migrated=data.map(s=>({
         id:s.id||('sess_'+Math.random().toString(36).slice(2)),
         date:s.date||getToday(),
         exercises:(s.exercises||[]).map(ex=>({
           id:ex.id||('ex_'+Math.random().toString(36).slice(2)),
-          name:ex.name||'',
-          bodyweight:!!ex.bodyweight,
-          sideBySide:!!ex.sideBySide,
+          name:ex.name||'',bodyweight:!!ex.bodyweight,sideBySide:!!ex.sideBySide,
           sets:(ex.sets||[]).map(set=>({
             id:set.id||('set_'+Math.random().toString(36).slice(2)),
-            weight:set.weight||0,reps:set.reps||0,
-            side:set.side||null,done:!!set.done
+            weight:set.weight||0,reps:set.reps||0,side:set.side||null,done:!!set.done
           }))
-        })),
-        note:s.note||''
+        })),note:s.note||''
       }));
       localStorage.setItem(STORE_KEY,JSON.stringify(migrated));
-      showToast('✅ 旧データを引き継ぎました');
-      return;
+      showToast('✅ 旧データを引き継ぎました');return;
     }catch{}
   }
 }
 
-/* ============================================================
-   App State
-   ============================================================ */
-let today = null;          // 今日のセッション
-let calY = new Date().getFullYear();
-let calM = new Date().getMonth();
-let calSel = null;         // カレンダー選択日
-let timerIv = null;
-let timerRem = 90;
-let timerExId = null;
+/* State */
+let today=null,calY=new Date().getFullYear(),calM=new Date().getMonth(),calSel=null;
+let timerIv=null,timerRem=90,timerExId=null;
+let collapseState={};
+let shareTargetDate=null;
+let lpTimer=null;
 
-/* ============================================================
-   Boot
-   ============================================================ */
 function init(){
   migrateIfNeeded();
-  today = getTodaySession() || newSession();
+  checkBackupReminder();
+  today=getTodaySession()||newSession();
   renderRecord();
 }
-
-function newSession(){
-  return{id:'sess_'+Date.now(),date:getToday(),exercises:[],note:''};
-}
-
+function newSession(){return{id:'sess_'+Date.now(),date:getToday(),exercises:[],note:''}}
 function save(){upsertSession(today)}
 
-/* ============================================================
-   Tab
-   ============================================================ */
+/* v5: backup reminder */
+function checkBackupReminder(){
+  const c=parseInt(localStorage.getItem('tn_launch_count')||'0')+1;
+  localStorage.setItem('tn_launch_count',String(c));
+  if(c%20===0)setTimeout(()=>showToast('💾 定期バックアップを忘れずに！'),1500);
+}
+
 function switchTab(tab){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+tab).classList.add('active');
@@ -417,76 +387,67 @@ function switchTab(tab){
   if(tab==='stats')renderStats();
 }
 
-/* ============================================================
-   RECORD PAGE
-   ============================================================ */
-function renderRecord(){
-  renderWeekSummary();
-  renderTodayLabel();
-  renderExList();
-  document.getElementById('note-input').value=today.note||'';
-}
+/* Record */
+function renderRecord(){renderWeekSummary();renderTodayLabel();renderExList();document.getElementById('note-input').value=today.note||'';}
 
-/* Week Summary */
 function renderWeekSummary(){
-  const sessions=getSessions();
-  const now=new Date();
-  const dow=now.getDay();
-  const weekStart=new Date(now);
-  weekStart.setDate(now.getDate()-(dow===0?6:dow-1));
-  weekStart.setHours(0,0,0,0);
-
-  const weekCount=sessions.filter(s=>{
-    const d=new Date(s.date);return d>=weekStart&&d<=now;
-  }).length;
-
-  const past=sessions.filter(s=>s.date!==getToday())
-    .sort((a,b)=>b.date.localeCompare(a.date));
+  const sessions=getSessions(),now=new Date(),dow=now.getDay();
+  const weekStart=new Date(now);weekStart.setDate(now.getDate()-(dow===0?6:dow-1));weekStart.setHours(0,0,0,0);
+  const weekCount=sessions.filter(s=>{const d=new Date(s.date);return d>=weekStart&&d<=now;}).length;
+  const past=sessions.filter(s=>s.date!==getToday()).sort((a,b)=>b.date.localeCompare(a.date));
   let lastStr='記録なし';
-  if(past[0]){
-    const diff=Math.round((now-new Date(past[0].date))/86400000);
-    lastStr=diff===0?'昨日':diff===1?'昨日':diff+'日前';
-  }
-
+  if(past[0]){const diff=Math.round((now-new Date(past[0].date))/86400000);lastStr=diff+'日前';}
   const days=['日','月','火','水','木','金','土'];
   document.getElementById('week-summary').innerHTML=`
-    <div class="ws-card">
-      <div class="ws-label">TODAY</div>
-      <div class="ws-value" style="font-size:17px;color:var(--text)">
-        ${now.getMonth()+1}/${now.getDate()}<span style="font-size:13px;color:var(--t2);margin-left:4px">（${days[dow]}）</span>
-      </div>
-      <div class="ws-sub">前回 ${lastStr}</div>
-    </div>
-    <div class="ws-card">
-      <div class="ws-label">今週のトレーニング</div>
-      <div class="ws-value">${weekCount}</div>
-      <div class="ws-sub">回</div>
-    </div>
-  `;
+    <div class="ws-card"><div class="ws-label">TODAY</div>
+      <div class="ws-value" style="font-size:17px;color:var(--text)">${now.getMonth()+1}/${now.getDate()}<span style="font-size:13px;color:var(--t2);margin-left:4px">（${days[dow]}）</span></div>
+      <div class="ws-sub">前回 ${lastStr}</div></div>
+    <div class="ws-card"><div class="ws-label">今週のトレーニング</div>
+      <div class="ws-value">${weekCount}</div><div class="ws-sub">回</div></div>`;
+}
+function renderTodayLabel(){document.getElementById('today-label').textContent=today.date+' の記録';}
+
+/* v5: mini history — 直近2回 */
+function getPrevExList(name){
+  const sessions=getSessions().filter(s=>s.date!==getToday()).sort((a,b)=>b.date.localeCompare(a.date));
+  const result=[];
+  for(const s of sessions){const ex=s.exercises.find(e=>e.name===name);if(ex){result.push(ex);if(result.length>=2)break;}}
+  return result;
 }
 
-function renderTodayLabel(){
-  document.getElementById('today-label').textContent=today.date+' の記録';
+function buildMiniHistHtml(ex){
+  const prevList=getPrevExList(ex.name);
+  if(!prevList.length)return'';
+  const labels=['前回','その前'];
+  let html='<div class="mini-hist">';
+  prevList.forEach((prev,idx)=>{
+    const rows=prev.sets.map(s=>{
+      const w=prev.bodyweight?'BW':`${s.weight}kg`;
+      const sd=s.side?`[${s.side}]`:'';
+      return `${w}×${s.reps}${sd}`;
+    }).join('　');
+    const copyBtn=idx===0?`<button class="mh-copy" onclick="copyPrev('${ex.id}')">コピー</button>`:'';
+    html+=`<div class="mh-row"><div class="mh-label">${labels[idx]}</div><div class="mh-data">${esc(rows)}</div>${copyBtn}</div>`;
+  });
+  return html+'</div>';
 }
 
-/* Exercise List */
 function renderExList(){
-  const el=document.getElementById('ex-list');
-  el.innerHTML='';
+  const el=document.getElementById('ex-list');el.innerHTML='';
   today.exercises.forEach(ex=>el.appendChild(buildExBlock(ex)));
 }
 
 function buildExBlock(ex){
   const wrap=document.createElement('div');
-  wrap.className='ex-block';
+  wrap.className='ex-block'+(collapseState[ex.id]?' collapsed':'');
   wrap.id='exb-'+ex.id;
-
-  const prev=getPrevEx(ex.name);
-  const prevHtml=prev?buildPrevHtml(ex,prev):'';
-
+  const doneCount=ex.sets.filter(s=>s.done).length;
+  const totalSets=ex.sets.length;
+  const summaryTxt=totalSets?` ${doneCount}/${totalSets}セット`:'';
   wrap.innerHTML=`
     <div class="ex-header">
       <div class="ex-name">${esc(ex.name)}</div>
+      ${collapseState[ex.id]&&summaryTxt?`<div class="ex-collapsed-summary">${summaryTxt}</div>`:''}
       <div class="ex-toggles">
         <div class="tgl-wrap" onclick="toggleBW('${ex.id}')">
           <div class="tgl-lbl">自重</div>
@@ -496,494 +457,301 @@ function buildExBlock(ex){
           <div class="tgl-lbl">左右別</div>
           <div class="tgl ${ex.sideBySide?'on':''}" id="tgl-side-${ex.id}"></div>
         </div>
+        <button class="ex-collapse-btn" onclick="toggleCollapse('${ex.id}')">▼</button>
         <div class="btn-icon" onclick="removeEx('${ex.id}')">✕</div>
       </div>
     </div>
     <div class="ex-body">
-      ${prevHtml}
+      ${buildMiniHistHtml(ex)}
       <div class="set-list" id="sets-${ex.id}"></div>
       <button class="add-set-btn" onclick="addSet('${ex.id}')">＋ セット追加</button>
       <div class="timer-badge" id="tmr-${ex.id}"></div>
-    </div>
-  `;
+    </div>`;
   renderSetList(ex,wrap);
   return wrap;
 }
 
-function buildPrevHtml(ex,prev){
-  const rows=prev.sets.map((s,i)=>{
-    const w=prev.bodyweight?'BW':`${s.weight}kg`;
-    const sd=s.side?` [${s.side}]`:'';
-    return `${i+1}:${w}×${s.reps}${sd}`;
-  }).join('　');
-  return `
-    <div class="prev-badge">
-      <div class="prev-label">前回</div>
-      <div class="prev-data">${esc(rows)}</div>
-      <button class="prev-copy" onclick="copyPrev('${ex.id}')">コピー</button>
-    </div>`;
+/* v5: collapse */
+function toggleCollapse(exId){
+  collapseState[exId]=!collapseState[exId];
+  const block=document.getElementById('exb-'+exId);
+  if(!block)return;
+  const ex=findEx(exId);
+  const newBlock=buildExBlock(ex);
+  block.parentNode.replaceChild(newBlock,block);
 }
 
 function renderSetList(ex,wrap){
   const el=(wrap||document.getElementById('exb-'+ex.id))?.querySelector('#sets-'+ex.id);
-  if(!el)return;
-  el.innerHTML='';
+  if(!el)return;el.innerHTML='';
   ex.sets.forEach((set,i)=>el.appendChild(buildSetRow(ex,set,i+1)));
 }
 
 function buildSetRow(ex,set,num){
-  const row=document.createElement('div');
-  row.className='set-row';
-  row.id='setr-'+set.id;
-
-  // weight area
+  const row=document.createElement('div');row.className='set-row';row.id='setr-'+set.id;
   let wHtml='';
-  if(ex.bodyweight){
-    wHtml=`<div class="bw-tag">自重</div>`;
-  }else{
-    wHtml=`
-      <div class="stepper">
-        <button class="sp-btn" onclick="chgW('${ex.id}','${set.id}',-2.5)">−</button>
-        <input class="sp-val" type="number" inputmode="decimal" value="${set.weight}" step="2.5" min="0"
-          onchange="setW('${ex.id}','${set.id}',this.value)">
-        <div class="sp-unit">kg</div>
-        <button class="sp-btn" onclick="chgW('${ex.id}','${set.id}',2.5)">＋</button>
-      </div>`;
-  }
-
-  // reps
-  const rHtml=`
-    <div class="stepper">
-      <button class="sp-btn" onclick="chgR('${ex.id}','${set.id}',-1)">−</button>
-      <input class="sp-val" type="number" inputmode="numeric" value="${set.reps}" step="1" min="0"
-        onchange="setR('${ex.id}','${set.id}',this.value)">
-      <div class="sp-unit">rep</div>
-      <button class="sp-btn" onclick="chgR('${ex.id}','${set.id}',1)">＋</button>
-    </div>`;
-
-  // side
-  const sideHtml=ex.sideBySide?`
-    <div class="side-sel">
-      <button class="side-btn ${set.side==='L'?'L':''}" onclick="chgSide('${ex.id}','${set.id}','L')">L</button>
-      <button class="side-btn ${set.side==='R'?'R':''}" onclick="chgSide('${ex.id}','${set.id}','R')">R</button>
-    </div>`:'';
-
-  // done
+  if(ex.bodyweight){wHtml=`<div class="bw-tag">自重</div>`;}
+  else{wHtml=`<div class="stepper"><button class="sp-btn" onclick="chgW('${ex.id}','${set.id}',-2.5)">−</button><input class="sp-val" type="number" inputmode="decimal" value="${set.weight}" step="2.5" min="0" onchange="setW('${ex.id}','${set.id}',this.value)"><div class="sp-unit">kg</div><button class="sp-btn" onclick="chgW('${ex.id}','${set.id}',2.5)">＋</button></div>`;}
+  const rHtml=`<div class="stepper"><button class="sp-btn" onclick="chgR('${ex.id}','${set.id}',-1)">−</button><input class="sp-val" type="number" inputmode="numeric" value="${set.reps}" step="1" min="0" onchange="setR('${ex.id}','${set.id}',this.value)"><div class="sp-unit">rep</div><button class="sp-btn" onclick="chgR('${ex.id}','${set.id}',1)">＋</button></div>`;
+  const sideHtml=ex.sideBySide?`<div class="side-sel"><button class="side-btn ${set.side==='L'?'L':''}" onclick="chgSide('${ex.id}','${set.id}','L')">L</button><button class="side-btn ${set.side==='R'?'R':''}" onclick="chgSide('${ex.id}','${set.id}','R')">R</button></div>`:'';
   const doneHtml=`<div class="set-done ${set.done?'checked':''}" onclick="toggleDone('${ex.id}','${set.id}')">${set.done?'✓':''}</div>`;
-
-  row.innerHTML=`
-    <div class="set-num">${num}</div>
-    ${wHtml}${rHtml}${sideHtml}${doneHtml}
-    <button class="set-del" onclick="delSet('${ex.id}','${set.id}')">✕</button>
-  `;
+  // v5: copy prev set
+  const copyHtml=`<button class="set-copy-btn" onclick="copyPrevSet('${ex.id}','${set.id}',${num-1})" title="前回と同じ">↺</button>`;
+  // v5: long-press delete
+  const delHtml=`<button class="set-del" id="del-${set.id}" onmousedown="startLP('${ex.id}','${set.id}')" ontouchstart="startLP('${ex.id}','${set.id}')" onmouseup="cancelLP('${set.id}')" onmouseleave="cancelLP('${set.id}')" ontouchend="cancelLP('${set.id}')" ontouchcancel="cancelLP('${set.id}')">✕</button>`;
+  row.innerHTML=`<div class="set-num">${num}</div>${wHtml}${rHtml}${sideHtml}${doneHtml}${copyHtml}${delHtml}`;
   return row;
 }
 
-/* ============================================================
-   Exercise Actions
-   ============================================================ */
+/* v5: long-press delete */
+function startLP(exId,setId){
+  cancelLP(setId);
+  document.getElementById('del-'+setId)?.classList.add('pressing');
+  lpTimer=setTimeout(()=>{delSet(exId,setId);showToast('🗑️ 削除しました');},600);
+}
+function cancelLP(setId){
+  if(lpTimer){clearTimeout(lpTimer);lpTimer=null;}
+  document.getElementById('del-'+setId)?.classList.remove('pressing');
+}
+
+/* v5: copy prev set ↺ */
+function copyPrevSet(exId,setId,idx){
+  const ex=findEx(exId);
+  const prevList=getPrevExList(ex.name);
+  if(!prevList.length){showToast('前回のデータがありません');return;}
+  const prevSet=prevList[0].sets[idx];
+  if(!prevSet){showToast('対応するセットがありません');return;}
+  const s=findSet(exId,setId);
+  s.weight=prevSet.weight;s.reps=prevSet.reps;s.side=prevSet.side||null;
+  save();renderSetList(ex);showToast('↺ 前回値をセットしました');
+}
+
+/* Exercise Actions */
 function addExercise(name){
-  const ex={
-    id:'ex_'+Date.now(),name,
-    bodyweight:false,sideBySide:false,
-    sets:[]
-  };
-  today.exercises.push(ex);
-  save();renderExList();
-  closeSheet();
+  const ex={id:'ex_'+Date.now(),name,bodyweight:false,sideBySide:false,sets:[]};
+  today.exercises.push(ex);save();renderExList();closeSheet();
 }
+function removeEx(exId){today.exercises=today.exercises.filter(e=>e.id!==exId);delete collapseState[exId];save();renderExList();}
+function toggleBW(exId){const ex=findEx(exId);ex.bodyweight=!ex.bodyweight;save();document.getElementById('tgl-bw-'+exId)?.classList.toggle('on',ex.bodyweight);renderSetList(ex);}
+function toggleSide(exId){const ex=findEx(exId);ex.sideBySide=!ex.sideBySide;save();document.getElementById('tgl-side-'+exId)?.classList.toggle('on',ex.sideBySide);renderSetList(ex);}
 
-function removeEx(exId){
-  today.exercises=today.exercises.filter(e=>e.id!==exId);
-  save();renderExList();
-}
-
-function toggleBW(exId){
-  const ex=findEx(exId);ex.bodyweight=!ex.bodyweight;
-  save();
-  document.getElementById('tgl-bw-'+exId)?.classList.toggle('on',ex.bodyweight);
-  renderSetList(ex);
-}
-
-function toggleSide(exId){
-  const ex=findEx(exId);ex.sideBySide=!ex.sideBySide;
-  save();
-  document.getElementById('tgl-side-'+exId)?.classList.toggle('on',ex.sideBySide);
-  renderSetList(ex);
-}
-
-/* ============================================================
-   Set Actions
-   ============================================================ */
+/* Set Actions */
 function addSet(exId){
-  const ex=findEx(exId);
-  const last=ex.sets[ex.sets.length-1];
-  ex.sets.push({
-    id:'set_'+Date.now(),
-    weight:last?last.weight:0,
-    reps:last?last.reps:10,
-    side:null,done:false
-  });
+  const ex=findEx(exId);const last=ex.sets[ex.sets.length-1];
+  ex.sets.push({id:'set_'+Date.now(),weight:last?last.weight:0,reps:last?last.reps:10,side:null,done:false});
   save();renderSetList(ex);
 }
-
-function delSet(exId,setId){
-  const ex=findEx(exId);
-  ex.sets=ex.sets.filter(s=>s.id!==setId);
-  save();renderSetList(ex);
-}
-
-function chgW(exId,setId,delta){
-  const s=findSet(exId,setId);
-  s.weight=Math.max(0,Math.round((s.weight+delta)*10)/10);
-  save();syncVal(setId,'w',s.weight);
-}
+function delSet(exId,setId){const ex=findEx(exId);ex.sets=ex.sets.filter(s=>s.id!==setId);save();renderSetList(ex);}
+function chgW(exId,setId,delta){const s=findSet(exId,setId);s.weight=Math.max(0,Math.round((s.weight+delta)*10)/10);save();syncVal(setId,'w',s.weight);}
 function setW(exId,setId,v){findSet(exId,setId).weight=Math.max(0,parseFloat(v)||0);save()}
-
-function chgR(exId,setId,delta){
-  const s=findSet(exId,setId);
-  s.reps=Math.max(0,s.reps+delta);
-  save();syncVal(setId,'r',s.reps);
-}
+function chgR(exId,setId,delta){const s=findSet(exId,setId);s.reps=Math.max(0,s.reps+delta);save();syncVal(setId,'r',s.reps);}
 function setR(exId,setId,v){findSet(exId,setId).reps=Math.max(0,parseInt(v)||0);save()}
-
 function syncVal(setId,type,val){
-  const row=document.getElementById('setr-'+setId);
-  if(!row)return;
+  const row=document.getElementById('setr-'+setId);if(!row)return;
   const all=row.querySelectorAll('.sp-val');
   if(type==='w'&&all[0])all[0].value=val;
   if(type==='r'&&all.length>0)all[all.length-1].value=val;
 }
-
-function chgSide(exId,setId,side){
-  const s=findSet(exId,setId);
-  s.side=s.side===side?null:side;
-  save();renderSetList(findEx(exId));
-}
-
+function chgSide(exId,setId,side){const s=findSet(exId,setId);s.side=s.side===side?null:side;save();renderSetList(findEx(exId));}
 function toggleDone(exId,setId){
-  const s=findSet(exId,setId);
-  s.done=!s.done;save();
-  // update UI
+  const s=findSet(exId,setId);s.done=!s.done;save();
   const el=document.getElementById('setr-'+setId)?.querySelector('.set-done');
   if(el){el.classList.toggle('checked',s.done);el.textContent=s.done?'✓':'';}
-  if(s.done)startTimer(exId);
-  else{stopTimer();document.getElementById('tmr-'+exId)?.classList.remove('show')}
+  if(s.done)startTimer(exId);else{stopTimer();document.getElementById('tmr-'+exId)?.classList.remove('show')}
 }
 
-/* ============================================================
-   Copy Previous
-   ============================================================ */
+/* Copy Previous (all sets) */
 function copyPrev(exId){
-  const ex=findEx(exId);
-  const prev=getPrevEx(ex.name);
-  if(!prev)return;
-  ex.sets=prev.sets.map(s=>({
-    id:'set_'+Date.now()+Math.random(),
-    weight:s.weight,reps:s.reps,side:s.side||null,done:false
-  }));
-  ex.bodyweight=!!prev.bodyweight;
-  save();renderSetList(ex);
-  showToast('前回のデータをコピーしました');
+  const ex=findEx(exId);const prevList=getPrevExList(ex.name);if(!prevList.length)return;
+  const prev=prevList[0];
+  ex.sets=prev.sets.map(s=>({id:'set_'+Date.now()+Math.random(),weight:s.weight,reps:s.reps,side:s.side||null,done:false}));
+  ex.bodyweight=!!prev.bodyweight;save();renderSetList(ex);showToast('前回のデータをコピーしました');
 }
 
-function getPrevEx(name){
-  const sessions=getSessions().filter(s=>s.date!==getToday())
-    .sort((a,b)=>b.date.localeCompare(a.date));
-  for(const s of sessions){
-    const ex=s.exercises.find(e=>e.name===name);
-    if(ex)return ex;
-  }
-  return null;
-}
-
-/* ============================================================
-   Timer
-   ============================================================ */
+/* Timer */
 function startTimer(exId){
-  stopTimer();
-  timerRem=90;timerExId=exId;
-  const badge=document.getElementById('tmr-'+exId);
-  if(!badge)return;
-  badge.classList.add('show');
-  updateTimerBadge(badge);
-  timerIv=setInterval(()=>{
-    timerRem--;
-    if(timerRem<=0){stopTimer();badge.classList.remove('show');return}
-    updateTimerBadge(badge);
-  },1000);
+  stopTimer();timerRem=90;timerExId=exId;
+  const badge=document.getElementById('tmr-'+exId);if(!badge)return;
+  badge.classList.add('show');updateTimerBadge(badge);
+  timerIv=setInterval(()=>{timerRem--;if(timerRem<=0){stopTimer();badge.classList.remove('show');return}updateTimerBadge(badge);},1000);
 }
 function updateTimerBadge(badge){
   const m=Math.floor(timerRem/60),s=timerRem%60;
-  badge.innerHTML=`
-    <div class="tb-label">🕐 REST</div>
-    <div class="tb-time">${m}:${String(s).padStart(2,'0')}</div>
-    <button class="tb-btn tb-plus" onclick="timerAdd()">+30s</button>
-    <button class="tb-btn tb-skip" onclick="timerSkip()">SKIP</button>`;
+  badge.innerHTML=`<div class="tb-label">🕐 REST</div><div class="tb-time">${m}:${String(s).padStart(2,'0')}</div><button class="tb-btn tb-plus" onclick="timerAdd()">+30s</button><button class="tb-btn tb-skip" onclick="timerSkip()">SKIP</button>`;
 }
 function timerAdd(){timerRem=Math.min(timerRem+30,600)}
-function timerSkip(){
-  stopTimer();
-  if(timerExId)document.getElementById('tmr-'+timerExId)?.classList.remove('show');
-}
+function timerSkip(){stopTimer();if(timerExId)document.getElementById('tmr-'+timerExId)?.classList.remove('show');}
 function stopTimer(){if(timerIv){clearInterval(timerIv);timerIv=null}}
 
-/* ============================================================
-   Note
-   ============================================================ */
 function saveNote(){today.note=document.getElementById('note-input').value;save()}
 
-/* ============================================================
-   Exercise Sheet
-   ============================================================ */
+/* Sheet */
 function openSheet(){
-  document.getElementById('ex-sheet').classList.add('open');
-  document.getElementById('overlay').classList.add('open');
-  document.getElementById('sheet-q').value='';
-  renderSheetList();
+  document.getElementById('ex-sheet').classList.add('open');document.getElementById('overlay').classList.add('open');
+  document.getElementById('sheet-q').value='';renderSheetList();
   setTimeout(()=>document.getElementById('sheet-q').focus(),300);
 }
-function closeSheet(){
-  document.getElementById('ex-sheet').classList.remove('open');
-  document.getElementById('overlay').classList.remove('open');
-}
-
+function closeSheet(){document.getElementById('ex-sheet').classList.remove('open');document.getElementById('overlay').classList.remove('open');}
 function renderSheetList(){
   const q=document.getElementById('sheet-q').value.trim().toLowerCase();
-  const recent=getRecentExNames();
-  const allNames=[...new Set([...recent,...PRESETS])];
-  let html='';
-
+  const recent=getRecentExNames();const allNames=[...new Set([...recent,...PRESETS])];let html='';
   if(q){
     const hits=allNames.filter(n=>n.toLowerCase().includes(q));
     html+=`<div class="sh-sec">検索結果</div><div class="sh-chips">`;
-    hits.forEach(n=>{html+=`<div class="ex-chip" onclick="addExercise('${esc2(n)}')">${esc(n)}</div>`});
-    html+=`</div>`;
-    const exact=hits.some(n=>n.toLowerCase()===q.toLowerCase());
-    if(!exact){
+    hits.forEach(n=>{html+=`<div class="ex-chip" onclick="addExercise('${esc2(n)}')">${esc(n)}</div>`});html+=`</div>`;
+    if(!hits.some(n=>n.toLowerCase()===q.toLowerCase())){
       const label=document.getElementById('sheet-q').value.trim();
-      html+=`<button class="btn btn-accent" style="width:100%;margin-top:8px"
-        onclick="addExercise('${esc2(label)}')">「${esc(label)}」を追加</button>`;
+      html+=`<button class="btn btn-accent" style="width:100%;margin-top:8px" onclick="addExercise('${esc2(label)}')">「${esc(label)}」を追加</button>`;
     }
   }else{
-    if(recent.length){
-      html+=`<div class="sh-sec">よく使う種目</div><div class="sh-chips">`;
-      recent.forEach(n=>{html+=`<div class="ex-chip" onclick="addExercise('${esc2(n)}')">${esc(n)}</div>`});
-      html+=`</div>`;
-    }
+    if(recent.length){html+=`<div class="sh-sec">よく使う種目</div><div class="sh-chips">`;recent.forEach(n=>{html+=`<div class="ex-chip" onclick="addExercise('${esc2(n)}')">${esc(n)}</div>`});html+=`</div>`;}
     html+=`<div class="sh-sec">プリセット</div><div class="sh-chips">`;
-    PRESETS.forEach(n=>{html+=`<div class="ex-chip" onclick="addExercise('${esc2(n)}')">${esc(n)}</div>`});
-    html+=`</div>`;
+    PRESETS.forEach(n=>{html+=`<div class="ex-chip" onclick="addExercise('${esc2(n)}')">${esc(n)}</div>`});html+=`</div>`;
   }
   document.getElementById('sheet-body').innerHTML=html;
 }
-
-function confirmSheetInput(){
-  const v=document.getElementById('sheet-q').value.trim();
-  if(v)addExercise(v);
-}
-
+function confirmSheetInput(){const v=document.getElementById('sheet-q').value.trim();if(v)addExercise(v);}
 function getRecentExNames(){
-  const count={};
-  getSessions().forEach(s=>s.exercises.forEach(ex=>{count[ex.name]=(count[ex.name]||0)+1}));
+  const count={};getSessions().forEach(s=>s.exercises.forEach(ex=>{count[ex.name]=(count[ex.name]||0)+1}));
   return Object.entries(count).sort((a,b)=>b[1]-a[1]).slice(0,10).map(([n])=>n);
 }
 
-/* ============================================================
-   CALENDAR
-   ============================================================ */
-function calNav(dir){
-  calM+=dir;
-  if(calM<0){calM=11;calY--}
-  if(calM>11){calM=0;calY++}
-  renderCalendar();
-}
-
+/* Calendar */
+function calNav(dir){calM+=dir;if(calM<0){calM=11;calY--}if(calM>11){calM=0;calY++}renderCalendar();}
 function renderCalendar(){
   document.getElementById('cal-month-label').textContent=`${calY}年${calM+1}月`;
-  const sessions=getSessions();
-  const trained=new Set(sessions.map(s=>s.date));
-  const todayStr=getToday();
-  const firstDow=new Date(calY,calM,1).getDay();
-  const offset=firstDow===0?6:firstDow-1;
-  const daysInMonth=new Date(calY,calM+1,0).getDate();
+  const sessions=getSessions(),trained=new Set(sessions.map(s=>s.date)),todayStr=getToday();
+  const firstDow=new Date(calY,calM,1).getDay(),offset=firstDow===0?6:firstDow-1,daysInMonth=new Date(calY,calM+1,0).getDate();
   const dows=['月','火','水','木','金','土','日'];
-
   let html=dows.map(d=>`<div class="cal-dow">${d}</div>`).join('');
   for(let i=0;i<offset;i++)html+=`<div class="cal-day empty"></div>`;
   for(let d=1;d<=daysInMonth;d++){
     const ds=`${calY}-${String(calM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const cls=['cal-day',
-      trained.has(ds)?'trained':'',
-      ds===todayStr?'today':'',
-      ds===calSel?'selected':''
-    ].filter(Boolean).join(' ');
+    const cls=['cal-day',trained.has(ds)?'trained':'',ds===todayStr?'today':'',ds===calSel?'selected':''].filter(Boolean).join(' ');
     html+=`<div class="${cls}" onclick="calClick('${ds}')">${d}</div>`;
   }
   document.getElementById('cal-grid').innerHTML=html;
   if(calSel)renderCalDetail(calSel);
 }
-
-function calClick(ds){
-  calSel=ds;
-  renderCalendar();
-  renderCalDetail(ds);
-}
-
+function calClick(ds){calSel=ds;renderCalendar();renderCalDetail(ds);}
 function renderCalDetail(ds){
   const el=document.getElementById('cal-detail');
   const sess=getSessions().find(s=>s.date===ds);
-  if(!sess){
-    el.innerHTML=`<div style="color:var(--t2);font-size:13px;text-align:center;padding:20px">この日の記録なし</div>`;
-    return;
-  }
-  const d=new Date(ds);
-  const dow='日月火水木金土'[d.getDay()];
-  let html=`<div class="cal-det-date">${ds}（${dow}）</div>`;
+  if(!sess){el.innerHTML=`<div style="color:var(--t2);font-size:13px;text-align:center;padding:20px">この日の記録なし</div>`;return;}
+  const d=new Date(ds),dow='日月火水木金土'[d.getDay()];
+  let html=`<div class="cal-det-header"><div class="cal-det-date">${ds}（${dow}）</div><button class="cal-share-btn" onclick="openShare('${ds}')">📋 サマリー</button></div>`;
   sess.exercises.forEach(ex=>{
-    const rows=ex.sets.map((s,i)=>{
-      const w=ex.bodyweight?'BW':`${s.weight}kg`;
-      const sd=s.side?` [${s.side}]`:'';
-      return `${i+1}: ${w} × ${s.reps}rep${sd}`;
-    }).join('<br>');
-    html+=`<div class="cal-ex-item">
-      <div class="cal-ex-name">${esc(ex.name)}</div>
-      <div class="cal-set-txt">${rows}</div>
-    </div>`;
+    const rows=ex.sets.map((s,i)=>{const w=ex.bodyweight?'BW':`${s.weight}kg`;const sd=s.side?` [${s.side}]`:'';return `${i+1}: ${w} × ${s.reps}rep${sd}`;}).join('<br>');
+    html+=`<div class="cal-ex-item"><div class="cal-ex-name">${esc(ex.name)}</div><div class="cal-set-txt">${rows}</div></div>`;
   });
   if(sess.note)html+=`<div class="card"><div class="sh">メモ</div><div style="font-size:13px;color:var(--t2)">${esc(sess.note)}</div></div>`;
   el.innerHTML=html;
 }
 
-/* ============================================================
-   STATS
-   ============================================================ */
+/* Stats */
 function renderStats(){
-  const sessions=getSessions();
-  const now=new Date();
-
-  const thisMonth=sessions.filter(s=>{
-    const d=new Date(s.date);
-    return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();
-  });
-
-  // streak
-  let streak=0;
-  const check=new Date();check.setHours(0,0,0,0);
-  const dateSet=new Set(sessions.map(s=>s.date));
-  for(;;){
-    if(!dateSet.has(dateStr(check)))break;
-    streak++;check.setDate(check.getDate()-1);
-  }
-
-  // month volume
-  let mVol=0;
-  thisMonth.forEach(s=>s.exercises.forEach(ex=>{
-    if(ex.bodyweight)return;
-    ex.sets.forEach(set=>{mVol+=set.weight*set.reps});
-  }));
-
+  const sessions=getSessions(),now=new Date();
+  const thisMonth=sessions.filter(s=>{const d=new Date(s.date);return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();});
+  let streak=0;const check=new Date();check.setHours(0,0,0,0);const dateSet=new Set(sessions.map(s=>s.date));
+  for(;;){if(!dateSet.has(dateStr(check)))break;streak++;check.setDate(check.getDate()-1);}
+  let mVol=0;thisMonth.forEach(s=>s.exercises.forEach(ex=>{if(ex.bodyweight)return;ex.sets.forEach(set=>{mVol+=set.weight*set.reps});}));
   document.getElementById('stats-grid').innerHTML=`
-    <div class="stat-card">
-      <div class="stat-label">総トレーニング</div>
-      <div class="stat-value">${sessions.length}</div>
-      <div class="stat-unit">日</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">今月</div>
-      <div class="stat-value">${thisMonth.length}</div>
-      <div class="stat-unit">日</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">連続記録</div>
-      <div class="stat-value">${streak}</div>
-      <div class="stat-unit">日</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">今月ボリューム</div>
-      <div class="stat-value" style="font-size:18px">${Math.round(mVol).toLocaleString()}</div>
-      <div class="stat-unit">kg</div>
-    </div>
-  `;
-
-  // max weight per exercise
+    <div class="stat-card"><div class="stat-label">総トレーニング</div><div class="stat-value">${sessions.length}</div><div class="stat-unit">日</div></div>
+    <div class="stat-card"><div class="stat-label">今月</div><div class="stat-value">${thisMonth.length}</div><div class="stat-unit">日</div></div>
+    <div class="stat-card"><div class="stat-label">連続記録</div><div class="stat-value">${streak}</div><div class="stat-unit">日</div></div>
+    <div class="stat-card"><div class="stat-label">今月ボリューム</div><div class="stat-value" style="font-size:18px">${Math.round(mVol).toLocaleString()}</div><div class="stat-unit">kg</div></div>`;
   const maxMap={};
-  sessions.forEach(s=>s.exercises.forEach(ex=>{
-    if(ex.bodyweight)return;
-    ex.sets.forEach(set=>{
-      if((set.weight||0)>(maxMap[ex.name]||0))maxMap[ex.name]=set.weight;
-    });
-  }));
+  sessions.forEach(s=>s.exercises.forEach(ex=>{if(ex.bodyweight)return;ex.sets.forEach(set=>{if((set.weight||0)>(maxMap[ex.name]||0))maxMap[ex.name]=set.weight;});}));
   const maxList=Object.entries(maxMap).sort((a,b)=>b[1]-a[1]).slice(0,10);
-
-  let extra='';
-  if(maxList.length){
-    extra=`<div class="card"><div class="sh">種目別 MAX重量</div>
-      <table class="max-table">
-        ${maxList.map(([n,v])=>`<tr><td>${esc(n)}</td><td class="td-val">${v}kg</td></tr>`).join('')}
-      </table>
-    </div>`;
-  }
-  document.getElementById('stats-extra').innerHTML=extra;
+  document.getElementById('stats-extra').innerHTML=maxList.length?`<div class="card"><div class="sh">種目別 MAX重量</div><table class="max-table">${maxList.map(([n,v])=>`<tr><td>${esc(n)}</td><td class="td-val">${v}kg</td></tr>`).join('')}</table></div>`:'';
 }
 
-/* ============================================================
-   Export / Import
-   ============================================================ */
+/* Export / Import */
 function exportData(){
   const blob=new Blob([JSON.stringify(getSessions(),null,2)],{type:'application/json'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download=`training-note-${getToday()}.json`;
-  a.click();
-  showToast('📤 エクスポートしました');
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`training-note-${getToday()}.json`;a.click();
+  showToast('📤 バックアップしました');
 }
 function importData(ev){
   const file=ev.target.files[0];if(!file)return;
   const r=new FileReader();
   r.onload=e=>{
     try{
-      const data=JSON.parse(e.target.result);
-      if(!Array.isArray(data)){showToast('⚠️ 形式エラー');return}
-      const exist=getSessions();
-      const ids=new Set(exist.map(s=>s.id));
+      const data=JSON.parse(e.target.result);if(!Array.isArray(data)){showToast('⚠️ 形式エラー');return}
+      const exist=getSessions();const ids=new Set(exist.map(s=>s.id));
       const merged=[...exist,...data.filter(s=>!ids.has(s.id))].sort((a,b)=>b.date.localeCompare(a.date));
-      setSessions(merged);
-      today=getTodaySession()||newSession();
-      renderRecord();
-      showToast(`✅ ${data.length}件インポートしました`);
+      setSessions(merged);today=getTodaySession()||newSession();renderRecord();showToast(`✅ ${data.length}件インポートしました`);
     }catch{showToast('⚠️ 読み込み失敗')}
-  };
-  r.readAsText(file);
-  ev.target.value='';
+  };r.readAsText(file);ev.target.value='';
 }
 function clearAll(){
   if(!confirm('全データを削除しますか？元に戻せません。'))return;
   if(!confirm('最終確認：本当に削除しますか？'))return;
-  localStorage.removeItem(STORE_KEY);
-  today=newSession();renderRecord();
-  showToast('🗑️ 削除しました');
+  localStorage.removeItem(STORE_KEY);today=newSession();renderRecord();showToast('🗑️ 削除しました');
 }
 
-/* ============================================================
-   Helpers
-   ============================================================ */
+/* v5: Share Card */
+function calcRM(w,r){if(r===1)return w;return Math.round(w*(1+r/30)*10)/10;}
+
+function openShare(ds){
+  const sess=getSessions().find(s=>s.date===ds);if(!sess)return;
+  shareTargetDate=ds;
+  const d=new Date(ds),dow='日月火水木金土'[d.getDay()];
+  let totalVol=0;
+  sess.exercises.forEach(ex=>{if(ex.bodyweight)return;ex.sets.forEach(s=>{totalVol+=s.weight*s.reps;});});
+  // get historical max RM per exercise
+  const histMax={};
+  getSessions().filter(s=>s.date!==ds).forEach(s=>s.exercises.forEach(ex=>{
+    if(ex.bodyweight)return;
+    ex.sets.forEach(set=>{const rm=calcRM(set.weight,set.reps);if(!histMax[ex.name]||rm>histMax[ex.name])histMax[ex.name]=rm;});
+  }));
+  let html=`<div class="share-card">
+    <div class="share-card-date">${ds}（${dow}）</div>
+    <div class="share-card-title">💪 WorkOut</div>
+    ${totalVol>0?`<div class="share-card-vol">Total Volume: ${Math.round(totalVol).toLocaleString()}kg</div>`:''}
+    <div class="share-divider"></div>`;
+  sess.exercises.forEach(ex=>{
+    let sessMaxRM=0;
+    ex.sets.forEach(s=>{if(ex.bodyweight)return;const rm=calcRM(s.weight,s.reps);if(rm>sessMaxRM)sessMaxRM=rm;});
+    const isPR=!ex.bodyweight&&sessMaxRM>0&&(!histMax[ex.name]||sessMaxRM>histMax[ex.name]);
+    const rmTxt=ex.bodyweight?'':`RM: ${sessMaxRM}kg`;
+    html+=`<div class="share-ex-block"><div class="share-ex-header"><div class="share-ex-title">${esc(ex.name)}${isPR?' 🔥':''}</div><div class="share-ex-rm">${rmTxt}</div></div>`;
+    ex.sets.forEach((s,i)=>{
+      const w=ex.bodyweight?'BW':`${s.weight}kg`;const sd=s.side?` [${s.side}]`:'';
+      const rm=!ex.bodyweight?calcRM(s.weight,s.reps):0;
+      const isSetPR=!ex.bodyweight&&rm>0&&(!histMax[ex.name]||rm>histMax[ex.name]);
+      html+=`<div class="share-set-row"><div class="share-set-num">${i+1}</div><div class="share-set-detail">${w} × ${s.reps}rep${sd}</div>${isSetPR?`<div class="share-set-pr">MAX RM</div>`:''}</div>`;
+    });
+    html+=`</div>`;
+  });
+  html+=`<div class="share-footer">Powered by トレーニングノート</div></div>`;
+  document.getElementById('share-card-wrap').innerHTML=html;
+  document.getElementById('share-overlay').classList.add('open');
+}
+function closeShare(){document.getElementById('share-overlay').classList.remove('open');}
+function copyShareText(){
+  const sess=getSessions().find(s=>s.date===shareTargetDate);if(!sess)return;
+  const d=new Date(shareTargetDate),dow='日月火水木金土'[d.getDay()];
+  let txt=`💪 ${shareTargetDate}（${dow}） WorkOut\n─────────────\n`;
+  sess.exercises.forEach(ex=>{
+    txt+=`\n【${ex.name}】\n`;
+    ex.sets.forEach((s,i)=>{const w=ex.bodyweight?'BW':`${s.weight}kg`;const sd=s.side?` [${s.side}]`:'';txt+=`  ${i+1}: ${w} × ${s.reps}rep${sd}\n`;});
+  });
+  txt+=`\n#筋トレ #トレーニングノート`;
+  navigator.clipboard.writeText(txt).then(()=>showToast('📋 コピーしました')).catch(()=>showToast('⚠️ コピー失敗'));
+}
+
+/* Helpers */
 function findEx(id){return today.exercises.find(e=>e.id===id)}
 function findSet(exId,setId){return findEx(exId)?.sets.find(s=>s.id===setId)}
-function esc(s){
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
-}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function esc2(s){return String(s).replace(/'/g,"\\'").replace(/"/g,'\\"')}
-
 let toastTmr;
 function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  clearTimeout(toastTmr);
-  toastTmr=setTimeout(()=>t.classList.remove('show'),2600);
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastTmr);toastTmr=setTimeout(()=>t.classList.remove('show'),2600);
 }
 
-/* Boot */
 init();
 </script>
 </body>
