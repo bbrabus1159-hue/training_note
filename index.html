@@ -92,6 +92,13 @@ textarea{width:100%;padding:9px 11px;resize:none;height:52px}
 /* v5 long-press delete */
 .set-del{background:none;border:none;color:var(--t3);cursor:pointer;font-size:16px;padding:2px;flex-shrink:0;line-height:1;transition:color .15s,transform .15s;user-select:none}
 .set-del.pressing{color:var(--red);transform:scale(1.25)}
+.set-bw-btn{background:var(--s2);border:1px solid var(--border);color:var(--t3);font-size:11px;font-weight:700;border-radius:5px;padding:0 7px;height:34px;cursor:pointer;flex-shrink:0;transition:all .15s;user-select:none}
+.set-bw-btn.on{background:var(--a10);border-color:var(--accent);color:var(--accent)}
+.ex-del-btn{background:none;border:none;color:var(--t3);cursor:pointer;font-size:15px;width:32px;height:32px;border-radius:var(--rsm);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;user-select:none}
+.ex-del-btn.pressing{color:var(--red);background:var(--red10);transform:scale(1.2)}
+.ex-chip-wrap{display:flex;align-items:center;gap:2px}
+.ex-chip-del{background:none;border:none;color:var(--t3);cursor:pointer;font-size:13px;padding:2px 4px;border-radius:4px;line-height:1;flex-shrink:0}
+.ex-chip-del:active{color:var(--red)}
 
 .add-set-btn{width:100%;background:var(--s2);border:1px dashed var(--border);border-radius:var(--rsm);color:var(--t2);font-size:13px;padding:8px;cursor:pointer;font-family:inherit;transition:border-color .15s,color .15s}
 .add-set-btn:hover{border-color:var(--accent);color:var(--accent)}
@@ -362,6 +369,7 @@ let timerIv=null,timerRem=90,timerExId=null;
 let collapseState={};
 let shareTargetDate=null;
 let lpTimer=null;
+let exLpTimer=null;
 
 function init(){
   migrateIfNeeded();
@@ -458,7 +466,7 @@ function buildExBlock(ex){
           <div class="tgl ${ex.sideBySide?'on':''}" id="tgl-side-${ex.id}"></div>
         </div>
         <button class="ex-collapse-btn" onclick="toggleCollapse('${ex.id}')">▼</button>
-        <div class="btn-icon" onclick="removeEx('${ex.id}')">✕</div>
+        <div class="btn-icon ex-del-btn" id="exdel-${ex.id}" onmousedown="startExLP('${ex.id}')" ontouchstart="startExLP('${ex.id}')" onmouseup="cancelExLP('${ex.id}')" onmouseleave="cancelExLP('${ex.id}')" ontouchend="cancelExLP('${ex.id}')" ontouchcancel="cancelExLP('${ex.id}')" title="長押しで削除">✕</div>
       </div>
     </div>
     <div class="ex-body">
@@ -489,9 +497,11 @@ function renderSetList(ex,wrap){
 
 function buildSetRow(ex,set,num){
   const row=document.createElement('div');row.className='set-row';row.id='setr-'+set.id;
+  const isBW=set.bw===true||(set.bw===undefined&&ex.bodyweight);
   let wHtml='';
-  if(ex.bodyweight){wHtml=`<div class="bw-tag">自重</div>`;}
+  if(isBW){wHtml=`<div class="bw-tag">自重</div>`;}
   else{wHtml=`<div class="stepper"><button class="sp-btn" onclick="chgW('${ex.id}','${set.id}',-2.5)">−</button><input class="sp-val" type="number" inputmode="decimal" value="${set.weight}" step="2.5" min="0" onchange="setW('${ex.id}','${set.id}',this.value)"><div class="sp-unit">kg</div><button class="sp-btn" onclick="chgW('${ex.id}','${set.id}',2.5)">＋</button></div>`;}
+  const bwBtnHtml=`<button class="set-bw-btn${isBW?' on':''}" onclick="toggleSetBW('${ex.id}','${set.id}')" title="このセットの自重切り替え">BW</button>`;
   const rHtml=`<div class="stepper"><button class="sp-btn" onclick="chgR('${ex.id}','${set.id}',-1)">−</button><input class="sp-val" type="number" inputmode="numeric" value="${set.reps}" step="1" min="0" onchange="setR('${ex.id}','${set.id}',this.value)"><div class="sp-unit">rep</div><button class="sp-btn" onclick="chgR('${ex.id}','${set.id}',1)">＋</button></div>`;
   const sideHtml=ex.sideBySide?`<div class="side-sel"><button class="side-btn ${set.side==='L'?'L':''}" onclick="chgSide('${ex.id}','${set.id}','L')">L</button><button class="side-btn ${set.side==='R'?'R':''}" onclick="chgSide('${ex.id}','${set.id}','R')">R</button></div>`:'';
   const doneHtml=`<div class="set-done ${set.done?'checked':''}" onclick="toggleDone('${ex.id}','${set.id}')">${set.done?'✓':''}</div>`;
@@ -499,7 +509,7 @@ function buildSetRow(ex,set,num){
   const copyHtml=`<button class="set-copy-btn" onclick="copyPrevSet('${ex.id}','${set.id}',${num-1})" title="前回と同じ">↺</button>`;
   // v5: long-press delete
   const delHtml=`<button class="set-del" id="del-${set.id}" onmousedown="startLP('${ex.id}','${set.id}')" ontouchstart="startLP('${ex.id}','${set.id}')" onmouseup="cancelLP('${set.id}')" onmouseleave="cancelLP('${set.id}')" ontouchend="cancelLP('${set.id}')" ontouchcancel="cancelLP('${set.id}')">✕</button>`;
-  row.innerHTML=`<div class="set-num">${num}</div>${wHtml}${rHtml}${sideHtml}${doneHtml}${copyHtml}${delHtml}`;
+  row.innerHTML=`<div class="set-num">${num}</div>${wHtml}${bwBtnHtml}${rHtml}${sideHtml}${doneHtml}${copyHtml}${delHtml}`;
   return row;
 }
 
@@ -526,7 +536,33 @@ function copyPrevSet(exId,setId,idx){
   save();renderSetList(ex);showToast('↺ 前回値をセットしました');
 }
 
-/* Exercise Actions */
+function toggleSetBW(exId,setId){
+  const ex=findEx(exId);const s=findSet(exId,setId);
+  const isBW=s.bw===true||(s.bw===undefined&&ex.bodyweight);
+  s.bw=!isBW;
+  save();renderSetList(ex);
+}
+
+/* Exercise long-press delete */
+function startExLP(exId){
+  cancelExLP(exId);
+  document.getElementById('exdel-'+exId)?.classList.add('pressing');
+  exLpTimer=setTimeout(()=>{
+    removeEx(exId);showToast('🗑️ 種目を削除しました');
+  },700);
+}
+function cancelExLP(exId){
+  if(exLpTimer){clearTimeout(exLpTimer);exLpTimer=null;}
+  document.getElementById('exdel-'+exId)?.classList.remove('pressing');
+}
+
+/* Custom exercise name management */
+function getExBlacklist(){try{return JSON.parse(localStorage.getItem('tn_ex_bl')||'[]')}catch{return[]}}
+function removeExName(name){
+  const bl=getExBlacklist();if(!bl.includes(name))bl.push(name);
+  localStorage.setItem('tn_ex_bl',JSON.stringify(bl));
+  renderSheetList();showToast('🗑️ 削除しました');
+}
 function addExercise(name){
   const ex={id:'ex_'+Date.now(),name,bodyweight:false,sideBySide:false,sets:[]};
   today.exercises.push(ex);save();renderExList();closeSheet();
@@ -604,7 +640,16 @@ function renderSheetList(){
       html+=`<button class="btn btn-accent" style="width:100%;margin-top:8px" onclick="addExercise('${esc2(label)}')">「${esc(label)}」を追加</button>`;
     }
   }else{
-    if(recent.length){html+=`<div class="sh-sec">よく使う種目</div><div class="sh-chips">`;recent.forEach(n=>{html+=`<div class="ex-chip" onclick="addExercise('${esc2(n)}')">${esc(n)}</div>`});html+=`</div>`;}
+    if(recent.length){
+      html+=`<div class="sh-sec">よく使う種目 <span style="font-size:10px;color:var(--t3);font-weight:400">（✕で非表示）</span></div><div class="sh-chips">`;
+      recent.forEach(n=>{
+        const isDel=!PRESETS.includes(n);
+        html+=isDel
+          ?`<div class="ex-chip-wrap"><div class="ex-chip" style="border-radius:6px 0 0 6px;border-right:none" onclick="addExercise('${esc2(n)}')">${esc(n)}</div><button class="ex-chip-del" onclick="removeExName('${esc2(n)}')" title="非表示にする">✕</button></div>`
+          :`<div class="ex-chip" onclick="addExercise('${esc2(n)}')">${esc(n)}</div>`;
+      });
+      html+=`</div>`;
+    }
     html+=`<div class="sh-sec">プリセット</div><div class="sh-chips">`;
     PRESETS.forEach(n=>{html+=`<div class="ex-chip" onclick="addExercise('${esc2(n)}')">${esc(n)}</div>`});html+=`</div>`;
   }
@@ -612,8 +657,9 @@ function renderSheetList(){
 }
 function confirmSheetInput(){const v=document.getElementById('sheet-q').value.trim();if(v)addExercise(v);}
 function getRecentExNames(){
+  const bl=getExBlacklist();
   const count={};getSessions().forEach(s=>s.exercises.forEach(ex=>{count[ex.name]=(count[ex.name]||0)+1}));
-  return Object.entries(count).sort((a,b)=>b[1]-a[1]).slice(0,10).map(([n])=>n);
+  return Object.entries(count).sort((a,b)=>b[1]-a[1]).slice(0,20).map(([n])=>n).filter(n=>!bl.includes(n));
 }
 
 /* Calendar */
